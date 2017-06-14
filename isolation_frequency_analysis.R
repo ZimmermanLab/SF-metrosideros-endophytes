@@ -1,5 +1,6 @@
 # script to analyze preliminary isolation data for m. excelsa in San Francisco
 # Emma Gibson, egibson@dons.usfca.edu, 4/20/17
+# adding a comment for git
 
 isolation_data <- read.csv("data/metrosideros_preliminary_data_R.csv")
 
