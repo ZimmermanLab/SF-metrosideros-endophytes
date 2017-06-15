@@ -77,3 +77,61 @@ rownames(comm_for_vegan) <- community_and_metadata$Tree_ID
 # Data Analysis
 
 Some fun analyses go here!
+
+```{r}
+# from http://rstudio-pubs-static.s3.amazonaws.com/11473_29c2de401c55441ca5350862ebd04456.html
+richness <- rowSums(comm_for_vegan > 0)
+sp.abund <- rowSums(comm_for_vegan)  #gives the number of individuals found in each plot
+raremax <- min(rowSums(comm_for_vegan))  #rarefaction uses the smallest number of observations (individuals here) per sample to extrapolate the expected number if all other samples only had that number of observations
+raremax
+Srare <- rarefy(comm_for_vegan, raremax)
+par(mfrow = c(1, 2))
+plot(sp.abund, Srare, xlab = "Observed No. of Species", ylab = "Rarefied No. of Species")
+rarecurve(comm_for_vegan, col = "blue")
+
+
+```
+
+The rightmost graph shows that even in our largest sample sizes, we cultured only a small portion of the total diversity. If we our samples reflected the total diversity in the area, we would expect the curves to gradually plateau. However, all of the curves remain fairly steep, indicating thatt here is still much diversity in these sites that remains unaccounted for.
+Interestingly, it also appears that the trees in Site 2, which had a significantly lower isolation frequencies than those in the other sites, had similar curves to the other sites, indicating that they had as much diversity. The graph on the left confirms this observation, further indicating that all of the sites have a similar amount of diversity, despite the number of species in each.
+
+
+```{r}
+shannon <- diversity(comm_for_vegan)
+boxplot(shannon ~ droplevels(tree_meta$Site_ID[2:13]))
+
+```
+
+This graph indicates that Site 3 had the largest diversity by a small margin, while Sites 1 and 3 have fairly similar levels of diversity. Site 2 shows by far the greatest amount of variation in diversity, which makes sense given that it had the smallest sample size and, therefore, the largest margin of error.
+
+
+```{r}
+rraremax <- rrarefy(comm_for_vegan, sample = raremax)
+rrshannon <- diversity(rraremax)
+boxplot(rrshannon ~ droplevels(tree_meta$Site_ID[2:13]))
+#running this yields a different graph every time
+
+
+```
+
+These graphs highlight that the pattern of diversity between each site is marginal at best, due to the large difference between sample sizes for each site. Because it takes different MOTUs into account every time, it effectively makes the sample size the same for each site, yielding different graphs each time its program is run. These graphs and their relationship to each other look different every time, indicating that the sites would show similar levels of diversity if they were all of the same sample size.
+
+
+```{r}
+site_communities <- community_and_metadata %>% 
+  group_by(Site_ID) %>%
+  select(starts_with("MOTU")) %>%
+  summarise_all(funs(sum))
+
+row.names(site_communities) <- pull(site_communities, Site_ID)
+site_comm_vegan <- site_communities %>%
+  select(starts_with("MOTU"))
+
+rarecurve(site_comm_vegan, col = "blue")
+
+
+```
+
+This graph indicates that the preliminary samples reflected only a small portion of the diversity within each site. Although it is similar to the first graphs above, it is different in that it groups all the trees in each site together. Initially, I thought that this might show that while no individual tree showed the full species diversity of its area, the combined diversity of the trees in each site might show a greater portion overall. Although the curves do appear to be a little less steep, if we had actually sampled all of the diversity in the area, then they would appear to plateau much more than they do, indicating that there is still much more diversity in each of these sites.
+Like with the previous graphs, the curve for Site 2 appears almost identical to that of Site 3, indicating that it has a similar level of species diversity despite the lower mount of fungus cultured from it. Interestingly, Site 1 appears to have slightly less diversity than the other sites, likely because of the large quantities of MOTU 17 there.
+
