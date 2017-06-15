@@ -1,0 +1,79 @@
+---
+title: "Metrosideros excelsa endophyte morphotype analysis"
+author: "Emma Gibson and Naupaka Zimmerman"
+date: "6/14/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+```{r install-load-packages}
+# install and load packages as needed 
+if (!require("dplyr")) {
+  install.packages("dplyr")
+  library("dplyr")
+}
+
+if (!require("tidyr")) {
+  install.packages("tidyr")
+  library("dplyr")
+}
+
+if (!require("vegan")) {
+  install.packages("vegan")
+  library("vegan")
+}
+```
+
+# Data Cleaning
+
+First we'll read in the three datasets downloaded from Google Spreadsheets.
+
+```{r read-in-data}
+tree_meta <- read.csv("data/2017-06-09_M_excel_tree_metadata - Sheet1.csv")
+morphotype_group <- read.csv("data/2017-06-09_M_excel_morphotyping - Sheet1.csv")
+culture_info <- read.csv("data/2017-02-16_culturing_worksheet - Sheet1.csv")
+```
+
+Then we will use the `join()` functions from the `dplyr` package to merge the three datasets together so that we can figure out which morphotypes were found in which trees.
+
+```{r join-data}
+# join all the data frames together based on shared columns 
+joined_data <- morphotype_group %>%
+  left_join(culture_info, by = c("full_culture_ID" = "Label_ID")) %>%
+  left_join(tree_meta, by = c("From_Label_ID" = "Tree_ID"))
+```
+
+We need to remove one of the rows here - it looks like xulture ZUSF00366 was entered twice on accident. Then we use the `spread()` function in `tidyr` to turn the long format data into wide format data (with trees as rows and MOTUs as columns), which is what we need for most kinds of community analyses.
+
+```{r make-community-matrix}
+# Need to remove a duplicated row for ZUSF00366, was entered twice by accident
+# >Error: Duplicate identifiers for rows (93, 96)
+community_matrix <- joined_data %>%
+  distinct(full_culture_ID, .keep_all = TRUE) %>%
+  count(From_Label_ID, motu_id) %>%
+  spread(motu_id, n, fill = 0) 
+```
+
+Once we have the spread out community matrix, we can add back on the metadata for each tree, again using the `join()` function. We'll get rid of the test 'Parker' site for now because it only has one rep.
+
+```{r join-community-matrix}
+community_and_metadata <- tree_meta %>%
+  left_join(community_matrix, by = c("Tree_ID" = "From_Label_ID")) %>%
+  filter(Site_ID != "Parker")
+```
+
+Finally, we make another data frame that just has the MOTU counts and has the tree IDs as row names. This is the format that the `vegan` package prefers and will make using it more easy. See the [`vegan` vignette](http://cc.oulu.fi/~jarioksa/opetus/metodi/vegantutor.pdf) for more info.
+
+```{r make-matrix-for-vegan}
+comm_for_vegan <- community_and_metadata %>%
+  select(starts_with("MOTU"))
+
+rownames(comm_for_vegan) <- community_and_metadata$Tree_ID
+```
+
+# Data Analysis
+
+Some fun analyses go here!
