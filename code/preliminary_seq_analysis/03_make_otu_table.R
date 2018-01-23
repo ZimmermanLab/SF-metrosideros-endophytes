@@ -13,7 +13,7 @@ library("tidyr")
 library("vegan")
 
 # load files
-otus <- read.table("data/seq_with_OTU_ID.txt")
+otus <- read.table("data/sequence_data_hand_cleaned/seq_with_OTU_ID.txt")
 groups <- read.table("data/groupfile.tsv")
 trees <- read.csv("data/2017-06-09_M_excel_tree_metadata - Sheet1.csv",
                   stringsAsFactors = FALSE)
