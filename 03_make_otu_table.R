@@ -33,26 +33,34 @@ row.names(otu_table) <- otu_table[, 1]
 otu_table <- otu_table[, -1]
 
 # drop out USF test sample
-otu_table <- otu_table[1:12,]
+otu_table <- otu_table[1:30,]
 
 # do and plot ordination with this matrix
 plot(metaMDS(otu_table), type = "t", display = "sites", cex = 1.5)
 
 # fix row names to be more readable
-#row.names(otu_table) <- c(paste("Balboa - Tree", 1:4),
-                         paste("Downtown - Tree", 1:4),
-                         paste("Mt. Davidson - Tree", 1:4),
-                         "USF")
+row.names(otu_table) <- c(paste("Balboa - Tree", 1:5),
+                         paste("Downtown - Tree", 1:5),
+                         paste("Mt. Davidson - Tree", 1:5),
+                         paste("Bay - Tree", 1:5),
+                         paste("Freeway - Tree", 1:5),
+                         paste("Ocean - Tree", 1:5))
 
 # some species accumulation curves
 rarecurve(otu_table, main = "Species accumulation curves for endophytic fungi")
 plot(colSums(otu_table))
 plot(specaccum(otu_table, method = "rare"), xvar = "individuals")
 
+
 # more sophisticaed multi-step ordination plotting
 ord_obj <- metaMDS(otu_table)
 
-group_labels <- c(rep("Balboa", 4), rep("Downtown", 4), rep("Mt. Davidson", 4), "USF")
+group_labels <- c(rep("Balboa", 5),
+                  rep("Downtown", 5),
+                  rep("Mt. Davidson", 5),
+                  rep("Bay", 5),
+                  rep("Freeway", 5),
+                  rep("Ocean", 5))
 
 plot(ord_obj,
      display = "sites",
@@ -61,29 +69,34 @@ plot(ord_obj,
 
 points(ord_obj,
        display = "sites",
-       col = c(rep("blue", 4),
-                 rep("red", 4),
-                 rep("orange", 4),
-                 "black"),
-       cex = 4,
+       col = c(rep("blue", 5),
+               rep("green", 5),
+               rep("yellow", 5),
+               rep("orange", 5),
+               rep("red", 5),
+               rep("purple", 5)),
+       cex = 5,
        pch = 16)
 
 legend("bottomleft",
        legend = levels(factor(group_labels)),
        pch = 16,
-       cex = 1.2,
-       pt.cex = 2.7,
+       cex = 1,
+       pt.cex = 2,
        col = c("blue",
-               "red",
+               "green",
+               "yellow",
                "orange",
-               "black"))
+               "red",
+               "purple"))
 
 ordiellipse(ord_obj,
             groups =group_labels,
             label = FALSE,
             col = c("blue",
-                    "red",
+                    "green",
+                    "yellow",
                     "orange",
-                    "black"),
-            lwd = 10)
+                    "red"),
+            lwd = 3)
 
