@@ -64,7 +64,7 @@ group_labels <- c(rep("Balboa", 5),
 
 plot(ord_obj,
      display = "sites",
-     type = "n",
+     type = "t",
      main = "NMDS ordination of fungal community composition")
 
 points(ord_obj,
@@ -75,7 +75,7 @@ points(ord_obj,
                rep("orange", 5),
                rep("red", 5),
                rep("purple", 5)),
-       cex = 5,
+       cex = 3,
        pch = 16)
 
 legend("bottomleft",
@@ -84,19 +84,20 @@ legend("bottomleft",
        cex = 1,
        pt.cex = 2,
        col = c("blue",
-               "green",
-               "yellow",
                "orange",
+               "green",
                "red",
+               "yellow",
                "purple"))
 
 ordiellipse(ord_obj,
             groups =group_labels,
             label = FALSE,
             col = c("blue",
-                    "green",
-                    "yellow",
                     "orange",
-                    "red"),
+                    "green",
+                    "red",
+                    "yellow",
+                    "purple"),
             lwd = 3)
 
