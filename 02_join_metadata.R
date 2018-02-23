@@ -54,7 +54,7 @@ levels(joined_tree_ID$all)[levels(joined_tree_ID$all) == "Test Sample"] <- "Test
 # fix zero padding errors in extraction IDs
 joined_tree_ID <- joined_tree_ID %>%
   mutate_if(is.factor, as.character) %>%
-  mutate(Label_ID = gsub("EUSF", "EUSF0", Label_ID))
+  mutate(Label_ID = gsub("EUSF0", "EUSF", Label_ID))
 
 # write out complete csv for use in next script
 write.table(joined_tree_ID,
