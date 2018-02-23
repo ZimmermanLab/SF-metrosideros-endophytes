@@ -15,7 +15,6 @@ culturing <- read.csv("metadata/culturing_worksheet.csv")
 extractions <- read.csv("metadata/Extraction_worksheet.csv")
 trees <- read.csv("metadata/M_excel_tree_metadata.csv")
 
-ls
 # 4 levels of joining since we can't recursively join
 joined <- extractions %>%
   left_join(culturing, by = c("Culture_Label_ID" = "Label_ID")) %>%
