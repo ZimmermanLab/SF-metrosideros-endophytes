@@ -46,8 +46,13 @@ row.names(otu_table) <- c(paste("Balboa - Tree", 1:5),
                          paste("Freeway - Tree", 1:5),
                          paste("Ocean - Tree", 1:5))
 
-# some species accumulation curves
+
+#save a pdf of the rarefaction curve
+pdf("figures/prelim_rarecurve.pdf")
 rarecurve(otu_table, main = "Species accumulation curves for endophytic fungi")
+dev.off()
+
+# some more species accumulation curves
 plot(colSums(otu_table))
 plot(specaccum(otu_table, method = "rare"), xvar = "individuals")
 
@@ -61,7 +66,7 @@ group_labels <- c(rep("Balboa", 5),
                   rep("Bay", 5),
                   rep("Freeway", 5),
                   rep("Ocean", 5))
-
+pdf("figures/prelim_ordination.pdf")
 plot(ord_obj,
      display = "sites",
      type = "t",
@@ -100,4 +105,4 @@ ordiellipse(ord_obj,
                     "yellow",
                     "purple"),
             lwd = 3)
-
+dev.off()
