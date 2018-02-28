@@ -59,6 +59,8 @@ plot(specaccum(otu_table, method = "rare"), xvar = "individuals")
 
 # more sophisticaed multi-step ordination plotting
 ord_obj <- metaMDS(otu_table)
+trees_aug <- subset(trees, as.POSIXct(trees$Date_sampled) > as.POSIXct("2017-08-01"))
+
 
 group_labels <- c(rep("Balboa", 5),
                   rep("Downtown", 5),
@@ -66,10 +68,10 @@ group_labels <- c(rep("Balboa", 5),
                   rep("Bay", 5),
                   rep("Freeway", 5),
                   rep("Ocean", 5))
-pdf("figures/prelim_ordination.pdf")
+pdf("figures/prelim_ordination_DBH.pdf")
 plot(ord_obj,
      display = "sites",
-     type = "t",
+     type = "n",
      main = "NMDS ordination of fungal community composition")
 
 points(ord_obj,
@@ -80,7 +82,7 @@ points(ord_obj,
                rep("orange", 5),
                rep("red", 5),
                rep("purple", 5)),
-       cex = 3,
+       cex = trees_aug$DBH_cm/10,
        pch = 16)
 
 legend("bottomleft",
