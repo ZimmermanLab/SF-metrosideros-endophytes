@@ -59,8 +59,9 @@ plot(specaccum(otu_table, method = "rare"), xvar = "individuals")
 
 # more sophisticaed multi-step ordination plotting
 ord_obj <- metaMDS(otu_table)
-trees_aug <- subset(trees, as.POSIXct(trees$Date_sampled) > as.POSIXct("2017-08-01"))
 
+#make a subset that only containt trees from the second round of sampling
+trees_aug <- subset(trees, as.POSIXct(trees$Date_sampled) > as.POSIXct("2017-08-01"))
 
 group_labels <- c(rep("Balboa", 5),
                   rep("Downtown", 5),
@@ -68,6 +69,9 @@ group_labels <- c(rep("Balboa", 5),
                   rep("Bay", 5),
                   rep("Freeway", 5),
                   rep("Ocean", 5))
+
+adonis(otu_table ~ trees_aug$DBH_cm)
+
 pdf("figures/prelim_ordination_DBH.pdf")
 plot(ord_obj,
      display = "sites",
