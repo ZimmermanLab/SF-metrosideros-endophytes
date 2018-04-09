@@ -49,7 +49,37 @@ row.names(otu_table) <- c(paste("Balboa - Tree", 1:5),
 
 #save a pdf of the rarefaction curve
 pdf("figures/prelim_rarecurve.pdf")
-rarecurve(otu_table, main = "Species accumulation curves for endophytic fungi")
+rare_color = c(rep("#ff5e62", 5),
+               rep("#f0a200", 5),
+               rep("#007f36", 5),
+               rep("#8781e6", 5),
+               rep("#00005a", 5),
+               rep("#81005e", 5))
+
+group_labels <- c(rep("Balboa", 5),
+                  rep("Downtown", 5),
+                  rep("Mt. Davidson", 5),
+                  rep("Bay", 5),
+                  rep("Freeway", 5),
+                  rep("Ocean", 5))
+
+rarecurve(otu_table,
+          main = "Species accumulation curves for endophytic fungi",
+          col = rare_color,
+          label = false,
+          lwd = 2.5)
+
+legend("bottomright",
+       legend = levels(factor(group_labels)),
+       pch = 16,
+       cex = 1,
+       pt.cex = 2,
+       col = c(rep("#ff5e62"),
+               rep("#8781e6"),
+               rep("#f0a200"),
+               rep("#00005a"),
+               rep("#007f36"),
+               rep("#81005e")))
 dev.off()
 
 # some more species accumulation curves
@@ -62,13 +92,6 @@ ord_obj <- metaMDS(otu_table)
 
 #make a subset that only containt trees from the second round of sampling
 trees_aug <- subset(trees, as.POSIXct(trees$Date_sampled) > as.POSIXct("2017-08-01"))
-
-group_labels <- c(rep("Balboa", 5),
-                  rep("Downtown", 5),
-                  rep("Mt. Davidson", 5),
-                  rep("Bay", 5),
-                  rep("Freeway", 5),
-                  rep("Ocean", 5))
 
 adonis(otu_table ~ trees_aug$DBH_cm)
 
@@ -110,5 +133,5 @@ ordiellipse(ord_obj,
                     rep("#00005a"),
                     rep("#007f36"),
                     rep("#81005e")),
-            lwd = 3)
+            lwd = 7)
 dev.off()
