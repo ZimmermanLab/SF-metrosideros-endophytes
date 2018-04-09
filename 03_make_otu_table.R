@@ -72,7 +72,7 @@ group_labels <- c(rep("Balboa", 5),
 
 adonis(otu_table ~ trees_aug$DBH_cm)
 
-pdf("figures/prelim_ordination_DBH.pdf")
+pdf("figures/prelim_ordination_proper_color.pdf")
 plot(ord_obj,
      display = "sites",
      type = "n",
@@ -80,13 +80,13 @@ plot(ord_obj,
 
 points(ord_obj,
        display = "sites",
-       col = c(rep("blue", 5),
-               rep("green", 5),
-               rep("yellow", 5),
-               rep("orange", 5),
-               rep("red", 5),
-               rep("purple", 5)),
-       cex = trees_aug$DBH_cm/10,
+       col = c(rep("#ff5e62", 5),
+               rep("#f0a200", 5),
+               rep("#007f36", 5),
+               rep("#8781e6", 5),
+               rep("#00005a", 5),
+               rep("#81005e", 5)),
+       cex = 4,
        pch = 16)
 
 legend("bottomleft",
@@ -94,21 +94,21 @@ legend("bottomleft",
        pch = 16,
        cex = 1,
        pt.cex = 2,
-       col = c("blue",
-               "orange",
-               "green",
-               "red",
-               "yellow",
-               "purple"))
+       col = c(rep("#ff5e62"),
+               rep("#8781e6"),
+               rep("#f0a200"),
+               rep("#00005a"),
+               rep("#007f36"),
+               rep("#81005e")))
 
 ordiellipse(ord_obj,
             groups =group_labels,
             label = FALSE,
-            col = c("blue",
-                    "orange",
-                    "green",
-                    "red",
-                    "yellow",
-                    "purple"),
+            col = c(rep("#ff5e62"),
+                    rep("#8781e6"),
+                    rep("#f0a200"),
+                    rep("#00005a"),
+                    rep("#007f36"),
+                    rep("#81005e")),
             lwd = 3)
 dev.off()
