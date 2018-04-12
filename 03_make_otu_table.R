@@ -71,7 +71,7 @@ rarecurve(otu_table,
           xlab = "Number of fungal isolates",
           ylab = "Number of fungal species (97% ITS OTUs)",
           cex.lab = 1.4,
-          cex.main = 1.9)
+          cex.main = 1.65)
 
 legend("bottomright",
        legend = levels(factor(group_labels)),
@@ -104,7 +104,7 @@ plot(ord_obj,
      display = "sites",
      type = "n",
      main = "NMDS ordination of fungal community composition",
-     cex.main = 1.89,
+     cex.main = 1.6,
      xlab = "",
      ylab = "",
      tck = 0,
