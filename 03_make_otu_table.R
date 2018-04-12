@@ -66,8 +66,12 @@ group_labels <- c(rep("Balboa", 5),
 rarecurve(otu_table,
           main = "Species accumulation curves for endophytic fungi",
           col = rare_color,
-          label = false,
-          lwd = 2.5)
+          label = FALSE,
+          lwd = 2.5,
+          xlab = "Number of fungal isolates",
+          ylab = "Number of fungal species (97% ITS OTUs)",
+          cex.lab = 1.4,
+          cex.main = 1.9)
 
 legend("bottomright",
        legend = levels(factor(group_labels)),
