@@ -103,7 +103,12 @@ pdf("figures/prelim_ordination_proper_color.pdf")
 plot(ord_obj,
      display = "sites",
      type = "n",
-     main = "NMDS ordination of fungal community composition")
+     main = "NMDS ordination of fungal community composition",
+     cex.main = 1.89,
+     xlab = "",
+     ylab = "",
+     tck = 0,
+     labels = FALSE)
 
 points(ord_obj,
        display = "sites",
