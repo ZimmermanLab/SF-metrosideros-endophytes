@@ -1,0 +1,189 @@
+---
+title: "Urban biogeography of fungal endophytes across San Francisco"
+author: "Emma Gibson and Naupaka Zimmerman"
+date: "4/17/2018"
+output: html_document
+bibliography: references.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r load-libraries}
+# load libraries
+library("dplyr")
+library("tidyr")
+library("vegan")
+```
+
+```{r read-in-data}
+# load files
+otus <- read.table("seq_with_OTU_ID.txt")
+groups <- read.table("groupfile.tsv")
+trees <- read.csv("metadata/M_excel_tree_metadata.csv",
+                  stringsAsFactors = FALSE)
+
+# count by groups instead of trees
+otu_table <- otus %>%
+  left_join(groups, by = c("V1" = "V1")) %>%
+  group_by(V2.x, V2.y) %>%
+  summarize(count = n()) %>%
+  spread(V2.x, count, fill = 0)
+
+# get rid of rows with NA
+otu_table <- as.data.frame(na.omit(otu_table))
+
+# fix row name problems for vegan
+row.names(otu_table) <- otu_table[, 1]
+otu_table <- otu_table[, -1]
+
+# drop out USF test sample
+otu_table <- otu_table[1:30,]
+```
+
+#Abstract
+
+In natural and agricultural systems, the plant microbiome —the microbial organisms associated with plant tissues—has been shown to have important effects on host physiology and ecology, yet we know little about how these plant-microbe relationships play out in urban environments. Here we characterize the composition of fungal communities associated with leaves of one of the most common sidewalk trees in the city of San Francisco, California. We focus our efforts on endophytic fungi (asymptomatic microfungi that live inside healthy leaves), which have been shown in other systems to have large ecological effects on the health of their plant hosts. Specifically, we characterized the foliar fungal microbiome of Metrosideros excelsa trees growing in a variety of urban environmental conditions. We used high-throughput culturing, PCR, and Sanger sequencing of the ITS nrDNA region to quantify the composition and structure of fungal communities growing within healthy leaves of 30 M. excelsa trees from 6 distinct sites, which were selected to capture the range of environmental conditions found within city limits. Sequencing resulted in 1044 high-quality ITS sequences. These sequences clustered into 97 Operational Taxonomic Units (97% VSEARCH OTUs). We found that these communities encompass relatively high alpha (within) and beta (between-site) diversity. Multivariate statistical analyses (NMDS, PERMANOVA) showed that fungal community composition was significantly different between sites (PERMANOVA p = 0.001). Since the communities are all from the same host tree species, and located in relatively close geographical proximity to one another, these analyses suggest that urban environmental factors such as urban heat islands or differences in traffic density (and associated air quality) could potentially be influencing the composition of these fungal communities. We are performing additional analyses to quantify how urban abiotic and anthropogenic factors may shape the composition of these trees' endophytic microbiomes. These biogeographic patterns provide evidence that plant microbiomes in urban environments can be as dynamic and complex as their natural counterparts. As human populations continue to transition out of rural areas and into cities, understanding the factors that shape environmental microbial communities in urban ecosystems stands to become increasingly important.
+
+#Introduction
+
+
+
+#Methods
+
+##Culturing Methods
+
+```{r map-embed}
+#figure out how to embed images
+```
+###Figure 1. Map ofthe locations sampled
+
+We used the Urban Forest Map, which documents the location and species of every tree in San Francisco, to choose 6 unique locations around the city with enough *Metrosideros excelsa* individuals (Figure 1). We collected small branches from 5 trees in each of these sites using a clipper pole, collected at least 3 sun-facing outer branches from each tree. We collected all leaf samples on the same day (August ((DATE)) 2017) to ensure that weather and season would not have an impact on the microbial community composition.
+
+After we brought the branches back, we selected a subset of dark green asymptomatic leaves to culture fungi from. These leaves were surface-sterilize with bleach and ethanol to kill off any surface microbes. Then we cut the leaves into small pieces and put them into slant tubes filled with malt extract agar (MEA). We used MEA because it is considered the standard media for isolating the largest variety of fungal species. For each tree, we prepared 6 leaves and made 100 tubes, except for the trees from the downtown site. For these trees, we prepared 150 tubes per tree because they had low isolation frequencies in our preliminary sampling. All leaves were prepared this way within 48 hours of the initial leaf sampling, to prevent death of the leaf tissue from altering the fungal community composition.
+
+After two weeks, we evaluated them for fungal growth and subcultured the fungi from tubes with growth onto 35mm MEA in order to better evaluate their morphotypes and accumulate sufficient tissue for future barcode gene sequencing and voucher preparation. We re-evaluated and subcultured these tubes another week later to find any late-growing fungi.
+
+##Molecular Methods
+
+We extracted DNA from the fungal cells using a bead-beater and the Extract ‘n Amp DNA extraction kit. First, we added fungal tissue to sterile tubes filled with small beads, then added extraction solution. Next, we put the tubes in the bead-beater for one minute, which vigorously shook the tubes so that the beads inside could physically grind up the fungal tissue. This step is necessary in fungal DNA extractions because fungi have cell walls, which are difficult for extraction solution to break up without this physical grinding step. Next, the samples were placed on heat blocks at 95°C for 10 minutes. After the heating step, we added a dilution buffer to each tube and stored them in a refrigerator to prevent degradation until PCR.
+
+We performed PCR on the ITS region, a commonly-accepted fungal barcode gene, using the ITS1F forward primer and ITS4 reverse primer. We used Extract ‘n Amp Taq polymerase, and a 35-repeat cycle. PCR samples were cleaned and prepared for sequencing using Shrimp Alkaline Phopsphatase Exonuclease (ExoSap), then sent to MCLabs for Sanger sequencing.
+
+##Computational Methods
+
+We analyzed the data using three tools: Geneious, Mothur, and the R programming language. We used Geneious to manually clean and trim the Sanger sequencing data, and to identify and remove failed and low-quality sequences. We used Mothur to determine Operational Taxonomic Units (OTUs), which are groups of sequences categorized together based on similarity. Next, we used R to analyze the resulting OTU table. This included using the ‘vegan’ package to run and plot a Non-Metric Multidimensional Scaling (NMDS) ordination, a non-parametric technique used to visualize high-dimensional community data in only two dimensions. Lastly, we used vegan (???) to calculate PERMANOVA values in order to prove that observed patterns were significant.
+
+
+#Results
+
+##Isolation Frequency
+
+##Species richness
+```{r rarefaction, fig.height=7}
+#set colors
+rare_color = c(rep("#ff5e62", 5),
+               rep("#f0a200", 5),
+               rep("#007f36", 5),
+               rep("#8781e6", 5),
+               rep("#00005a", 5),
+               rep("#81005e", 5))
+
+#rename sites to be more readable
+group_labels <- c(rep("Balboa", 5),
+                  rep("Downtown", 5),
+                  rep("Mt. Davidson", 5),
+                  rep("Bay", 5),
+                  rep("Freeway", 5),
+                  rep("Ocean", 5))
+
+#draw the species richness curves
+rarecurve(otu_table,
+          main = "Species accumulation curves for endophytic fungi",
+          col = rare_color,
+          label = FALSE,
+          lwd = 2,
+          xlab = "Number of fungal isolates",
+          ylab = "Number of fungal species (97% ITS OTUs)")
+
+#add a legend for greater readability
+legend("bottomright",
+       legend = levels(factor(group_labels)),
+       pch = 16,
+       col = c(rep("#ff5e62"),
+               rep("#8781e6"),
+               rep("#f0a200"),
+               rep("#00005a"),
+               rep("#007f36"),
+               rep("#81005e")))
+
+```
+###Figure 4. Rarefaction curve showing species richness in all trees & sites
+
+There were 97 total OTUs found among the 30 different trees. Although both isolation frequency and number of fungal species found varies notably between trees, the species richness curve indicates 
+
+##NMDS Ordination
+
+```{r ordination, fig.height=7}
+# do and plot ordination with this matrix
+plot(metaMDS(otu_table), type = "t", display = "sites", cex = 1.5)
+
+# fix row names to be more readable
+row.names(otu_table) <- c(paste("Balboa - Tree", 1:5),
+                         paste("Downtown - Tree", 1:5),
+                         paste("Mt. Davidson - Tree", 1:5),
+                         paste("Bay - Tree", 1:5),
+                         paste("Freeway - Tree", 1:5),
+                         paste("Ocean - Tree", 1:5))
+
+plot(ord_obj,
+     display = "sites",
+     type = "n",
+     main = "NMDS ordination of fungal community composition",
+     cex.main = 1.6,
+     xlab = "",
+     ylab = "",
+     tck = 0,
+     labels = FALSE)
+
+points(ord_obj,
+       display = "sites",
+       col = c(rep("#ff5e62", 5),
+               rep("#f0a200", 5),
+               rep("#007f36", 5),
+               rep("#8781e6", 5),
+               rep("#00005a", 5),
+               rep("#81005e", 5)),
+       cex = 4,
+       pch = 16)
+
+legend("bottomleft",
+       legend = levels(factor(group_labels)),
+       pch = 16,
+       cex = 1,
+       pt.cex = 2,
+       col = c(rep("#ff5e62"),
+               rep("#8781e6"),
+               rep("#f0a200"),
+               rep("#00005a"),
+               rep("#007f36"),
+               rep("#81005e")))
+
+ordiellipse(ord_obj,
+            groups =group_labels,
+            label = FALSE,
+            col = c(rep("#ff5e62"),
+                    rep("#8781e6"),
+                    rep("#f0a200"),
+                    rep("#00005a"),
+                    rep("#007f36"),
+                    rep("#81005e")),
+            lwd = 7)
+```
+
+###Figure 5. NMDS ordination of community composition
+
+#Discussion
+
+words
