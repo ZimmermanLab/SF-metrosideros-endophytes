@@ -48,6 +48,11 @@ In natural and agricultural systems, the plant microbiome —the microbial organ
 
 #Introduction
 
+As people continue to live in increasingly urban environments, understanding the ecology of cities and urban settings will become critical to human health. Just as rural environments contain complex and dynamic ecosystems, the human and non-human aspects of large city habitats interact to creats a unique urban ecosystem. In recent years, ecologists have begun studying the urban environment just as they would a natural environment, in order to understand the novel environmental conditions this setting presents to the organisms that live there. For example, recent studies have shown that plant life in large cities can impact temperature, air quality, and other aspects of human health [@Willis374]. A study spanning the United States showed that plant life can improve a city's air quality by taking up significant amounts of carbon dioxide from urban air [@NOWAK2014119]. Another study in China indicated that healthy plant life can reduce the urban heat island effect, which is caused when heat becomes trapped between tall buildings [@salford40381]. Therefore, understanding the impact of urban environments on plant health could help to allow those plants to thrive, benefitting the human inhabitants of the city as well as the environment as a whole.
+
+One potentially major factor influencing plant health that has yet to be studied in an urban environment in great detail is the endophytic microbiome. Endophytes are microbial organisms, generally bacteria and fungi, that live symbiotically inside the leaves of plants. Inoculation experiments have shown that specific species of endophytes can have an impact on their host’s overall health, including factors such as resistance and susceptibility to disease (@Busby2016). In the wild, endophytic communities display species diversity comparable to that of any macroscopic community, even among individual trees from the same species [@gazis2011]. However, what factors influence this diversity and to what extent is still poorly understood. The urban setting is unique because factors such as rainfall and elevation will be less apparent in a smaller geographic area, but new factors such as proximity to roads and tall buildings may introduce effects of their own. Studies of suburban forests in Japan have indicated that an urban setting has a notable impact on endophytic diversity [@MATSUMURA201319]. However, the full impact of urban environmental factors on endophytic communities has yet to be completely understood.
+
+In this study, we plan to use culturing and barcode gene sequencing to identify the species makeup of endophytic communities in Metrosideros excelsa throughout San Francisco to relate environmental factors with fungal community composition. In a related Hawaiian species, Metrosideros polymorpha, the species makeup of fungal endophyte communities has been shown to vary greatly with environmental factors such as elevation and rainfall [@Zimmerman13022]. Other studies have been conducted on *Metrosideros excelsa* in its native home of New Zealand, but there have been few studies about the endophytes in this species outside of its native environment or in an urban setting [@mckenzie1999]. 
 
 
 #Methods
@@ -73,7 +78,7 @@ We performed PCR on the ITS region, a commonly-accepted fungal barcode gene, usi
 
 ##Computational Methods
 
-We analyzed the data using three tools: Geneious, Mothur, and the R programming language. We used Geneious to manually clean and trim the Sanger sequencing data, and to identify and remove failed and low-quality sequences. We used Mothur to determine Operational Taxonomic Units (OTUs), which are groups of sequences categorized together based on similarity. Next, we used R to analyze the resulting OTU table. This included using the ‘vegan’ package to run and plot a Non-Metric Multidimensional Scaling (NMDS) ordination, a non-parametric technique used to visualize high-dimensional community data in only two dimensions. Lastly, we used vegan (???) to calculate PERMANOVA values in order to prove that observed patterns were significant.
+We analyzed the data using three tools: Geneious, Mothur, and the R programming language. We used Geneious to manually clean and trim the Sanger sequencing data, and to identify and remove failed and low-quality sequences [@geneious]. We used Mothur to determine Operational Taxonomic Units (OTUs), which are groups of sequences categorized together based on similarity. Next, we used R to analyze the resulting OTU table. This included using the ‘vegan’ package to run and plot a Non-Metric Multidimensional Scaling (NMDS) ordination, a non-parametric technique used to visualize high-dimensional community data in only two dimensions. Lastly, we used vegan (???) to calculate PERMANOVA values in order to prove that observed patterns were significant.
 
 
 #Results
@@ -187,3 +192,5 @@ ordiellipse(ord_obj,
 #Discussion
 
 words
+
+#Sources Cited
