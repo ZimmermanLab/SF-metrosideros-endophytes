@@ -7,7 +7,7 @@ bibliography: references.bib
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = FALSE)
 ```
 
 ```{r load-libraries}
@@ -124,15 +124,21 @@ legend("bottomright",
                rep("#81005e")))
 
 ```
-###Figure 4. Rarefaction curve showing species richness in all trees & sites
+###Figure 3. Rarefaction curve showing species richness in all trees & sites
 
-There were 97 total OTUs found among the 30 different trees. Although both isolation frequency and number of fungal species found varies notably between trees, the species richness curve indicates 
+The species richness curve graphs the number of fungal species (OTUs) found versus the totla number of fungal isolates for each tree's microbiome. Each line represents one tree's community, and the color of the line represents which site each tree was located in. A sharply angled line indicates that the full species diversity has not been samples, and a line that plateaus indicated that most of the species available in that community have been sampled. There were 97 total OTUs found among the 30 different trees. Both isolation frequency and number of fungal species found varies notably between trees.
+
+```{r bar-graph}
+#use TBAS metadata
+```
+###Figure 4. Prominent Taxa in each site
+
+The most prominent 
 
 ##NMDS Ordination
 
 ```{r ordination, fig.height=7}
-# do and plot ordination with this matrix
-plot(metaMDS(otu_table), type = "t", display = "sites", cex = 1.5)
+ord_obj <- metaMDS(otu_table)
 
 # fix row names to be more readable
 row.names(otu_table) <- c(paste("Balboa - Tree", 1:5),
@@ -188,6 +194,8 @@ ordiellipse(ord_obj,
 ```
 
 ###Figure 5. NMDS ordination of community composition
+
+A non-metric multidimensional scaling (NMDS) ordination graphs the microbial communities of each tree by compositional similarity using the DNA sequences from each tree. Each point represents the endophytic community of one tree, and the color of said point corresponds to the site that tree is from. The ellipses show the standard error around the centroid of all points within a site, and are also color-coded according to which site they represent. 
 
 #Discussion
 
