@@ -46,6 +46,23 @@ library("tidyverse")
     ## ✖ dplyr::lag()    masks stats::lag()
 
 ``` r
+library("ggpubr")
+```
+
+    ## Loading required package: magrittr
+
+    ## 
+    ## Attaching package: 'magrittr'
+
+    ## The following object is masked from 'package:purrr':
+    ## 
+    ##     set_names
+
+    ## The following object is masked from 'package:tidyr':
+    ## 
+    ##     extract
+
+``` r
 # load files
 otus <- read.table("seq_with_OTU_ID.txt")
 groups <- read.table("groupfile.tsv")
@@ -98,7 +115,7 @@ Methods
 Culturing Methods
 -----------------
 
-![](figures/thesis_map.png)
+![site-map](figures/thesis_map.PNG)
 
 ### Figure 1. Map ofthe locations sampled
 
@@ -125,6 +142,29 @@ Results
 
 Isolation Frequency
 -------------------
+
+``` r
+trees %>%
+ filter(Site_ID != "Parker") %>%
+ filter(Date_sampled > "2017-08-25") %>%
+ separate(isolation_freq,
+          into = c("grew", "total"),
+          sep = "/") %>%
+ mutate(grew = as.numeric(grew),
+        total = as.numeric(total)) %>%
+ mutate(isoFreq = grew/total) %>%
+ ggplot(aes(x = Site_name,
+            y = isoFreq)) +
+   geom_boxplot() +
+ theme(axis.text.x = element_text(angle = 45,
+                                  vjust = 1,
+                                  hjust = 1)) +
+ stat_compare_means(method = "kruskal")
+```
+
+![](2018-04-17_Report_draft_files/figure-markdown_github/isolation-1.png)
+
+### Figure 1. Isolation frequencies of each site
 
 Species richness
 ----------------
@@ -167,7 +207,9 @@ legend("bottomright",
                rep("#81005e")))
 ```
 
-![](2018-04-17_Report_draft_files/figure-markdown_github/rarefaction-1.png) \#\#\# Figure 3. Rarefaction curve showing species richness in all trees & sites
+![](2018-04-17_Report_draft_files/figure-markdown_github/rarefaction-1.png)
+
+### Figure 3. Rarefaction curve showing species richness in all trees & sites
 
 The species richness curve graphs the number of fungal species (OTUs) found versus the totla number of fungal isolates for each tree's microbiome. Each line represents one tree's community, and the color of the line represents which site each tree was located in. A sharply angled line indicates that the full species diversity has not been samples, and a line that plateaus indicated that most of the species available in that community have been sampled. There were 97 total OTUs found among the 30 different trees. Both isolation frequency and number of fungal species found varies notably between trees.
 
@@ -203,14 +245,16 @@ TBAS_with_site %>%
   scale_fill_discrete(name = "Class") +
     scale_x_discrete(labels = c("Balboa",
                                      "Downtown",
-                                     "Davidson",
+                                     "Mt. Davidson",
                                      "Bay",
                                      "Freeway",
                                      "Ocean")) +
   xlab("Site")
 ```
 
-![](2018-04-17_Report_draft_files/figure-markdown_github/bar-graph-1.png) \#\#\# Figure 4. Prominent Taxa in each site
+![](2018-04-17_Report_draft_files/figure-markdown_github/bar-graph-1.png)
+
+### Figure 4. Prominent Taxa in each site
 
 The most prominent
 
@@ -223,34 +267,28 @@ ord_obj <- metaMDS(otu_table)
 
     ## Wisconsin double standardization
     ## Run 0 stress 0.2365893 
-    ## Run 1 stress 0.2422799 
-    ## Run 2 stress 0.2476955 
-    ## Run 3 stress 0.2510651 
-    ## Run 4 stress 0.2560505 
-    ## Run 5 stress 0.2535802 
-    ## Run 6 stress 0.2370133 
-    ## ... Procrustes: rmse 0.02748534  max resid 0.07658948 
-    ## Run 7 stress 0.2369446 
-    ## ... Procrustes: rmse 0.03683702  max resid 0.1012426 
-    ## Run 8 stress 0.25253 
-    ## Run 9 stress 0.2365885 
-    ## ... New best solution
-    ## ... Procrustes: rmse 0.0005749758  max resid 0.001975438 
-    ## ... Similar to previous best
-    ## Run 10 stress 0.2403721 
-    ## Run 11 stress 0.2590312 
-    ## Run 12 stress 0.2508043 
-    ## Run 13 stress 0.2403015 
-    ## Run 14 stress 0.2401204 
-    ## Run 15 stress 0.2435632 
-    ## Run 16 stress 0.2367419 
-    ## ... Procrustes: rmse 0.0380721  max resid 0.1035599 
-    ## Run 17 stress 0.241583 
-    ## Run 18 stress 0.250713 
-    ## Run 19 stress 0.2375818 
-    ## Run 20 stress 0.2370814 
-    ## ... Procrustes: rmse 0.03029513  max resid 0.09670085 
-    ## *** Solution reached
+    ## Run 1 stress 0.2540048 
+    ## Run 2 stress 0.2519444 
+    ## Run 3 stress 0.260319 
+    ## Run 4 stress 0.2458621 
+    ## Run 5 stress 0.2555415 
+    ## Run 6 stress 0.240482 
+    ## Run 7 stress 0.2370939 
+    ## Run 8 stress 0.2378236 
+    ## Run 9 stress 0.2393982 
+    ## Run 10 stress 0.2387748 
+    ## Run 11 stress 0.2406154 
+    ## Run 12 stress 0.2508796 
+    ## Run 13 stress 0.2509497 
+    ## Run 14 stress 0.2469355 
+    ## Run 15 stress 0.2387746 
+    ## Run 16 stress 0.2592158 
+    ## Run 17 stress 0.2374066 
+    ## Run 18 stress 0.2397475 
+    ## Run 19 stress 0.2408619 
+    ## Run 20 stress 0.2571851 
+    ## *** No convergence -- monoMDS stopping criteria:
+    ##     20: stress ratio > sratmax
 
 ``` r
 # fix row names to be more readable
