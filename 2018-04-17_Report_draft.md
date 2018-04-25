@@ -1,99 +1,7 @@
 Urban biogeography of fungal endophytes across San Francisco
 ================
-Emma Gibson and Naupaka Zimmerman
+Emma Gibson
 4/17/2018
-
-``` r
-# load libraries
-library("dplyr")
-```
-
-    ## 
-    ## Attaching package: 'dplyr'
-
-    ## The following objects are masked from 'package:stats':
-    ## 
-    ##     filter, lag
-
-    ## The following objects are masked from 'package:base':
-    ## 
-    ##     intersect, setdiff, setequal, union
-
-``` r
-library("tidyr")
-library("vegan")
-```
-
-    ## Loading required package: permute
-
-    ## Loading required package: lattice
-
-    ## This is vegan 2.4-6
-
-``` r
-library("ggplot2")
-library("tidyverse")
-```
-
-    ## ── Attaching packages ────────────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──
-
-    ## ✔ tibble  1.4.2     ✔ purrr   0.2.4
-    ## ✔ readr   1.1.1     ✔ stringr 1.3.0
-    ## ✔ tibble  1.4.2     ✔ forcats 0.3.0
-
-    ## ── Conflicts ───────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
-    ## ✖ dplyr::filter() masks stats::filter()
-    ## ✖ dplyr::lag()    masks stats::lag()
-
-``` r
-library("ggpubr")
-```
-
-    ## Loading required package: magrittr
-
-    ## 
-    ## Attaching package: 'magrittr'
-
-    ## The following object is masked from 'package:purrr':
-    ## 
-    ##     set_names
-
-    ## The following object is masked from 'package:tidyr':
-    ## 
-    ##     extract
-
-``` r
-# load files
-otus <- read.table("seq_with_OTU_ID.txt")
-groups <- read.table("groupfile.tsv")
-trees <- read.csv("metadata/M_excel_tree_metadata_with_isolationfreq.csv",
-                  stringsAsFactors = FALSE)
-TBAS <- read.csv("metadata/TBAS_taxonomies.csv")
-culturing <- read.csv("metadata/culturing_worksheet.csv")
-extractions <- read.csv("metadata/Extraction_worksheet.csv")
-
-# count by groups instead of trees
-otu_table <- otus %>%
-  left_join(groups, by = c("V1" = "V1")) %>%
-  group_by(V2.x, V2.y) %>%
-  summarize(count = n()) %>%
-  spread(V2.x, count, fill = 0)
-```
-
-    ## Warning: Column `V1` joining factors with different levels, coercing to
-    ## character vector
-
-``` r
-# get rid of rows with NA
-otu_table <- as.data.frame(na.omit(otu_table))
-
-# fix row name problems for vegan
-row.names(otu_table) <- otu_table[, 1]
-otu_table <- otu_table[, -1]
-
-# drop out USF test sample
-otu_table <- otu_table[1:30,]
-```
 
 Abstract
 ========
@@ -105,9 +13,9 @@ Introduction
 
 As people continue to live in increasingly urban environments, understanding the ecology of cities and urban settings will become critical to human health. Just as rural environments contain complex and dynamic ecosystems, the human and non-human aspects of large city habitats interact to creats a unique urban ecosystem. In recent years, ecologists have begun studying the urban environment just as they would a natural environment, in order to understand the novel environmental conditions this setting presents to the organisms that live there. For example, recent studies have shown that plant life in large cities can impact temperature, air quality, and other aspects of human health (Willis and Petrokofsky 2017). A study spanning the United States showed that plant life can improve a city's air quality by taking up significant amounts of carbon dioxide from urban air (Nowak et al. 2014). Another study in China indicated that healthy plant life can reduce the urban heat island effect, which is caused when heat becomes trapped between tall buildings (Kong et al. 2014). Therefore, understanding the impact of urban environments on plant health could help to allow those plants to thrive, benefitting the human inhabitants of the city as well as the environment as a whole.
 
-One potentially major factor influencing plant health that has yet to be studied in an urban environment in great detail is the endophytic microbiome. Endophytes are microbial organisms, generally bacteria and fungi, that live symbiotically inside the leaves of plants. Although some of these fungal microbes may be latent pathogens or decomposers waiting for the leaf to die, others are mutualists that may confer a benefit to their host. For instance, inoculation experiments have shown that specific species of endophytes can have an impact on their host’s overall health, including factors such as resistance and susceptibility to disease (Busby, Ridout, and Newcombe 2016). In the wild, endophytic communities display species diversity comparable to that of any macroscopic community, even among individual trees from the same species (Gazis, Rehner, and Chaverri, n.d.). However, what factors influence this diversity and to what extent is still poorly understood. The urban setting is unique because factors such as rainfall and elevation will be less apparent in a smaller geographic area, but new factors such as proximity to roads and tall buildings may introduce effects of their own. Studies of suburban forests in Japan have indicated that an urban setting has a notable impact on endophytic diversity (<span class="citeproc-not-found" data-reference-id="MATSUMURA201319">**???**</span>). However, the full impact of urban environmental factors on endophytic communities has yet to be completely understood.
+One potentially major factor influencing plant health that has yet to be studied in an urban environment in great detail is the endophytic microbiome. Endophytes are microbial organisms, generally bacteria and fungi, that live symbiotically inside the leaves of plants. Although some of these fungal microbes may be latent pathogens or decomposers waiting for the leaf to die, others are mutualists that may confer a benefit to their host. For instance, inoculation experiments have shown that specific species of endophytes can have an impact on their host’s overall health, including factors such as resistance and susceptibility to disease (Busby, Ridout, and Newcombe 2016). In the wild, endophytic communities display species diversity comparable to that of any macroscopic community, even among individual trees from the same species (Gazis, Rehner, and Chaverri, n.d.). However, what factors influence this diversity and to what extent is still poorly understood. The urban setting is unique because factors such as rainfall and elevation will be less apparent in a smaller geographic area, but new factors such as proximity to roads and tall buildings may introduce effects of their own. Studies of suburban forests in Japan have indicated that an urban setting has a notable impact on endophytic diversity (Matsumura and Fukuda 2013). However, the full impact of urban environmental factors on endophytic communities has yet to be completely understood.
 
-In this study, used culturing and barcode gene sequencing to identify the species makeup of endophytic communities in *Metrosideros excelsa* throughout San Francisco to relate environmental factors with fungal community composition. *M. excelsa* was an ideal species to choose for this study because it is both widely planted throughout San Francsico, and its endophytic communities have been documented in previous studies. In a related Hawaiian species, *Metrosideros polymorpha*, the species makeup of fungal endophyte communities has been shown to vary greatly with environmental factors such as elevation and rainfall (Zimmerman and Vitousek 2012). Although *M. excelsa's* endophytic communities have ben characterized in its native home of New Zealand, there have been few studies about these communities outside of its native environment or in an urban setting (McKenzie, Buchanan, and Johnston 1999).
+In this study, used culturing and barcode gene sequencing to identify the species makeup of endophytic communities in *Metrosideros excelsa* throughout San Francisco to relate environmental factors with fungal community composition. *M. excelsa* was an ideal species to choose for this study because it is both widely planted throughout San Francsico, and its endophytic communities have been documented in previous studies. In a related Hawaiian species, *Metrosideros polymorpha*, the species makeup of fungal endophyte communities has been shown to vary greatly with environmental factors such as elevation and rainfall (Zimmerman and Vitousek 2012). Although *M. excelsa's* endophytic communities have ben characterized in its native home of New Zealand, there have been few studies about these communities outside of its native environment or in an urban setting (McKenzie, Buchanan, and Johnston 1999). When studying this organism's microbiome in an urban environment, we expected to find that urban environmental factors such as pollution and tall buildings played a role in shaping the composition of these endophytic communities.
 
 Methods
 =======
@@ -135,7 +43,9 @@ We performed PCR on the ITS region, a commonly-accepted fungal barcode gene, usi
 Computational Methods
 ---------------------
 
-We analyzed the data using three tools: Geneious, Mothur, and the R programming language. We used Geneious to manually clean and trim the Sanger sequencing data, and to identify and remove failed and low-quality sequences (Kearse et al. 2012). We used Mothur to determine Operational Taxonomic Units (OTUs), which are groups of sequences categorized together based on similarity. Next, we used R to analyze the resulting OTU table. This included using the ‘vegan’ package to run and plot a Non-Metric Multidimensional Scaling (NMDS) ordination, a non-parametric technique used to visualize high-dimensional community data in only two dimensions. Lastly, we used vegan (???) to calculate PERMANOVA values in order to prove that observed patterns were significant.
+We analyzed the data using three tools: Geneious, Mothur, and the R programming language. We used Geneious to manually clean and trim the Sanger sequencing data, and to identify and remove failed and low-quality sequences (Kearse et al. 2012). We used Mothur to determine Operational Taxonomic Units (OTUs), which are groups of sequences categorized together based on similarity. Next, we used R to analyze the resulting OTU table. This included using the ‘vegan’ package to run and plot a Non-Metric Multidimensional Scaling (NMDS) ordination, a non-parametric technique used to visualize high-dimensional community data in only two dimensions. We used vegan (???) to calculate PERMANOVA values in order to prove that observed patterns were significant.
+
+Because ITS1 has a lot of variation and is therefore difficult to construct phylogenies with, we used the Tree-Based ALignment Selector (TBAS) toolkit to construct a phylogeny and assign taxonomies to the data (Carbone et al. 2017). This toolkit matches unknown ITS sequences to the most similar ITS sequences in a large multi-gene phylogeny of confidently-assigned taxa.
 
 Results
 =======
@@ -143,69 +53,14 @@ Results
 Isolation Frequency
 -------------------
 
-``` r
-trees %>%
- filter(Site_ID != "Parker") %>%
- filter(Date_sampled > "2017-08-25") %>%
- separate(isolation_freq,
-          into = c("grew", "total"),
-          sep = "/") %>%
- mutate(grew = as.numeric(grew),
-        total = as.numeric(total)) %>%
- mutate(isoFreq = grew/total) %>%
- ggplot(aes(x = Site_name,
-            y = isoFreq)) +
-   geom_boxplot() +
- theme(axis.text.x = element_text(angle = 45,
-                                  vjust = 1,
-                                  hjust = 1)) +
- stat_compare_means(method = "kruskal")
-```
+![](2018-04-17_Report_draft_files/figure-markdown_github/isolation-1.png)![](2018-04-17_Report_draft_files/figure-markdown_github/isolation-2.png)
 
-![](2018-04-17_Report_draft_files/figure-markdown_github/isolation-1.png)
+### Figure 2. Isolation frequencies and tree diameters at each site
 
-### Figure 1. Isolation frequencies of each site
+The isolation frequency, or the percentage of leaf pieces that yielded fungal isolates, varied considerably between sites (Figure 2 A.). In most sites, the isolation frequency also varies between trees, especially in the Bay site. Trees within the Bay site also show the greatest variation in diameter at breast height (DBH) (Figure 2 B.). The only site that does not show as consistent variation in isolation frequency is the Downtown site, which is also the site with the smalles isolation frequencies.
 
 Species richness
 ----------------
-
-``` r
-#set colors
-rare_color = c(rep("#ff5e62", 5),
-               rep("#f0a200", 5),
-               rep("#007f36", 5),
-               rep("#8781e6", 5),
-               rep("#00005a", 5),
-               rep("#81005e", 5))
-
-#rename sites to be more readable
-group_labels <- c(rep("Balboa", 5),
-                  rep("Downtown", 5),
-                  rep("Mt. Davidson", 5),
-                  rep("Bay", 5),
-                  rep("Freeway", 5),
-                  rep("Ocean", 5))
-
-#draw the species richness curves
-rarecurve(otu_table,
-          main = "Species accumulation curves for endophytic fungi",
-          col = rare_color,
-          label = FALSE,
-          lwd = 2,
-          xlab = "Number of fungal isolates",
-          ylab = "Number of fungal species (97% ITS OTUs)")
-
-#add a legend for greater readability
-legend("bottomright",
-       legend = levels(factor(group_labels)),
-       pch = 16,
-       col = c(rep("#ff5e62"),
-               rep("#8781e6"),
-               rep("#f0a200"),
-               rep("#00005a"),
-               rep("#007f36"),
-               rep("#81005e")))
-```
 
 ![](2018-04-17_Report_draft_files/figure-markdown_github/rarefaction-1.png)
 
@@ -213,176 +68,46 @@ legend("bottomright",
 
 The species richness curve graphs the number of fungal species (OTUs) found versus the totla number of fungal isolates for each tree's microbiome. Each line represents one tree's community, and the color of the line represents which site each tree was located in. A sharply angled line indicates that the full species diversity has not been samples, and a line that plateaus indicated that most of the species available in that community have been sampled. There were 97 total OTUs found among the 30 different trees. Both isolation frequency and number of fungal species found varies notably between trees.
 
-``` r
-extraction_with_tree <- read.table("groupfile.tsv",
-                                   sep = "\t",
-                                   col.names = c("Extraction_ID", "Tree_ID")) %>%
-  mutate(site_ID = substr(Tree_ID, 1, 2))
-
-TBAS_names_fixed <- TBAS %>%
-  mutate(Extraction_ID = substr(Query_sequence, 1, 8))
-
-TBAS_with_site <- TBAS_names_fixed %>%
-  left_join(extraction_with_tree, by = "Extraction_ID") %>%
-  na.omit()
-```
-
-    ## Warning: Column `Extraction_ID` joining character vector and factor,
-    ## coercing into character vector
-
-``` r
-write.csv(TBAS_with_site,
-          file = "metadata/TBS_with_site.csv",
-          row.names = FALSE)
-
-TBAS_with_site %>% 
-  group_by(site_ID, Class.level_assignment) %>%
-  tally() %>%
-  ggplot(aes(x = site_ID,
-             y = n,
-             fill = Class.level_assignment)) +
-  geom_col(position = position_fill()) +
-  scale_fill_discrete(name = "Class") +
-    scale_x_discrete(labels = c("Balboa",
-                                     "Downtown",
-                                     "Mt. Davidson",
-                                     "Bay",
-                                     "Freeway",
-                                     "Ocean")) +
-  xlab("Site")
-```
-
 ![](2018-04-17_Report_draft_files/figure-markdown_github/bar-graph-1.png)
 
 ### Figure 4. Prominent Taxa in each site
 
-The most prominent
+The most prominent taxa in each site vary considerably between sites. *Dothideomycetes*, the largest class within the ascomycetes, appears to predominate the microbiomes of most sites except for the Downtown and Bay sites. In both of these sites, *Sordariomycetes* is the most common class instead. There are several classes that are either absent or present in small numbers in most sites, but more abundant in one or several sites. For example, *Eurotiomycetes* are more common in the Downtown and Freeway sites, and *Leotiomycetes* is only abundant in the Mt. Davidson site.
 
 NMDS Ordination
 ---------------
-
-``` r
-ord_obj <- metaMDS(otu_table)
-```
-
-    ## Wisconsin double standardization
-    ## Run 0 stress 0.2365893 
-    ## Run 1 stress 0.2540048 
-    ## Run 2 stress 0.2519444 
-    ## Run 3 stress 0.260319 
-    ## Run 4 stress 0.2458621 
-    ## Run 5 stress 0.2555415 
-    ## Run 6 stress 0.240482 
-    ## Run 7 stress 0.2370939 
-    ## Run 8 stress 0.2378236 
-    ## Run 9 stress 0.2393982 
-    ## Run 10 stress 0.2387748 
-    ## Run 11 stress 0.2406154 
-    ## Run 12 stress 0.2508796 
-    ## Run 13 stress 0.2509497 
-    ## Run 14 stress 0.2469355 
-    ## Run 15 stress 0.2387746 
-    ## Run 16 stress 0.2592158 
-    ## Run 17 stress 0.2374066 
-    ## Run 18 stress 0.2397475 
-    ## Run 19 stress 0.2408619 
-    ## Run 20 stress 0.2571851 
-    ## *** No convergence -- monoMDS stopping criteria:
-    ##     20: stress ratio > sratmax
-
-``` r
-# fix row names to be more readable
-row.names(otu_table) <- c(paste("Balboa - Tree", 1:5),
-                         paste("Downtown - Tree", 1:5),
-                         paste("Mt. Davidson - Tree", 1:5),
-                         paste("Bay - Tree", 1:5),
-                         paste("Freeway - Tree", 1:5),
-                         paste("Ocean - Tree", 1:5))
-
-trees_aug <- subset(trees, as.POSIXct(trees$Date_sampled) > as.POSIXct("2017-08-01"))
-
-plot(ord_obj,
-     display = "sites",
-     type = "n",
-     main = "NMDS ordination of fungal community composition",
-     cex.main = 1.6,
-     xlab = "",
-     ylab = "",
-     tck = 0,
-     labels = FALSE)
-```
-
-    ## Warning in plot.window(...): "labels" is not a graphical parameter
-
-    ## Warning in plot.xy(xy, type, ...): "labels" is not a graphical parameter
-
-    ## Warning in box(...): "labels" is not a graphical parameter
-
-    ## Warning in title(...): "labels" is not a graphical parameter
-
-``` r
-points(ord_obj,
-       display = "sites",
-       col = c(rep("#ff5e62", 5),
-               rep("#f0a200", 5),
-               rep("#007f36", 5),
-               rep("#8781e6", 5),
-               rep("#00005a", 5),
-               rep("#81005e", 5)),
-       cex = trees_aug$DBH_cm/10,
-       pch = 16)
-
-legend("bottomleft",
-       legend = levels(factor(group_labels)),
-       pch = 16,
-       cex = 1,
-       pt.cex = 2,
-       col = c(rep("#ff5e62"),
-               rep("#8781e6"),
-               rep("#f0a200"),
-               rep("#00005a"),
-               rep("#007f36"),
-               rep("#81005e")))
-
-ordiellipse(ord_obj,
-            groups =group_labels,
-            label = FALSE,
-            col = c(rep("#ff5e62"),
-                    rep("#8781e6"),
-                    rep("#f0a200"),
-                    rep("#00005a"),
-                    rep("#007f36"),
-                    rep("#81005e")),
-            lwd = 7)
-```
 
 ![](2018-04-17_Report_draft_files/figure-markdown_github/ordination-1.png)
 
 ### Figure 5. NMDS ordination of community composition
 
-A non-metric multidimensional scaling (NMDS) ordination graphs the microbial communities of each tree by compositional similarity using the DNA sequences from each tree. Each point represents the endophytic community of one tree, and the size of the point corresponds to that tree's diameter at breast height (DBH), while the color of said point corresponds to the site that tree is from. The ellipses show the standard error around the centroid of all points within a site, and are also color-coded according to which site they represent.
+A non-metric multidimensional scaling (NMDS) ordination graphs the microbial communities of each tree by compositional similarity using the DNA sequences from each tree. Each point represents the endophytic community of one tree, and the size of the point corresponds to that tree's DBH, while the color of said point corresponds to the site that tree is from. The ellipses show the standard error around the centroid of all points within a site, and are also color-coded according to which site they represent.
 
 Discussion
 ==========
 
-The major, overarching takeaway from this study is that the urban endophytic microbiome contains a great amount of diversity and should not be overlooked. Even in the small geographic area of San Francisco, we found notable trends in microbiome composition that appear to vary with uniquely urban environmental factors, such as traffic.
+Overall, the microbial composition of these urban trees' leaves varies in many aspects, from number of fungal isolates to the identities of said isolates. This variation could be explained by numerous environmental factors, as well as host physiological factors, such as the age and size of the tree. Each aspect of these complex microbimoes is likely influenced by several of these factors at once. For example, both isolation frequency and DBH varied greatly from one site to the other, and some sites showed considerable within-site differences in these factorsa well. The trees in the bay showed the greatest range in both isolation frequency and DBH (Figure 2 A and B), indicating that the size of a tree likely has a corelation with the number of fungal endophytes found within its leaves. Just as it shows the greatest range of isolation frequencies and tree sies, the Bay site also has the greatest diversity in fungal communities on the NMDS ordination. The two trees with vastly different communities are also the smallest, and therefore likely youngest (Figure 5). in this instance, it appears that the age of the trees has the largest impact on the endophytic communities. This conclusion is further supported by the fact that the Mt. Davidson site, which has the most tightly-clustered communities (Figure 5), also has fairly large trees with similar DBH. Additionaly, the Mt. Davidson trees have a larger median and range of DBH than the ocean or freeway trees (Figure 2 B.), and also have a higher median isolation frequency. This indicates that trees with a larger DBH generally have a higher number of fungal endophytes, which could be because larger trees are likely older and have had more time to acquire fungal endophytes.
 
-The NMDS ordination indicates that urban environmental factors play a considerable role in shaping the endophytic communities of these trees. Some of the NMDS groupings can be explained by geographic proximity, like the Ocean and Balboa sites. However, the proximity of the Downtown and Freeway sites indicate that there may be common environmental factors impacting community composition, such as traffic and pollution.
+Although there appears to be a general pattern with larger trees hosting a greater number of fungal endophytes, DBH cannot explain all of the variation in isolation frequencies, as demonstrated by the Downtown and Balboa sites. Although the trees from the downtown site have a larger median DBH (Figure 2 B.), the trees from the Balboa site have considerably more endophytes (Figure 2 A.), which demonstrates that larger trees do not necesarily have a higher number of fungal endophytes. In such cases, it is likely that environmental factors play a key role in shaping the endophytic communities of these trees. While the impact of environmental factors may be less evident when considering the number of fungal endophytes in a tree's microbiome, it becomes more apparent when looking at the identities of these endophytes. The composition of these communities can vary greatly among trees with similar isolation frequencies, as demonstrated by the taxonomic composition of the Mt. Davidson and bay sites (Figure 4). In general, there was more compostitional similarity between trees from the same location than between trees of a similar size (Figure 5).
 
-The isolation frequency varied greatly from one site to the other, and while some sites showed similar isolation frequencies across all trees, others had a wide variety of
+These findings indicate that urban environmental factors play a considerable role in shaping the endophytic communities of these trees. Most of the trees within the same site cluster together on the NMDS ordination, and sites that cluster closer together are typically geographically close together, indicating that disperal mechanisms and/or common environmental factors may be shaping these community compositions (Figure 5). However, disperal alone does not sufficiently explain the compositional similarity of the downtown and freeway sites cluster together despite being fairly distant geographically (Figure 1). This indicates that these sites share a common environmental factor that shapes their communities, such as traffic and polution levels.
 
-The Bay site shows the greatest diversity in fungal communities on the NMDS ordination, as well as a large difference in isolation frequency and DBH. Although this could be due to the climate of the bay, we believe that it is more likely due to the age of the trees. The two trees with vastly different communities are also the smalles, and therefore likely youngest, trees (Figure 5).Younger trees have been exposed to less endophytes, This conclusion is further supported by the fact that the Mt. Davidson site, which has the most tightly-clustered communities (Figure 5), also has fairly large trees with similar DBH.
+Tis study has demonstrated that the urban endophytic microbiome contains a great amount of diversity and appears to be influenced by unique urban environmental factors. Nearly all of the species accumulation curves indicate that the full diversity of these endophytic communities has yet to be sampled (Figure 3). Even in the small geographic area of San Francisco, we found notable trends in microbiome composition that appear to vary with uniquely urban environmental factors, such as traffic. A combination of environmental factors and host physiology appear to be the driving force behind the diversity of these microbiomes. While tree age and size may have a major impact on the number of fungal endophytes in a tree's microbiome, the composition of these comunities is more directly influenced by environmental factors.
 
 Sources Cited
 =============
 
 Busby, Posy E., Mary Ridout, and George Newcombe. 2016. “Fungal Endophytes: Modifiers of Plant Disease.” *Plant Molecular Biology* 90 (6): 645–55. doi:[10.1007/s11103-015-0412-0](https://doi.org/10.1007/s11103-015-0412-0).
 
+Carbone, Ignazio, James B. White, Jolanta Miadlikowska, A. Elizabeth Arnold, Mark A. Miller, Frank Kauff, Jana M. U’Ren, Georgiana May, and François Lutzoni. 2017. “T-Bas: Tree-Based Alignment Selector Toolkit for Phylogenetic-Based Placement, Alignment Downloads and Metadata Visualization: An Example with the Pezizomycotina Tree of Life.” *Bioinformatics* 33 (8): 1160–8. doi:[10.1093/bioinformatics/btw808](https://doi.org/10.1093/bioinformatics/btw808).
+
 Gazis, Romina, Stephen Rehner, and Priscila Chaverri. n.d. “Species Delimitation in Fungal Endophyte Diversity Studies and Its Implications in Ecological and Biogeographic Inferences.” *Molecular Ecology* 20 (14): 3001–13. doi:[10.1111/j.1365-294X.2011.05110.x](https://doi.org/10.1111/j.1365-294X.2011.05110.x).
 
 Kearse, Matthew, Richard Moir, Amy Wilson, Steven Stones-Havas, Matthew Cheung, Shane Sturrock, Simon Buxton, et al. 2012. “Geneious Basic: An Integrated and Extendable Desktop Software Platform for the Organization and Analysis of Sequence Data.” *Bioinformatics* 28 (12): 1647–9. doi:[10.1093/bioinformatics/bts199](https://doi.org/10.1093/bioinformatics/bts199).
 
 Kong, F, H Yin, P James, LR Hutyra, and HS He. 2014. “Effects of Spatial Pattern of Greenspace on Urban Cooling in a Large Metropolitan Area of Eastern China.” *Landscape and Urban Planning* 128. Elsevier: 35–47. doi:[10.1016/j.landurbplan.2014.04.018](https://doi.org/10.1016/j.landurbplan.2014.04.018).
+
+Matsumura, Emi, and Kenji Fukuda. 2013. “A Comparison of Fungal Endophytic Community Diversity in Tree Leaves of Rural and Urban Temperate Forests of Kanto District, Eastern Japan.” *Fungal Biology* 117 (3): 191–201. doi:[https://doi.org/10.1016/j.funbio.2013.01.007](https://doi.org/https://doi.org/10.1016/j.funbio.2013.01.007).
 
 McKenzie, E. H. C., P. K. Buchanan, and P. R. Johnston. 1999. “Fungi on Pohutukawa and Other Metrosideros Species in New Zealand.” *New Zealand Journal of Botany* 37 (2). Taylor & Francis: 335–54. doi:[10.1080/0028825X.1999.9512637](https://doi.org/10.1080/0028825X.1999.9512637).
 
