@@ -3,6 +3,11 @@ Urban biogeography of fungal endophytes across San Francisco
 Emma Gibson and Naupaka Zimmerman
 4/17/2018
 
+``` r
+# load libraries
+library("dplyr")
+```
+
     ## 
     ## Attaching package: 'dplyr'
 
@@ -14,14 +19,53 @@ Emma Gibson and Naupaka Zimmerman
     ## 
     ##     intersect, setdiff, setequal, union
 
+``` r
+library("tidyr")
+library("vegan")
+```
+
     ## Loading required package: permute
 
     ## Loading required package: lattice
 
     ## This is vegan 2.4-6
 
+``` r
+library("ggplot2")
+```
+
+``` r
+# load files
+otus <- read.table("seq_with_OTU_ID.txt")
+groups <- read.table("groupfile.tsv")
+trees <- read.csv("metadata/M_excel_tree_metadata_with_isolationfreq.csv",
+                  stringsAsFactors = FALSE)
+TBAS <- read.csv("metadata/TBAS_taxonomies.csv")
+culturing <- read.csv("metadata/culturing_worksheet.csv")
+extractions <- read.csv("metadata/Extraction_worksheet.csv")
+
+# count by groups instead of trees
+otu_table <- otus %>%
+  left_join(groups, by = c("V1" = "V1")) %>%
+  group_by(V2.x, V2.y) %>%
+  summarize(count = n()) %>%
+  spread(V2.x, count, fill = 0)
+```
+
     ## Warning: Column `V1` joining factors with different levels, coercing to
     ## character vector
+
+``` r
+# get rid of rows with NA
+otu_table <- as.data.frame(na.omit(otu_table))
+
+# fix row name problems for vegan
+row.names(otu_table) <- otu_table[, 1]
+otu_table <- otu_table[, -1]
+
+# drop out USF test sample
+otu_table <- otu_table[1:30,]
+```
 
 Abstract
 ========
@@ -42,6 +86,10 @@ Methods
 
 Culturing Methods
 -----------------
+
+``` r
+#figure out how to embed images
+```
 
 ### Figure 1. Map ofthe locations sampled
 
@@ -72,9 +120,64 @@ Isolation Frequency
 Species richness
 ----------------
 
+``` r
+#set colors
+rare_color = c(rep("#ff5e62", 5),
+               rep("#f0a200", 5),
+               rep("#007f36", 5),
+               rep("#8781e6", 5),
+               rep("#00005a", 5),
+               rep("#81005e", 5))
+
+#rename sites to be more readable
+group_labels <- c(rep("Balboa", 5),
+                  rep("Downtown", 5),
+                  rep("Mt. Davidson", 5),
+                  rep("Bay", 5),
+                  rep("Freeway", 5),
+                  rep("Ocean", 5))
+
+#draw the species richness curves
+rarecurve(otu_table,
+          main = "Species accumulation curves for endophytic fungi",
+          col = rare_color,
+          label = FALSE,
+          lwd = 2,
+          xlab = "Number of fungal isolates",
+          ylab = "Number of fungal species (97% ITS OTUs)")
+
+#add a legend for greater readability
+legend("bottomright",
+       legend = levels(factor(group_labels)),
+       pch = 16,
+       col = c(rep("#ff5e62"),
+               rep("#8781e6"),
+               rep("#f0a200"),
+               rep("#00005a"),
+               rep("#007f36"),
+               rep("#81005e")))
+```
+
 ![](2018-04-17_Report_draft_files/figure-markdown_github/rarefaction-1.png) \#\#\#Figure 3. Rarefaction curve showing species richness in all trees & sites
 
 The species richness curve graphs the number of fungal species (OTUs) found versus the totla number of fungal isolates for each tree's microbiome. Each line represents one tree's community, and the color of the line represents which site each tree was located in. A sharply angled line indicates that the full species diversity has not been samples, and a line that plateaus indicated that most of the species available in that community have been sampled. There were 97 total OTUs found among the 30 different trees. Both isolation frequency and number of fungal species found varies notably between trees.
+
+``` r
+extraction_with_tree <- read.table("groupfile.tsv",
+                                   sep = "\t",
+                                   col.names = c("Extraction_ID", "Tree_ID")) %>%
+  mutate(site_ID = substr(Tree_ID, 1, 2))
+
+TBAS_names_fixed <- TBAS %>%
+  mutate(Extraction_ID = substr(Query_sequence, 1, 8))
+
+TBAS_with_site <- TBAS_names_fixed %>%
+  left_join(extraction_with_tree, by = "Extraction_ID") %>%
+  na.omit()
+```
+
+    ## Warning: Column `Extraction_ID` joining character vector and factor,
+    ## coercing into character vector
 
 ### Figure 4. Prominent Taxa in each site
 
@@ -83,35 +186,62 @@ The most prominent
 NMDS Ordination
 ---------------
 
+``` r
+ord_obj <- metaMDS(otu_table)
+```
+
     ## Wisconsin double standardization
     ## Run 0 stress 0.2365893 
-    ## Run 1 stress 0.2474907 
-    ## Run 2 stress 0.2485377 
-    ## Run 3 stress 0.2530347 
-    ## Run 4 stress 0.2427621 
-    ## Run 5 stress 0.2370408 
-    ## ... Procrustes: rmse 0.03129049  max resid 0.09728397 
-    ## Run 6 stress 0.236744 
-    ## ... Procrustes: rmse 0.02588129  max resid 0.09840443 
-    ## Run 7 stress 0.2509126 
-    ## Run 8 stress 0.243723 
-    ## Run 9 stress 0.2367419 
-    ## ... Procrustes: rmse 0.0378051  max resid 0.1023503 
-    ## Run 10 stress 0.2370112 
-    ## ... Procrustes: rmse 0.027342  max resid 0.07687523 
-    ## Run 11 stress 0.2455069 
-    ## Run 12 stress 0.2533399 
-    ## Run 13 stress 0.2408622 
-    ## Run 14 stress 0.2498453 
-    ## Run 15 stress 0.2453633 
-    ## Run 16 stress 0.2606699 
-    ## Run 17 stress 0.2367418 
-    ## ... Procrustes: rmse 0.03781377  max resid 0.1021535 
-    ## Run 18 stress 0.2417353 
-    ## Run 19 stress 0.2522434 
-    ## Run 20 stress 0.2507039 
-    ## *** No convergence -- monoMDS stopping criteria:
-    ##     20: stress ratio > sratmax
+    ## Run 1 stress 0.2366079 
+    ## ... Procrustes: rmse 0.04123009  max resid 0.105673 
+    ## Run 2 stress 0.2575533 
+    ## Run 3 stress 0.2365904 
+    ## ... Procrustes: rmse 0.001521073  max resid 0.004787468 
+    ## ... Similar to previous best
+    ## Run 4 stress 0.2489858 
+    ## Run 5 stress 0.240694 
+    ## Run 6 stress 0.245747 
+    ## Run 7 stress 0.236612 
+    ## ... Procrustes: rmse 0.04121139  max resid 0.1041449 
+    ## Run 8 stress 0.2367419 
+    ## ... Procrustes: rmse 0.03782502  max resid 0.101851 
+    ## Run 9 stress 0.2466173 
+    ## Run 10 stress 0.2368153 
+    ## ... Procrustes: rmse 0.01772226  max resid 0.07546903 
+    ## Run 11 stress 0.2523475 
+    ## Run 12 stress 0.2387748 
+    ## Run 13 stress 0.2465185 
+    ## Run 14 stress 0.2369467 
+    ## ... Procrustes: rmse 0.03673694  max resid 0.1016372 
+    ## Run 15 stress 0.24167 
+    ## Run 16 stress 0.242381 
+    ## Run 17 stress 0.2527246 
+    ## Run 18 stress 0.2398427 
+    ## Run 19 stress 0.2387746 
+    ## Run 20 stress 0.2537874 
+    ## *** Solution reached
+
+``` r
+# fix row names to be more readable
+row.names(otu_table) <- c(paste("Balboa - Tree", 1:5),
+                         paste("Downtown - Tree", 1:5),
+                         paste("Mt. Davidson - Tree", 1:5),
+                         paste("Bay - Tree", 1:5),
+                         paste("Freeway - Tree", 1:5),
+                         paste("Ocean - Tree", 1:5))
+
+trees_aug <- subset(trees, as.POSIXct(trees$Date_sampled) > as.POSIXct("2017-08-01"))
+
+plot(ord_obj,
+     display = "sites",
+     type = "n",
+     main = "NMDS ordination of fungal community composition",
+     cex.main = 1.6,
+     xlab = "",
+     ylab = "",
+     tck = 0,
+     labels = FALSE)
+```
 
     ## Warning in plot.window(...): "labels" is not a graphical parameter
 
@@ -121,16 +251,58 @@ NMDS Ordination
 
     ## Warning in title(...): "labels" is not a graphical parameter
 
+``` r
+points(ord_obj,
+       display = "sites",
+       col = c(rep("#ff5e62", 5),
+               rep("#f0a200", 5),
+               rep("#007f36", 5),
+               rep("#8781e6", 5),
+               rep("#00005a", 5),
+               rep("#81005e", 5)),
+       cex = trees_aug$DBH_cm/10,
+       pch = 16)
+
+legend("bottomleft",
+       legend = levels(factor(group_labels)),
+       pch = 16,
+       cex = 1,
+       pt.cex = 2,
+       col = c(rep("#ff5e62"),
+               rep("#8781e6"),
+               rep("#f0a200"),
+               rep("#00005a"),
+               rep("#007f36"),
+               rep("#81005e")))
+
+ordiellipse(ord_obj,
+            groups =group_labels,
+            label = FALSE,
+            col = c(rep("#ff5e62"),
+                    rep("#8781e6"),
+                    rep("#f0a200"),
+                    rep("#00005a"),
+                    rep("#007f36"),
+                    rep("#81005e")),
+            lwd = 7)
+```
+
 ![](2018-04-17_Report_draft_files/figure-markdown_github/ordination-1.png)
 
 ### Figure 5. NMDS ordination of community composition
 
-A non-metric multidimensional scaling (NMDS) ordination graphs the microbial communities of each tree by compositional similarity using the DNA sequences from each tree. Each point represents the endophytic community of one tree, and the color of said point corresponds to the site that tree is from. The ellipses show the standard error around the centroid of all points within a site, and are also color-coded according to which site they represent.
+A non-metric multidimensional scaling (NMDS) ordination graphs the microbial communities of each tree by compositional similarity using the DNA sequences from each tree. Each point represents the endophytic community of one tree, and the size of the point corresponds to that tree's diameter at breast height (DBH), while the color of said point corresponds to the site that tree is from. The ellipses show the standard error around the centroid of all points within a site, and are also color-coded according to which site they represent.
 
 Discussion
 ==========
 
-words
+The major, overarching takeaway from this study is that the urban endophytic microbiome contains a great amount of diversity and should not be overlooked. Even in the small geographic area of San Francisco, we found notable trends in microbiome composition that appear to vary with uniquely urban environmental factors, such as traffic.
+
+The NMDS ordination indicates that urban environmental factors play a considerable role in shaping the endophytic communities of these trees. Some of the NMDS groupings can be explained by geographic proximity, like the Ocean and Balboa sites. However, the proximity of the Downtown and Freeway sites indicate that there may be common environmental factors impacting community composition, such as traffic and pollution.
+
+The isolation frequency varied greatly from one site to the other, and while some sites showed similar isolation frequencies across all trees, others had a wide variety of
+
+The Bay site shows the greatest diversity in fungal communities on the NMDS ordination, as well as a large difference in isolation frequency and DBH. Although this could be due to the climate of the bay, we believe that it is more likely due to the age of the trees. The two trees with vastly different communities are also the smalles, and therefore likely youngest, trees (Figure 5).Younger trees have been exposed to less endophytes, This conclusion is further supported by the fact that the Mt. Davidson site, which has the most tightly-clustered communities (Figure 5), also has fairly large trees with similar DBH.
 
 Sources Cited
 =============
