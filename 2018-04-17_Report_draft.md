@@ -32,7 +32,18 @@ library("vegan")
 
 ``` r
 library("ggplot2")
+library("tidyverse")
 ```
+
+    ## ── Attaching packages ────────────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──
+
+    ## ✔ tibble  1.4.2     ✔ purrr   0.2.4
+    ## ✔ readr   1.1.1     ✔ stringr 1.3.0
+    ## ✔ tibble  1.4.2     ✔ forcats 0.3.0
+
+    ## ── Conflicts ───────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+    ## ✖ dplyr::filter() masks stats::filter()
+    ## ✖ dplyr::lag()    masks stats::lag()
 
 ``` r
 # load files
@@ -77,7 +88,7 @@ Introduction
 
 As people continue to live in increasingly urban environments, understanding the ecology of cities and urban settings will become critical to human health. Just as rural environments contain complex and dynamic ecosystems, the human and non-human aspects of large city habitats interact to creats a unique urban ecosystem. In recent years, ecologists have begun studying the urban environment just as they would a natural environment, in order to understand the novel environmental conditions this setting presents to the organisms that live there. For example, recent studies have shown that plant life in large cities can impact temperature, air quality, and other aspects of human health (Willis and Petrokofsky 2017). A study spanning the United States showed that plant life can improve a city's air quality by taking up significant amounts of carbon dioxide from urban air (Nowak et al. 2014). Another study in China indicated that healthy plant life can reduce the urban heat island effect, which is caused when heat becomes trapped between tall buildings (Kong et al. 2014). Therefore, understanding the impact of urban environments on plant health could help to allow those plants to thrive, benefitting the human inhabitants of the city as well as the environment as a whole.
 
-One potentially major factor influencing plant health that has yet to be studied in an urban environment in great detail is the endophytic microbiome. Endophytes are microbial organisms, generally bacteria and fungi, that live symbiotically inside the leaves of plants. Although some of these fungal microbes may be latent pathogens or decomposers waiting for the leaf to die, others are mutualists that may confer a benefit to their host. For instance, inoculation experiments have shown that specific species of endophytes can have an impact on their host’s overall health, including factors such as resistance and susceptibility to disease (Busby, Ridout, and Newcombe 2016). In the wild, endophytic communities display species diversity comparable to that of any macroscopic community, even among individual trees from the same species (GAZIS, REHNER, and CHAVERRI, n.d.). However, what factors influence this diversity and to what extent is still poorly understood. The urban setting is unique because factors such as rainfall and elevation will be less apparent in a smaller geographic area, but new factors such as proximity to roads and tall buildings may introduce effects of their own. Studies of suburban forests in Japan have indicated that an urban setting has a notable impact on endophytic diversity (<span class="citeproc-not-found" data-reference-id="MATSUMURA201319">**???**</span>). However, the full impact of urban environmental factors on endophytic communities has yet to be completely understood.
+One potentially major factor influencing plant health that has yet to be studied in an urban environment in great detail is the endophytic microbiome. Endophytes are microbial organisms, generally bacteria and fungi, that live symbiotically inside the leaves of plants. Although some of these fungal microbes may be latent pathogens or decomposers waiting for the leaf to die, others are mutualists that may confer a benefit to their host. For instance, inoculation experiments have shown that specific species of endophytes can have an impact on their host’s overall health, including factors such as resistance and susceptibility to disease (Busby, Ridout, and Newcombe 2016). In the wild, endophytic communities display species diversity comparable to that of any macroscopic community, even among individual trees from the same species (Gazis, Rehner, and Chaverri, n.d.). However, what factors influence this diversity and to what extent is still poorly understood. The urban setting is unique because factors such as rainfall and elevation will be less apparent in a smaller geographic area, but new factors such as proximity to roads and tall buildings may introduce effects of their own. Studies of suburban forests in Japan have indicated that an urban setting has a notable impact on endophytic diversity (<span class="citeproc-not-found" data-reference-id="MATSUMURA201319">**???**</span>). However, the full impact of urban environmental factors on endophytic communities has yet to be completely understood.
 
 In this study, used culturing and barcode gene sequencing to identify the species makeup of endophytic communities in *Metrosideros excelsa* throughout San Francisco to relate environmental factors with fungal community composition. *M. excelsa* was an ideal species to choose for this study because it is both widely planted throughout San Francsico, and its endophytic communities have been documented in previous studies. In a related Hawaiian species, *Metrosideros polymorpha*, the species makeup of fungal endophyte communities has been shown to vary greatly with environmental factors such as elevation and rainfall (Zimmerman and Vitousek 2012). Although *M. excelsa's* endophytic communities have ben characterized in its native home of New Zealand, there have been few studies about these communities outside of its native environment or in an urban setting (McKenzie, Buchanan, and Johnston 1999).
 
@@ -87,9 +98,7 @@ Methods
 Culturing Methods
 -----------------
 
-``` r
-#figure out how to embed images
-```
+![](figures/thesis_map.png)
 
 ### Figure 1. Map ofthe locations sampled
 
@@ -158,7 +167,7 @@ legend("bottomright",
                rep("#81005e")))
 ```
 
-![](2018-04-17_Report_draft_files/figure-markdown_github/rarefaction-1.png) \#\#\#Figure 3. Rarefaction curve showing species richness in all trees & sites
+![](2018-04-17_Report_draft_files/figure-markdown_github/rarefaction-1.png) \#\#\# Figure 3. Rarefaction curve showing species richness in all trees & sites
 
 The species richness curve graphs the number of fungal species (OTUs) found versus the totla number of fungal isolates for each tree's microbiome. Each line represents one tree's community, and the color of the line represents which site each tree was located in. A sharply angled line indicates that the full species diversity has not been samples, and a line that plateaus indicated that most of the species available in that community have been sampled. There were 97 total OTUs found among the 30 different trees. Both isolation frequency and number of fungal species found varies notably between trees.
 
@@ -179,7 +188,29 @@ TBAS_with_site <- TBAS_names_fixed %>%
     ## Warning: Column `Extraction_ID` joining character vector and factor,
     ## coercing into character vector
 
-### Figure 4. Prominent Taxa in each site
+``` r
+write.csv(TBAS_with_site,
+          file = "metadata/TBS_with_site.csv",
+          row.names = FALSE)
+
+TBAS_with_site %>% 
+  group_by(site_ID, Class.level_assignment) %>%
+  tally() %>%
+  ggplot(aes(x = site_ID,
+             y = n,
+             fill = Class.level_assignment)) +
+  geom_col(position = position_fill()) +
+  scale_fill_discrete(name = "Class") +
+    scale_x_discrete(labels = c("Balboa",
+                                     "Downtown",
+                                     "Davidson",
+                                     "Bay",
+                                     "Freeway",
+                                     "Ocean")) +
+  xlab("Site")
+```
+
+![](2018-04-17_Report_draft_files/figure-markdown_github/bar-graph-1.png) \#\#\# Figure 4. Prominent Taxa in each site
 
 The most prominent
 
@@ -192,33 +223,33 @@ ord_obj <- metaMDS(otu_table)
 
     ## Wisconsin double standardization
     ## Run 0 stress 0.2365893 
-    ## Run 1 stress 0.2366079 
-    ## ... Procrustes: rmse 0.04123009  max resid 0.105673 
-    ## Run 2 stress 0.2575533 
-    ## Run 3 stress 0.2365904 
-    ## ... Procrustes: rmse 0.001521073  max resid 0.004787468 
+    ## Run 1 stress 0.2422799 
+    ## Run 2 stress 0.2476955 
+    ## Run 3 stress 0.2510651 
+    ## Run 4 stress 0.2560505 
+    ## Run 5 stress 0.2535802 
+    ## Run 6 stress 0.2370133 
+    ## ... Procrustes: rmse 0.02748534  max resid 0.07658948 
+    ## Run 7 stress 0.2369446 
+    ## ... Procrustes: rmse 0.03683702  max resid 0.1012426 
+    ## Run 8 stress 0.25253 
+    ## Run 9 stress 0.2365885 
+    ## ... New best solution
+    ## ... Procrustes: rmse 0.0005749758  max resid 0.001975438 
     ## ... Similar to previous best
-    ## Run 4 stress 0.2489858 
-    ## Run 5 stress 0.240694 
-    ## Run 6 stress 0.245747 
-    ## Run 7 stress 0.236612 
-    ## ... Procrustes: rmse 0.04121139  max resid 0.1041449 
-    ## Run 8 stress 0.2367419 
-    ## ... Procrustes: rmse 0.03782502  max resid 0.101851 
-    ## Run 9 stress 0.2466173 
-    ## Run 10 stress 0.2368153 
-    ## ... Procrustes: rmse 0.01772226  max resid 0.07546903 
-    ## Run 11 stress 0.2523475 
-    ## Run 12 stress 0.2387748 
-    ## Run 13 stress 0.2465185 
-    ## Run 14 stress 0.2369467 
-    ## ... Procrustes: rmse 0.03673694  max resid 0.1016372 
-    ## Run 15 stress 0.24167 
-    ## Run 16 stress 0.242381 
-    ## Run 17 stress 0.2527246 
-    ## Run 18 stress 0.2398427 
-    ## Run 19 stress 0.2387746 
-    ## Run 20 stress 0.2537874 
+    ## Run 10 stress 0.2403721 
+    ## Run 11 stress 0.2590312 
+    ## Run 12 stress 0.2508043 
+    ## Run 13 stress 0.2403015 
+    ## Run 14 stress 0.2401204 
+    ## Run 15 stress 0.2435632 
+    ## Run 16 stress 0.2367419 
+    ## ... Procrustes: rmse 0.0380721  max resid 0.1035599 
+    ## Run 17 stress 0.241583 
+    ## Run 18 stress 0.250713 
+    ## Run 19 stress 0.2375818 
+    ## Run 20 stress 0.2370814 
+    ## ... Procrustes: rmse 0.03029513  max resid 0.09670085 
     ## *** Solution reached
 
 ``` r
@@ -309,7 +340,7 @@ Sources Cited
 
 Busby, Posy E., Mary Ridout, and George Newcombe. 2016. “Fungal Endophytes: Modifiers of Plant Disease.” *Plant Molecular Biology* 90 (6): 645–55. doi:[10.1007/s11103-015-0412-0](https://doi.org/10.1007/s11103-015-0412-0).
 
-GAZIS, ROMINA, STEPHEN REHNER, and PRISCILA CHAVERRI. n.d. “Species Delimitation in Fungal Endophyte Diversity Studies and Its Implications in Ecological and Biogeographic Inferences.” *Molecular Ecology* 20 (14): 3001–13. doi:[10.1111/j.1365-294X.2011.05110.x](https://doi.org/10.1111/j.1365-294X.2011.05110.x).
+Gazis, Romina, Stephen Rehner, and Priscila Chaverri. n.d. “Species Delimitation in Fungal Endophyte Diversity Studies and Its Implications in Ecological and Biogeographic Inferences.” *Molecular Ecology* 20 (14): 3001–13. doi:[10.1111/j.1365-294X.2011.05110.x](https://doi.org/10.1111/j.1365-294X.2011.05110.x).
 
 Kearse, Matthew, Richard Moir, Amy Wilson, Steven Stones-Havas, Matthew Cheung, Shane Sturrock, Simon Buxton, et al. 2012. “Geneious Basic: An Integrated and Extendable Desktop Software Platform for the Organization and Analysis of Sequence Data.” *Bioinformatics* 28 (12): 1647–9. doi:[10.1093/bioinformatics/bts199](https://doi.org/10.1093/bioinformatics/bts199).
 
