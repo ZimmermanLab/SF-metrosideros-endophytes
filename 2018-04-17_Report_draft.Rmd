@@ -18,6 +18,7 @@ library("dplyr")
 library("tidyr")
 library("vegan")
 library("ggplot2")
+library("tidyverse")
 ```
 
 ```{r read-in-data}
@@ -48,11 +49,11 @@ otu_table <- otu_table[, -1]
 otu_table <- otu_table[1:30,]
 ```
 
-#Abstract
+# Abstract
 
 In natural and agricultural systems, the plant microbiome —the microbial organisms associated with plant tissues—has been shown to have important effects on host physiology and ecology, yet we know little about how these plant-microbe relationships play out in urban environments. Here we characterize the composition of fungal communities associated with leaves of one of the most common sidewalk trees in the city of San Francisco, California. We focus our efforts on endophytic fungi (asymptomatic microfungi that live inside healthy leaves), which have been shown in other systems to have large ecological effects on the health of their plant hosts. Specifically, we characterized the foliar fungal microbiome of Metrosideros excelsa trees growing in a variety of urban environmental conditions. We used high-throughput culturing, PCR, and Sanger sequencing of the ITS nrDNA region to quantify the composition and structure of fungal communities growing within healthy leaves of 30 M. excelsa trees from 6 distinct sites, which were selected to capture the range of environmental conditions found within city limits. Sequencing resulted in 1044 high-quality ITS sequences. These sequences clustered into 97 Operational Taxonomic Units (97% VSEARCH OTUs). We found that these communities encompass relatively high alpha (within) and beta (between-site) diversity. Multivariate statistical analyses (NMDS, PERMANOVA) showed that fungal community composition was significantly different between sites (PERMANOVA p = 0.001). Since the communities are all from the same host tree species, and located in relatively close geographical proximity to one another, these analyses suggest that urban environmental factors such as urban heat islands or differences in traffic density (and associated air quality) could potentially be influencing the composition of these fungal communities. We are performing additional analyses to quantify how urban abiotic and anthropogenic factors may shape the composition of these trees' endophytic microbiomes. These biogeographic patterns provide evidence that plant microbiomes in urban environments can be as dynamic and complex as their natural counterparts. As human populations continue to transition out of rural areas and into cities, understanding the factors that shape environmental microbial communities in urban ecosystems stands to become increasingly important.
 
-#Introduction
+# Introduction
 
 As people continue to live in increasingly urban environments, understanding the ecology of cities and urban settings will become critical to human health. Just as rural environments contain complex and dynamic ecosystems, the human and non-human aspects of large city habitats interact to creats a unique urban ecosystem. In recent years, ecologists have begun studying the urban environment just as they would a natural environment, in order to understand the novel environmental conditions this setting presents to the organisms that live there. For example, recent studies have shown that plant life in large cities can impact temperature, air quality, and other aspects of human health [@Willis374]. A study spanning the United States showed that plant life can improve a city's air quality by taking up significant amounts of carbon dioxide from urban air [@NOWAK2014119]. Another study in China indicated that healthy plant life can reduce the urban heat island effect, which is caused when heat becomes trapped between tall buildings [@salford40381]. Therefore, understanding the impact of urban environments on plant health could help to allow those plants to thrive, benefitting the human inhabitants of the city as well as the environment as a whole.
 
@@ -61,14 +62,13 @@ One potentially major factor influencing plant health that has yet to be studied
 In this study, used culturing and barcode gene sequencing to identify the species makeup of endophytic communities in *Metrosideros excelsa* throughout San Francisco to relate environmental factors with fungal community composition.  *M. excelsa* was an ideal species to choose for this study because it is both widely planted throughout San Francsico, and its endophytic communities have been documented in previous studies. In a related Hawaiian species, *Metrosideros polymorpha*, the species makeup of fungal endophyte communities has been shown to vary greatly with environmental factors such as elevation and rainfall [@Zimmerman13022]. Although *M. excelsa's* endophytic communities have ben characterized in its native home of New Zealand,  there have been few studies about these communities outside of its native environment or in an urban setting [@mckenzie1999].
 
 
-#Methods
+# Methods
 
-##Culturing Methods
+## Culturing Methods
 
-```{r map-embed}
-#figure out how to embed images
-```
-###Figure 1. Map ofthe locations sampled
+![](figures/thesis_map.png)
+
+### Figure 1. Map ofthe locations sampled
 
 We used the Urban Forest Map, which documents the location and species of every tree in San Francisco, to choose 6 unique locations around the city with enough *Metrosideros excelsa* individuals (Figure 1). We collected small branches from 5 trees in each of these sites using a clipper pole, collected at least 3 sun-facing outer branches from each tree. Because *M. excelsa* is an evergreen tree, and the newer leaves contain less fungi, we only collected branches that contained dark green leaves that appeared to be at least one year old. We collected all leaf samples on the same day (August 26, 2017) to ensure that weather and season would not have an impact on the microbial community composition.
 
@@ -76,22 +76,22 @@ After we brought the branches back, we selected a subset of dark green asymptoma
 
 After two weeks, we evaluated them for fungal growth and subcultured the fungi from tubes with growth onto 35mm MEA in order to better evaluate their morphotypes and accumulate sufficient tissue for future barcode gene sequencing and voucher preparation. We re-evaluated and subcultured these tubes another week later to find any late-growing fungi.
 
-##Molecular Methods
+## Molecular Methods
 
 We extracted DNA from the fungal cells using a bead-beater and the Extract ‘n Amp DNA extraction kit. First, we added fungal tissue to sterile tubes filled with small beads, then added extraction solution. Next, we put the tubes in the bead-beater for one minute, which vigorously shook the tubes so that the beads inside could physically grind up the fungal tissue. This step is necessary in fungal DNA extractions because fungi have cell walls, which are difficult for extraction solution to break up without this physical grinding step. Next, the samples were placed on heat blocks at 95°C for 10 minutes. After the heating step, we added a dilution buffer to each tube and stored them in a refrigerator to prevent degradation until PCR.
 
 We performed PCR on the ITS region, a commonly-accepted fungal barcode gene, using the ITS1F forward primer and ITS4 reverse primer. We used Extract ‘n Amp Taq polymerase, and a 35-repeat cycle. PCR samples were cleaned and prepared for sequencing using Shrimp Alkaline Phopsphatase Exonuclease (ExoSap), then sent to MCLabs for Sanger sequencing.
 
-##Computational Methods
+## Computational Methods
 
 We analyzed the data using three tools: Geneious, Mothur, and the R programming language. We used Geneious to manually clean and trim the Sanger sequencing data, and to identify and remove failed and low-quality sequences [@geneious]. We used Mothur to determine Operational Taxonomic Units (OTUs), which are groups of sequences categorized together based on similarity. Next, we used R to analyze the resulting OTU table. This included using the ‘vegan’ package to run and plot a Non-Metric Multidimensional Scaling (NMDS) ordination, a non-parametric technique used to visualize high-dimensional community data in only two dimensions. Lastly, we used vegan (???) to calculate PERMANOVA values in order to prove that observed patterns were significant.
 
 
-#Results
+# Results
 
-##Isolation Frequency
+## Isolation Frequency
 
-##Species richness
+## Species richness
 ```{r rarefaction, fig.height=7}
 #set colors
 rare_color = c(rep("#ff5e62", 5),
@@ -130,7 +130,7 @@ legend("bottomright",
                rep("#81005e")))
 
 ```
-###Figure 3. Rarefaction curve showing species richness in all trees & sites
+### Figure 3. Rarefaction curve showing species richness in all trees & sites
 
 The species richness curve graphs the number of fungal species (OTUs) found versus the totla number of fungal isolates for each tree's microbiome. Each line represents one tree's community, and the color of the line represents which site each tree was located in. A sharply angled line indicates that the full species diversity has not been samples, and a line that plateaus indicated that most of the species available in that community have been sampled. There were 97 total OTUs found among the 30 different trees. Both isolation frequency and number of fungal species found varies notably between trees.
 
@@ -147,12 +147,32 @@ TBAS_with_site <- TBAS_names_fixed %>%
   left_join(extraction_with_tree, by = "Extraction_ID") %>%
   na.omit()
 
+write.csv(TBAS_with_site,
+          file = "metadata/TBS_with_site.csv",
+          row.names = FALSE)
+
+TBAS_with_site %>% 
+  group_by(site_ID, Class.level_assignment) %>%
+  tally() %>%
+  ggplot(aes(x = site_ID,
+             y = n,
+             fill = Class.level_assignment)) +
+  geom_col(position = position_fill()) +
+  scale_fill_discrete(name = "Class") +
+    scale_x_discrete(labels = c("Balboa",
+                                     "Downtown",
+                                     "Davidson",
+                                     "Bay",
+                                     "Freeway",
+                                     "Ocean")) +
+  xlab("Site")
+
 ```
-###Figure 4. Prominent Taxa in each site
+### Figure 4. Prominent Taxa in each site
 
 The most prominent 
 
-##NMDS Ordination
+## NMDS Ordination
 
 ```{r ordination, fig.height=7}
 ord_obj <- metaMDS(otu_table)
@@ -212,11 +232,11 @@ ordiellipse(ord_obj,
             lwd = 7)
 ```
 
-###Figure 5. NMDS ordination of community composition
+###  Figure 5. NMDS ordination of community composition
 
 A non-metric multidimensional scaling (NMDS) ordination graphs the microbial communities of each tree by compositional similarity using the DNA sequences from each tree. Each point represents the endophytic community of one tree, and the size of the point corresponds to that tree's diameter at breast height (DBH), while the color of said point corresponds to the site that tree is from. The ellipses show the standard error around the centroid of all points within a site, and are also color-coded according to which site they represent. 
 
-#Discussion
+# Discussion
 
 The major, overarching takeaway from this study is that the urban endophytic microbiome contains a great amount of diversity and should not be overlooked. Even in the small geographic area of San Francisco, we found notable trends in microbiome composition that appear to vary with uniquely urban environmental factors, such as traffic. 
 
@@ -227,4 +247,4 @@ The isolation frequency varied greatly from one site to the other, and while som
 The Bay site shows the greatest diversity in fungal communities on the NMDS ordination, as well as a large difference in isolation frequency and DBH. Although this could be due to the climate of the bay, we believe that it is more likely due to the age of the trees. The two trees with vastly different communities are also the smalles, and therefore likely youngest, trees (Figure 5).Younger trees have been exposed to less endophytes, 
 This conclusion is further supported by the fact that the Mt. Davidson site, which has the most tightly-clustered communities (Figure 5), also has fairly large trees with similar DBH.
 
-#Sources Cited
+# Sources Cited
