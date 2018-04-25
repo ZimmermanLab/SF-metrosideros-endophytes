@@ -19,6 +19,7 @@ library("tidyr")
 library("vegan")
 library("ggplot2")
 library("tidyverse")
+library("ggpubr")
 ```
 
 ```{r read-in-data}
@@ -66,7 +67,7 @@ In this study, used culturing and barcode gene sequencing to identify the specie
 
 ## Culturing Methods
 
-![](figures/thesis_map.png)
+![site-map](figures/thesis_map.PNG)
 
 ### Figure 1. Map ofthe locations sampled
 
@@ -90,6 +91,27 @@ We analyzed the data using three tools: Geneious, Mothur, and the R programming 
 # Results
 
 ## Isolation Frequency
+
+```{r isolation}
+trees %>%
+ filter(Site_ID != "Parker") %>%
+ filter(Date_sampled > "2017-08-25") %>%
+ separate(isolation_freq,
+          into = c("grew", "total"),
+          sep = "/") %>%
+ mutate(grew = as.numeric(grew),
+        total = as.numeric(total)) %>%
+ mutate(isoFreq = grew/total) %>%
+ ggplot(aes(x = Site_name,
+            y = isoFreq)) +
+   geom_boxplot() +
+ theme(axis.text.x = element_text(angle = 45,
+                                  vjust = 1,
+                                  hjust = 1)) +
+ stat_compare_means(method = "kruskal")
+```
+
+### Figure 1. Isolation frequencies of each site
 
 ## Species richness
 ```{r rarefaction, fig.height=7}
@@ -130,6 +152,7 @@ legend("bottomright",
                rep("#81005e")))
 
 ```
+
 ### Figure 3. Rarefaction curve showing species richness in all trees & sites
 
 The species richness curve graphs the number of fungal species (OTUs) found versus the totla number of fungal isolates for each tree's microbiome. Each line represents one tree's community, and the color of the line represents which site each tree was located in. A sharply angled line indicates that the full species diversity has not been samples, and a line that plateaus indicated that most of the species available in that community have been sampled. There were 97 total OTUs found among the 30 different trees. Both isolation frequency and number of fungal species found varies notably between trees.
@@ -161,13 +184,14 @@ TBAS_with_site %>%
   scale_fill_discrete(name = "Class") +
     scale_x_discrete(labels = c("Balboa",
                                      "Downtown",
-                                     "Davidson",
+                                     "Mt. Davidson",
                                      "Bay",
                                      "Freeway",
                                      "Ocean")) +
   xlab("Site")
 
 ```
+
 ### Figure 4. Prominent Taxa in each site
 
 The most prominent 
