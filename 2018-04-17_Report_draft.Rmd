@@ -115,12 +115,31 @@ trees %>%
                                      "Mt. Davidson",
                                      "Bay",
                                      "Freeway",
-                                     "Ocean"))
+                                     "Ocean")) +
+  ggtitle("A. Isolation Frequencies")
+
+trees %>%
+ filter(Site_ID != "Parker") %>%
+ filter(Date_sampled > "2017-08-25") %>%
+ ggplot(aes(x = Site_ID,
+            y = DBH_cm)) +
+   geom_boxplot() +
+ theme(axis.text.x = element_text(angle = 45,
+                                  vjust = 1,
+                                  hjust = 1)) +
+ stat_compare_means(method = "kruskal") +
+  scale_x_discrete(labels = c("Balboa",
+                                     "Downtown",
+                                     "Mt. Davidson",
+                                     "Bay",
+                                     "Freeway",
+                                     "Ocean")) +
+  ggtitle("B. Diameter at Breast Height")
 ```
 
-### Figure 2. Isolation frequencies of each site
+### Figure 2. Isolation frequencies and tree diameters at each site
 
-The isolation frequency, or the percentage of leaf pieces that yielded fungal isolates, varied considerably between sites. In most sites, the isolation frequency also varies between trees, especially in the Bay site. The only site that does not show as consistent variation in isolation frequency is the Downtown site, which is also the site with the smalles isolation frequencies.
+The isolation frequency, or the percentage of leaf pieces that yielded fungal isolates, varied considerably between sites (Figure 2 A.). In most sites, the isolation frequency also varies between trees, especially in the Bay site. Trees within the Bay site also show the greatest variation in diameter at breast height (DBH) (Figure 2 B.). The only site that does not show as consistent variation in isolation frequency is the Downtown site, which is also the site with the smalles isolation frequencies.
 
 ## Species richness
 ```{r rarefaction, fig.height=7}
@@ -271,13 +290,13 @@ A non-metric multidimensional scaling (NMDS) ordination graphs the microbial com
 
 # Discussion
 
-The major, overarching takeaway from this study is that the urban endophytic microbiome contains a great amount of diversity and should not be overlooked. Even in the small geographic area of San Francisco, we found notable trends in microbiome composition that appear to vary with uniquely urban environmental factors, such as traffic. 
+Overall, the microbial composition of these urban trees' leaves varies in many aspects, from number of fungal isolates to teh identities of said isolates. This variation could be explained by numerous environmental factors, as well as host physiological factors, such as the age and size of the tree. Each aspect of these complex microbimoes is likely influenced by several of these factors at once. For example, both isolation frequency and DBH varied greatly from one site to the other, and some sites showed considerable within-site differences in these factorsa well. The trees in the bay showed the greatest range in both isolation frequency and DBH (Figure 2 A and B), indicating that the size of a tree likely has a corelation with the number of fungal endophytes found within its leaves.  Just as it shows the greatest range of isolation frequencies and tree sies, the Bay site also has the greatest diversity in fungal communities on the NMDS ordination. Although this could be due to the climate of the bay, we believe that it is more likely due to the age of the trees. The two trees with vastly different communities are also the smallest, and therefore likely youngest, trees (Figure 5).
+This conclusion is further supported by the fact that the Mt. Davidson site, which has the most tightly-clustered communities (Figure 5), also has fairly large trees with similar DBH. Additionaly, the Mt. Davidson trees have a larger median and range of DBH than the Ocean or Freeway trees (Figure 2 B.), and also have a higher median isolation frequency. This indiactes that trees with a larger DBH generally have a higher number of fungal endophytes, which could be because larger trees are likely older and have therefore had more time to acquire a number and variety of fungal endophytes.
 
-The NMDS ordination indicates that urban environmental factors play a considerable role in shaping the endophytic communities of these trees. Some of the NMDS groupings can be explained by geographic proximity, like the Ocean and Balboa sites. However, the proximity of the Downtown and Freeway sites indicate that there may be common environmental factors impacting community composition, such as traffic and pollution. 
+Although there appears to be a general pattern with larger trees hosting a greater number of fungal endophytes, DBH cannot explain all of the variation in isolation frequencies, as demonstrated by the Downtown and Balboa sites. Although the trees from the downtown site have a larger median DBH (Figure 2 B.), the trees from the Balboa site have considerably more endophytes (Figure 2 A.), which demonstrates that larger trees do not necesarily have a higher number of fungal endophytes. In such cases, it is likely that environmental factors play a key role in shaping the endophytic communities of these trees. Furthermore, the NMDS ordination indicates that urban environmental factors play a considerable role in shaping the endophytic communities of these trees. Some of the NMDS groupings can be explained by geographic proximity, like the Ocean and Balboa sites. However, the proximity of the Downtown and Freeway sites indicate that there may be common environmental factors impacting community composition, such as traffic and pollution.
 
-The isolation frequency varied greatly from one site to the other, and while some sites showed similar isolation frequencies across all trees, others had a wide variety of 
+The composition of these communities can vary greatly among trees with similar isolation frequencies, as demonstrated by the Mt. Davidson and Bay sites (Figure 4).
 
-The Bay site shows the greatest diversity in fungal communities on the NMDS ordination, as well as a large difference in isolation frequency and DBH. Although this could be due to the climate of the bay, we believe that it is more likely due to the age of the trees. The two trees with vastly different communities are also the smalles, and therefore likely youngest, trees (Figure 5).Younger trees have been exposed to less endophytes, 
-This conclusion is further supported by the fact that the Mt. Davidson site, which has the most tightly-clustered communities (Figure 5), also has fairly large trees with similar DBH.
+The major, overarching takeaway from this study is that the urban endophytic microbiome contains a great amount of diversity and should not be overlooked. Even in the small geographic area of San Francisco, we found notable trends in microbiome composition that appear to vary with uniquely urban environmental factors, such as traffic. A combination of environmental factors and host physiology appear to be the driving force behind the diversity of these microbiomes. While tree age and size may have a major impact on the number of fungal endophytes in a tree's microbiome, the composition of these comunities is more directly influenced by environmental factors.
 
 # Sources Cited
