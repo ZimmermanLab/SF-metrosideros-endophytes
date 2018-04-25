@@ -2,7 +2,9 @@
 title: "Urban biogeography of fungal endophytes across San Francisco"
 author: "Emma Gibson and Naupaka Zimmerman"
 date: "4/17/2018"
-output: html_document
+output:
+    github_document: default
+    word_document: default
 bibliography: references.bib
 ---
 
@@ -148,6 +150,8 @@ row.names(otu_table) <- c(paste("Balboa - Tree", 1:5),
                          paste("Freeway - Tree", 1:5),
                          paste("Ocean - Tree", 1:5))
 
+trees_aug <- subset(trees, as.POSIXct(trees$Date_sampled) > as.POSIXct("2017-08-01"))
+
 plot(ord_obj,
      display = "sites",
      type = "n",
@@ -166,7 +170,7 @@ points(ord_obj,
                rep("#8781e6", 5),
                rep("#00005a", 5),
                rep("#81005e", 5)),
-       cex = 4,
+       cex = trees_aug$DBH_cm/10,
        pch = 16)
 
 legend("bottomleft",
@@ -195,10 +199,17 @@ ordiellipse(ord_obj,
 
 ###Figure 5. NMDS ordination of community composition
 
-A non-metric multidimensional scaling (NMDS) ordination graphs the microbial communities of each tree by compositional similarity using the DNA sequences from each tree. Each point represents the endophytic community of one tree, and the color of said point corresponds to the site that tree is from. The ellipses show the standard error around the centroid of all points within a site, and are also color-coded according to which site they represent. 
+A non-metric multidimensional scaling (NMDS) ordination graphs the microbial communities of each tree by compositional similarity using the DNA sequences from each tree. Each point represents the endophytic community of one tree, and the size of the point corresponds to that tree's diameter at breast height (DBH), while the color of said point corresponds to the site that tree is from. The ellipses show the standard error around the centroid of all points within a site, and are also color-coded according to which site they represent. 
 
 #Discussion
 
-words
+The major, overarching takeaway from this study is that the urban endophytic microbiome contains a great amount of diversity and should not be overlooked. Even in the small geographic area of San Francisco, we found notable trends in microbiome composition that appear to vary with uniquely urban environmental factors, such as traffic. 
+
+The NMDS ordination indicates that urban environmental factors play a considerable role in shaping the endophytic communities of these trees. Some of the NMDS groupings can be explained by geographic proximity, like the Ocean and Balboa sites. However, the proximity of the Downtown and Freeway sites indicate that there may be common environmental factors impacting community composition, such as traffic and pollution. 
+
+The isolation frequency varied greatly from one site to the other, and while some sites showed similar isolation frequencies across all trees, others had a wide variety of 
+
+The Bay site shows the greatest diversity in fungal communities on the NMDS ordination, as well as a large difference in isolation frequency and DBH. Although this could be due to the climate of the bay, we believe that it is more likely due to the age of the trees. The two trees with vastly different communities are also the smalles, and therefore likely youngest, trees (Figure 5).Younger trees have been exposed to less endophytes, 
+This conclusion is further supported by the fact that the Mt. Davidson site, which has the most tightly-clustered communities (Figure 5), also has fairly large trees with similar DBH.
 
 #Sources Cited
