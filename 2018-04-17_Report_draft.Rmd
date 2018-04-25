@@ -17,14 +17,18 @@ knitr::opts_chunk$set(echo = FALSE)
 library("dplyr")
 library("tidyr")
 library("vegan")
+library("ggplot2")
 ```
 
 ```{r read-in-data}
 # load files
 otus <- read.table("seq_with_OTU_ID.txt")
 groups <- read.table("groupfile.tsv")
-trees <- read.csv("metadata/M_excel_tree_metadata.csv",
+trees <- read.csv("metadata/M_excel_tree_metadata_with_isolationfreq.csv",
                   stringsAsFactors = FALSE)
+TBAS <- read.csv("metadata/TBAS_taxonomies.csv")
+culturing <- read.csv("metadata/culturing_worksheet.csv")
+extractions <- read.csv("metadata/Extraction_worksheet.csv")
 
 # count by groups instead of trees
 otu_table <- otus %>%
@@ -131,7 +135,18 @@ legend("bottomright",
 The species richness curve graphs the number of fungal species (OTUs) found versus the totla number of fungal isolates for each tree's microbiome. Each line represents one tree's community, and the color of the line represents which site each tree was located in. A sharply angled line indicates that the full species diversity has not been samples, and a line that plateaus indicated that most of the species available in that community have been sampled. There were 97 total OTUs found among the 30 different trees. Both isolation frequency and number of fungal species found varies notably between trees.
 
 ```{r bar-graph}
-#use TBAS metadata
+extraction_with_tree <- read.table("groupfile.tsv",
+                                   sep = "\t",
+                                   col.names = c("Extraction_ID", "Tree_ID")) %>%
+  mutate(site_ID = substr(Tree_ID, 1, 2))
+
+TBAS_names_fixed <- TBAS %>%
+  mutate(Extraction_ID = substr(Query_sequence, 1, 8))
+
+TBAS_with_site <- TBAS_names_fixed %>%
+  left_join(extraction_with_tree, by = "Extraction_ID") %>%
+  na.omit()
+
 ```
 ###Figure 4. Prominent Taxa in each site
 
