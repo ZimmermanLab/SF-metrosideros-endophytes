@@ -32,6 +32,9 @@ TBAS <- read.csv("metadata/TBAS_taxonomies.csv")
 culturing <- read.csv("metadata/culturing_worksheet.csv")
 extractions <- read.csv("metadata/Extraction_worksheet.csv")
 
+#properly format sequence names in OUT table
+otus$V1 <- gsub("EUSF00", "EUSF0", otus$V1)
+
 # count by groups instead of trees
 otu_table <- otus %>%
   left_join(groups, by = c("V1" = "V1")) %>%
