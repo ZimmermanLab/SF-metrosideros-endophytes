@@ -11,7 +11,7 @@
 ## TODO: Need to adjust paths to new directory structure, or use ARGV
 
 # combine all individual fasta files into single combined fasta
-cat data/hand-cleaned_seqs.fasta > all_seqs.fasta
+cat hand-cleaned_seqs/*_CLEAN_seqs.fasta > all_seqs.fasta
 
 # count number of non-failed sequences
 # need to install bioawk if it is not already installed
