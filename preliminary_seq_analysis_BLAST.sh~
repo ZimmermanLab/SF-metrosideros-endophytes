@@ -1,0 +1,14 @@
+#!/bin/bash
+
+#Emma Gibson, Feb 21, 2018
+#a quick preliminary script to analyze sequence data
+
+# check for BLASTDB variable, and sets appropriate variables if there isn't one
+if [ -z ${BLASTDB} ]; then source /home/.bashrc; export PATH; export BLASTDB; fi
+
+#make BLAST directory
+mkdir BLAST_results
+
+# search BLAST for sequence matches for cleaned .fastas
+echo "searching BLAST database for sequence m -query preliminary_trimmed_seqs.fasta > BLAST_results/prelim_BLAST.txt
+echo "searched BLAST database for sequence matches"

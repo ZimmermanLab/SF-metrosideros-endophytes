@@ -1,0 +1,141 @@
+      1 Acremonium vitellinum
+      1 Alternaria alternata
+      1 Ascomycota sp. UNEX FECRGA 2012E598
+      1 Ascomycota sp. UNEX FECRGA 2012E703
+      1 Chaetomium elatum
+      1 Chaetomium sp. OTU420
+      1 Cladosporium pini-ponderosae
+      1 Cladosporium sp. N52
+      1 Cladosporium sp. OTU12
+      1 Cladosporium sp. TR031
+      1 Coccomyces proteae
+      1 Colletotrichum boninense
+      1 Coniochaeta cephalothecoides
+      1 Coniochaeta hoffmannii
+      1 Coniothyrium sp.
+      1 Daldinia loculata
+      1 Diaporthales sp. CHTAE31
+      1 Diaporthales sp. CHTAF8
+      1 Diaporthe eres
+      1 Diaporthe sp. RH23
+      1 Dothideomycetes sp. MUT 5396
+      1 Dothiorella sarmentorum
+      1 Dothistroma pini
+      1 fungal sp. ARIZ AZ0633
+      1 fungal sp. ARIZ AZ0799
+      1 fungal sp. ARIZ AZ0940;fungal sp. ARIZ AZ0992
+      1 fungal sp. PIMO_0.06
+      1 fungal sp. shylm112
+      1 Fusarium sp. ZG-3-2-3
+      1 Geopyxis majalis
+      1 Hortaea thailandica
+      1 Kirschsteiniothelia arasbaranica
+      1 Kretzschmaria deusta
+      1 Lecythophora sp. DSM 101981
+      1 Lewia infectoria
+      1 Nigrospora sp.
+      1 Penicillium chrysogenum
+      1 Penicillium roseopurpureum
+      1 Penicillium spathulatum
+      1 Peziza pseudoammophila var. bonii
+      1 Pezizomycetes sp. 11193
+      1 Pezizomycetes sp. genotype 36
+      1 Pezizomycetes sp. genotype 87
+      1 Phialophora sp. ZF-2016b
+      1 Phoma herbarum
+      1 Phoma sp.
+      1 Phomopsis sp.
+      1 Pleospora sp.
+      1 Pringsheimia euphorbiae
+      1 Ramularia sp. P5
+      1 Ramularia sp. SIRV-2014b
+      1 Rosellinia aquila
+      1 Sarcosomataceae sp.
+      1 Sordariomycetes sp. 11273.1
+      1 Sordariomycetes sp. genotype 57
+      1 Sordariomycetes sp. genotype 89
+      1 Thielavia terrestris
+      1 uncultured fungus
+      1 Xenoramularia arxii
+      1 Xylaria sp. JF-08084
+      1 Xylaria sp. RQ-NB3-1
+      2 Acremonium sp. W07
+      2 Ascomycota sp. genotype 945 JMUR-2014
+      2 Aureobasidium pullulans
+      2 Chaetomium globosum
+      2 Cladosporium limoniforme
+      2 Cladosporium pseudocladosporioides
+      2 Devriesia fraseriae
+      2 Dothideomycetes sp. genotype 789 JMUR-2016
+      2 Fimetariella rabenhorstii
+      2 foliar endophyte of Picea glauca sp. O6
+      2 fungal sp. ARIZ AZ0661
+      2 fungal sp. ARIZ AZ0811
+      2 fungal sp. P1N6
+      2 fungal sp. UNEX FECRGA 2012E586
+      2 Geopyxis carbonaria
+      2 Penicillium olsonii
+      2 Penicillium sp. LW-2016c
+      2 Penicillium sp. SC10
+      2 Peziza varia
+      2 Pezizomycetes sp. DC2065
+      2 Ramularia eucalypti
+      2 Ramularia hydrangeae-macrophyllae
+      2 Sordariomycetes sp. genotype 32
+      2 Sordariomycetes sp. genotype 640 JMUR-2016
+      2 Stemphylium globuliferum
+      2 Tricharina striispora
+      3 Chaetomium subglobosum
+      3 Cladosporium allicinum
+      3 Diaporthe australafricana
+      3 fungal sp. MUT 2828
+      3 Mycosphaerellaceae sp. CPC 12304
+      3 Mycosphaerella coacervata
+      3 Mycosphaerella sp. GSM5_3_4
+      3 Nigrospora oryzae
+      3 Penicillium expansum
+      3 Penicillium sp.
+      3 Pezicula melanigena
+      3 Pezizomycetes sp. genotype 20
+      3 Phomopsis sp. JW28-2
+      3 Phomopsis sp. P1
+      3 Phomopsis sp. RH32
+      3 Ramularia grevilleana
+      3 Ramularia sp. SIRV-2014a
+      3 Sordariales sp.
+      4 Cladosporium dominicanum
+      4 Pithya cupressina
+      4 Preussia australis
+      4 Stemphylium solani
+      5 Cladosporium ramotenellum
+      5 Neofusicoccum sp. HGMM-2009a
+      6 Diaporthe foeniculina
+      6 fungal sp. ARIZ AZ0335
+      6 Nemania maritima
+      8 Penicillium brevicompactum
+      8 Pezicula cinnamomea
+      9 Acremonium sp. MAB-2010ag
+      9 Stemphylium sp.
+     11 Creosphaeria sassafras
+     11 Marthamyces desmoschoeni
+     11 Sordariomycetes sp. DC2119
+     12 fungal sp.
+     13 Sordariomycetes sp.
+     15 Cladosporium cladosporioides
+     16 fungal sp. NLR-2013
+     17 Penicillium compactum
+     17 Sordariomycetes sp. genotype 88
+     20 fungal endophyte
+     23 Neofusicoccum luteum
+     23 Sordariomycetes sp. genotype 926 JMUR-2014
+     25 Penicillium glabrum
+     25 Stemphylium vesicarium
+     27 Cladosporium sp.
+     29 Diaporthe rudis
+     30 Graphostroma sp. SGLMf27
+     32 Xylaria sp. ICMP 20627
+     52 Nemania serpens
+     78 Biscogniauxia mediterranea
+    104 Capnodiales sp. WQ-2013g
+    108 Cladosporium cf. ramotenellum
+    110 Neofusicoccum australe
