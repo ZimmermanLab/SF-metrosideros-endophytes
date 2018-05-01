@@ -86,6 +86,57 @@ legend("bottomright",
                rep("#81005e")))
 dev.off()
 
+#save a pdf of a rarefaction curve with one line per site
+pdf("figures/prelim_rarecurve_combined.pdf")
+rare_color_c = c(rep("#ff5e62"),
+               rep("#f0a200"),
+               rep("#007f36"),
+               rep("#8781e6"),
+               rep("#00005a"),
+               rep("#81005e"))
+
+group_labels_c <- c(rep("Balboa"),
+                  rep("Downtown"),
+                  rep("Mt. Davidson"),
+                  rep("Bay"),
+                  rep("Freeway"),
+                  rep("Ocean"))
+
+otu_table_combined <- otus %>%
+  left_join(groups, by = c("V1" = "V1")) %>%
+  mutate(V2.y = gsub("T[0-9]", "", V2.y)) %>%
+  group_by(V2.x, V2.y) %>%
+  summarize(count = n()) %>%
+  spread(V2.x, count, fill = 0)
+
+otu_table_combined <- as.data.frame(na.omit(otu_table_combined))
+
+row.names(otu_table_combined) <- otu_table_combined[, 1]
+otu_table_combined <- otu_table_combined[, -1]
+
+rarecurve(otu_table_combined,
+          main = "Species accumulation curves for endophytic fungi",
+          col = rare_color_c,
+          label = FALSE,
+          lwd = 2.5,
+          xlab = "Number of fungal isolates",
+          ylab = "Number of fungal species (97% ITS OTUs)",
+          cex.lab = 1.4,
+          cex.main = 1.65)
+
+legend("bottomright",
+       legend = levels(factor(group_labels_c)),
+       pch = 16,
+       cex = 1,
+       pt.cex = 2,
+       col = c(rep("#ff5e62"),
+               rep("#8781e6"),
+               rep("#f0a200"),
+               rep("#00005a"),
+               rep("#007f36"),
+               rep("#81005e")))
+dev.off()
+
 # some more species accumulation curves
 plot(colSums(otu_table))
 plot(specaccum(otu_table, method = "rare"), xvar = "individuals")
