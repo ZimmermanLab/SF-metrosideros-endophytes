@@ -24,13 +24,13 @@ library("ggpubr")
 
 ```{r read-in-data}
 # load files
-otus <- read.table("seq_with_OTU_ID.txt")
-groups <- read.table("groupfile.tsv")
-trees <- read.csv("metadata/M_excel_tree_metadata_with_isolationfreq.csv",
+otus <- read.table("output/processed_sequence_files/seq_with_OTU_ID.txt")
+groups <- read.table("output/processed_sequence_files/groupfile.tsv")
+trees <- read.csv("data/metadata/M_excel_tree_metadata_with_isolationfreq.csv",
                   stringsAsFactors = FALSE)
-TBAS <- read.csv("metadata/TBAS_taxonomies.csv")
-culturing <- read.csv("metadata/culturing_worksheet.csv")
-extractions <- read.csv("metadata/Extraction_worksheet.csv")
+TBAS <- read.csv("data/metadata/TBAS_taxonomies.csv")
+culturing <- read.csv("data/metadata/culturing_worksheet.csv")
+extractions <- read.csv("data/metadata/Extraction_worksheet.csv")
 
 #properly format sequence names in OUT table
 otus$V1 <- gsub("EUSF00", "EUSF0", otus$V1)
@@ -218,7 +218,7 @@ legend("bottomright",
 The species richness curve graphs the number of fungal species (OTUs) found versus the totla number of fungal isolates for each tree's microbiome. Each line represents one tree's community, and the color of the line represents which site each tree was located in. A sharply angled line indicates that the full species diversity has not been samples, and a line that plateaus indicated that most of the species available in that community have been sampled. There were 97 total OTUs found among the 30 different trees. Both isolation frequency and number of fungal species found varies notably between trees.
 
 ```{r bar-graph}
-extraction_with_tree <- read.table("groupfile.tsv",
+extraction_with_tree <- read.table("output/processed_sequence_files/groupfile.tsv",
                                    sep = "\t",
                                    col.names = c("Extraction_ID", "Tree_ID")) %>%
   mutate(site_ID = substr(Tree_ID, 1, 2))
