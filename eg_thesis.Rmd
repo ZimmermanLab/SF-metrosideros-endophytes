@@ -78,7 +78,7 @@ In this study, used culturing and barcode gene sequencing to identify the specie
 
 [[[[[[[construct map in r]]]]]]]
 
-### Figure 1. Map ofthe locations sampled
+**Figure 1.** A map of the locations sampled. The preliminary sampling in April of 2017 only included trees from the downtown, Mt. Davidson, and Balboa sites, and only 4 trees per site. The second sampling in August of 2017 included all 6 sites and 5 trees from each site, including a re-sampling of all 12 original trees.
 
 We used the Urban Forest Map, which documents the location and species of every tree in San Francisco, to choose unique locations around the city with enough *Metrosideros excelsa* individuals (Figure 1). We collected small branches from 5 trees in each of these sites using a clipper pole, collected at least 3 sun-facing outer branches from each tree. Because *M. excelsa* is an evergreen tree, and the newer leaves contain less fungi, we only collected branches that contained dark green leaves that appeared to be at least one year old. 
 
@@ -154,7 +154,7 @@ trees %>%
   ggtitle("B. Diameter at Breast Height")
 ```
 
-### Figure 2. Isolation frequencies and tree diameters at each site
+**Figure 2.** Isolation frequencies (A) and tree diameters (B) at each site. Isolation frequency (A) is only shown for the August 2017 sampling, and is a measure of how many slant tubes showed signs of fungal growth, out of how many total slant tubes were made. 100 slant tubes were made for each tree except for the trees in the downtown site, which had 140 slant tubes per tree because they had low isolation frequencies during the initial sampling.
 
 The isolation frequency, or the percentage of leaf pieces that yielded fungal isolates, varied considerably between sites (Figure 2 A.). In most sites, the isolation frequency also varies between trees, especially in the Bay site. Trees within the Bay site also show the greatest variation in diameter at breast height (DBH) (Figure 2 B.). The only site that does not show as consistent variation in isolation frequency is the Downtown site, which is also the site with the smalles isolation frequencies.
 
@@ -198,7 +198,7 @@ legend("bottomright",
 
 ```
 
-### Figure 3. Species accumulation curve showing species richness in all trees & sites
+**Figure 3.** Species accumulation curve showing species richness in all trees and sites for the August 2017 sampling. Each line represents the species richness of one tree, and the color represents the site which said tree is from. 
 
 The species richness curve graphs the number of fungal species (OTUs) found versus the totla number of fungal isolates for each tree's microbiome. Each line represents one tree's community, and the color of the line represents which site each tree was located in. A sharply angled line indicates that the full species diversity has not been samples, and a line that plateaus indicated that most of the species available in that community have been sampled. There were 97 total OTUs found among the 30 different trees. Both isolation frequency and number of fungal species found varies notably between trees.
 
@@ -240,7 +240,7 @@ TBAS_with_site %>%
 
 ```
 
-### Figure 4. Prominent Taxa in each site
+**Figure 4.** Normalized relative abundances of *Ascomycota* taxa in each site for the August 2017sampling.
 
 The most prominent taxa in each site vary considerably between sites. *Dothideomycetes*, the largest class within the ascomycetes, appears to predominate the microbiomes of most sites except for the Downtown and Bay sites. In both of these sites, *Sordariomycetes* is the most common class instead. There are several classes that are either absent or present in small numbers in most sites, but more abundant in one or several sites. For example, *Eurotiomycetes* are more common in the Downtown and Freeway sites, and *Leotiomycetes* is only abundant in the Mt. Davidson site.
 
@@ -304,15 +304,18 @@ ordiellipse(ord_obj,
             lwd = 7)
 ```
 
-###  Figure 5. NMDS ordination of community composition
+*Figure 5.* NMDS ordination of community composition for the Augist 2017 sampling. Each point represents the endophytic community of one tree, and the size of the point corresponds to that tree's DBH, while the color of said point corresponds to the site that tree is from. Points that are closer together indicate that the trees they represent have similar comunity compositions. The ellipses show the standard error around the centroid of all points within a site, and are also color-coded according to which site they represent. 
 
-A non-metric multidimensional scaling (NMDS) ordination graphs the microbial communities of each tree by compositional similarity using the DNA sequences from each tree. Each point represents the endophytic community of one tree, and the size of the point corresponds to that tree's DBH, while the color of said point corresponds to the site that tree is from. The ellipses show the standard error around the centroid of all points within a site, and are also color-coded according to which site they represent. 
+A non-metric multidimensional scaling (NMDS) ordination shows that the similarities between  microbial communities of these trees vary. Some sites show very little compositional similarity, while others cluster more tightly, indicating a greater degree of compositional similarity. 
 
 # Discussion
 
 Overall, the microbial composition of these urban trees' leaves varies in many aspects, from number of fungal isolates to the identities of said isolates. This variation could be explained by numerous environmental factors, as well as host physiological factors, such as the age and size of the tree. Each aspect of these complex microbimoes is likely influenced by several of these factors at once. 
 
-Both isolation frequency and DBH varied greatly from one site to the other, and some sites show considerable within-site differences in these factors as well. The trees in the bay show the greatest range in both isolation frequency and DBH (Figure 2 A and B), indicating that the size of a tree may have a corelation with the number of fungal endophytes found within its leaves.  Just as it shows the greatest range of isolation frequencies and tree sies, the Bay site also has some of the least similarity between its fungal communities on the NMDS ordination (Figure 5). The two trees with vastly different communities are also the smallest, and therefore likely youngest (Figure 5). In this instance, it appears that the size of the trees has the largest impact on the endophytic communities. Furthermore, the trees in the Mt. Davidson site, which have some of the most similar communities (Figure 5), also have fairly large trees with similar DBH. The fact that these trees have similar sizes in addition to similar community composition indicates that host size may have an impact on endophytic comunity composition. Additionaly, the Mt. Davidson trees have a larger median and range of DBH than the ocean or freeway trees (Figure 2 B.), and also have a higher median isolation frequency, which could indicate that trees with a larger DBH may also have a higher number of fungal endophytes.
+Both isolation frequency and DBH varied greatly from one site to the other, and some sites show considerable within-site differences in these factors as well. The trees in the bay show the greatest range in both isolation frequency and DBH (Figure 2 A and B), indicating that the size of a tree may have a corelation with the number of fungal endophytes found within its leaves.  Just as it shows the greatest range of isolation frequencies and tree sies, the Bay site also has some of the least similarity between its fungal communities on the NMDS ordination (Figure 5). The two trees with vastly different communities are also the smallest, and therefore likely youngest (Figure 5). In this instance, it appears that the size of the trees has the largest impact on the endophytic communities. Furthermore, the trees in the Mt. Davidson site, which have some of the most similar communities (Figure 5), also have fairly large trees with similar DBH. The fact that these trees have similar sizes in addition to similar community composition indicates that host size may have an impact on endophytic comunity composition.
+
+However, it may be more likely that the sites that show great within-site diversity simply appear that way due to random sampling error. Although the Balboa site appears to have a high isolation frequency (Figure 2 A), many of the slant tubes that showed fungal growth failed to grow into a larger culture, leading to a low number of usable sequences (Figure 3). This low number of sequences per tree may indicate that the divergence in community composition that appears to be present might be due to the low sample size, rather than actual diference between the microbial communities between the Balboa trees (Figure 5).
+That said, it is still possible that the size of the trees might have an impact on the size of the endophytic communities. The Mt. Davidson trees have a larger median and range of DBH than the ocean or freeway trees (Figure 2 B.), and also have a higher median isolation frequency, which could indicate that trees with a larger DBH may also have a higher number of fungal endophytes.
 
 Although there appears to be a general pattern with larger trees hosting a greater number of fungal endophytes, DBH cannot explain all of the variation in isolation frequencies, as demonstrated by the Downtown and Balboa sites. Although the trees from the downtown site have a larger median DBH (Figure 2 B.), the trees from the Balboa site have considerably more endophytes (Figure 2 A.), which demonstrates that larger trees do not necesarily have a higher number of fungal endophytes. In such cases, it is likely that environmental factors play a key role in shaping the endophytic communities of these trees. While the impact of environmental factors may be less evident when considering the number of fungal endophytes in a tree's microbiome, it becomes more apparent when looking at the identities of these endophytes. The composition of these communities can vary greatly among trees with similar isolation frequencies, as demonstrated by the taxonomic composition of the Mt. Davidson and bay sites (Figure 4). In general, there was more compostitional similarity between trees from the same location than between trees of a similar size (Figure 5).
 
