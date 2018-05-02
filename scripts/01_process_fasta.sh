@@ -38,10 +38,17 @@ grep "EUSF" output/processed_sequence_files/good_seqs_short_names.fasta | sort |
 # get rid of 462 sequence
 bioawk -c fastx '!/EUSF00462/ {print ">"$name"\n"$seq}' output/processed_sequence_files/good_seqs_short_names.fasta > output/processed_sequence_files/good_seqs_short_names_checked.fasta
 
+# make names file
+bioawk -c fastx '// {print $name}' output/processed_sequence_files/good_seqs_short_names_checked.fasta > output/processed_sequence_files/seq_names.txt
+
+# cd output/processed_sequence_files
+
 # cluster using vsearch
 # need to install mothur if it is not already installed
-mothur "#cluster(fasta=output/processed_sequence_files/good_seqs_short_names_checked.fasta, method=agc);"
+mothur "#count.seqs(name=seq_names.txt, inputdir=./output/processed_sequence_files, outputdir=./output/processed_sequence_files)"
 
-mothur "#bin.seqs(list=output/processed_sequence_files/good_seqs_short_names_checked.agc.list, fasta=output/processed_sequence_files/good_seqs_short_names_checked.fasta);"
+mothur "#cluster(fasta=good_seqs_short_names_checked.fasta, method=agc, inputdir=./output/processed_sequence_files, outputdir=./output/processed_sequence_files);"
+
+mothur "#bin.seqs(list=good_seqs_short_names_checked.agc.list, fasta=good_seqs_short_names_checked.fasta, inputdir=./output/processed_sequence_files, outputdir=./output/processed_sequence_files);"
 
 grep ">" output/processed_sequence_files/good_seqs_short_names_checked.agc.0.03.fasta | sed 's/>//' > output/processed_sequence_files/seq_with_OTU_ID.txt

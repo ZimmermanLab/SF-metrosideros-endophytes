@@ -12,6 +12,11 @@ bibliography: references.bib
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 ```
 
+```{r run-pre-rmd-scripts}
+source("scripts/02_join_metadata.R")
+source("scripts/03_make_otu_table.R")
+```
+
 ```{r load-libraries}
 # load libraries
 library("dplyr")
