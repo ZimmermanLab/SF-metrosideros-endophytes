@@ -27,7 +27,7 @@ Sample Collection
 
 \[\[\[\[\[\[\[construct map in r\]\]\]\]\]\]\]
 
-### Figure 1. Map ofthe locations sampled
+**Figure 1.** A map of the locations sampled. The preliminary sampling in April of 2017 only included trees from the downtown, Mt. Davidson, and Balboa sites, and only 4 trees per site. The second sampling in August of 2017 included all 6 sites and 5 trees from each site, including a re-sampling of all 12 original trees.
 
 We used the Urban Forest Map, which documents the location and species of every tree in San Francisco, to choose unique locations around the city with enough *Metrosideros excelsa* individuals (Figure 1). We collected small branches from 5 trees in each of these sites using a clipper pole, collected at least 3 sun-facing outer branches from each tree. Because *M. excelsa* is an evergreen tree, and the newer leaves contain less fungi, we only collected branches that contained dark green leaves that appeared to be at least one year old.
 
@@ -45,31 +45,9 @@ Molecular Methods
 
 We extracted DNA from the fungal cells using a bead-beater and the Extract ‘n Amp DNA extraction kit. First, we added fungal tissue to sterile tubes filled with small beads, then added 100 μL Extract 'n' Amp DNA extraction solution. Next, we put the tubes in the bead-beater for one minute, which vigorously shook the tubes so that the zirconium oxide beads inside could physically ground up the fungal tissue. This step is necessary in fungal DNA extractions because fungi have cell walls, which are difficult for extraction solution to break up without this physical grinding step. Next, the samples were placed on heat blocks at 95°C for 10 minutes. After the heating step, we added a dilution buffer to each tube and stored them in a refrigerator to prevent degradation until PCR.
 
-We performed PCR on the ITS region, a commonly-accepted fungal barcode gene, using the ITS1F forward primer and ITS4 reverse primer. We used 1 μL of template DNA from the extraction, and the following master master mix recipie (per reaction):
+We performed PCR on the ITS region, a commonly-accepted fungal barcode gene, using the ITS1F forward primer and ITS4 reverse primer. For each PCR reaction, we used 1 μL of template DNA, 10 μL Extract ‘n Amp Taq polymerase, 6.4 μL PCR-grade water, 1 μL bovine serum albumin, 0.8 μL ITS1F forward primer, and 0.8 μL ITS4 reverse primer. For the PCR reaction, we used a BioRAD T100 thermal cycler with the following 35-repeat heat cycle: 95°C for 3 minutes, 95°C for 30 seconds, 54°C for 30 seconds, 72°C for 30 seconds, repeat steps 2-4 34 times, 72°C for 10 minutes, and then infinite hold at 4°C. To ensure that the fungal DNA successfully amplified, and that the master mix was not contaminated, we ran 5 μL of each sample on a 10% agarose gel with 1X Tris-acetate-EDTA (TEA) buffer and SYBR Safe, which ran at 120 volts for 20 minutes. Successful PCR samples with clean negative controls were kept at 4°C until sequencing preparation.
 
--   10 μL Extract ‘n Amp Taq polymerase
--   6.4 μL PCR-grade water
--   1 μL bovine serum albumin
--   0.8 μL ITS1F forward primer
--   0.8 μL ITS4 reverse primer
-
-For the PCR reaction, we used a BioRAD T100 thermal cycler with the following 35-repeat heat cycle:
-
-1.  95°C for 3 minutes
-2.  95°C for 30 seconds
-3.  54°C for 30 seconds
-4.  72°C for 30 seconds
-5.  repeat from step 2. 34 times
-6.  72°C for 10 minutes
-7.  4°C infinite hold
-
-To ensure that the fungal DNA successfully amplified, and that the master mix was not contaminated, we ran 5 μL of each sample on a 10% agarose gel with 1X Tris-acetate-EDTA (TEA) buffer and SYBR Safe, which ran at 120 volts for 20 minutes. Successful PCR samples with clean negative controls were kept at 4°C until sequencing preparation, when they were then cleaned with 1 μL Shrimp Alkaline Phopsphatase Exonuclease (ExoSap) per sample. To clean the samples, we used the following cycle on the same BioRAD T100 thermal cycler:
-
-1.  37°C for 15 minutes
-2.  80°C for 15 minutes
-3.  4°C infinite hold
-
-After cleaning, samples were kept at 4°C until they were ready to be sent for sequencing. Directly before being sent for sequencing, cleaned samples that showed bright bands on their gels were diluted with an additional 15 μL PCR water before sequencing, although a small number of samples that had faint bands on the gels were not diluted this way. Cleaned samples were sent to MCLabs for Sanger sequencing.
+To prepare successful samples for sequencin, they were first cleaned with 1 μL Shrimp Alkaline Phopsphatase Exonuclease (ExoSap) per sample. To clean the samples, we used the following cycle on the same BioRAD T100 thermal cycler: 37°C for 15 minutes, 80°C for 15 minutes, then infinite hold at 4°C. After cleaning, samples were kept at 4°C until they were ready to be sent for sequencing. Directly before being sent for sequencing, cleaned samples that showed bright bands on their gels were diluted with an additional 15 μL PCR water before sequencing, although a small number of samples that had faint bands on the gels were not diluted this way. Cleaned samples were sent to MCLabs for Sanger sequencing.
 
 Computational Methods
 ---------------------
@@ -81,12 +59,14 @@ Because ITS1 has a lot of variation and is therefore difficult to construct phyl
 Results
 =======
 
+Overall, we found a great amount of diversity in several aspects of these endophytic communities, including number of fungal isolates, species diversity, and community composition. While some communities showed a low number of fungal isolates, species richness analyyses showed that in nearly all of the microbial communities analyzed, our sampling did not encompas the complete microbial diversity within these microbiomes. While the species diversity within some sites exceeds 20 OTUs, there appears to be greater species diversity in these endophytic communities than this study was able to document. Furthermore, the taxonomic variation between different sites is also considerable, as there is no taxa that dominates all sites, although there are several taxa that show a degree of prominence in all sites.
+
 Isolation Frequency
 -------------------
 
 ![](eg_thesis_files/figure-markdown_github/isolation-1.png)![](eg_thesis_files/figure-markdown_github/isolation-2.png)
 
-### Figure 2. Isolation frequencies and tree diameters at each site
+**Figure 2.** Isolation frequencies (A) and tree diameters (B) at each site. Isolation frequency (A) is only shown for the August 2017 sampling, and is a measure of how many slant tubes showed signs of fungal growth, out of how many total slant tubes were made. 100 slant tubes were made for each tree except for the trees in the downtown site, which had 140 slant tubes per tree because they had low isolation frequencies during the initial sampling.
 
 The isolation frequency, or the percentage of leaf pieces that yielded fungal isolates, varied considerably between sites (Figure 2 A.). In most sites, the isolation frequency also varies between trees, especially in the Bay site. Trees within the Bay site also show the greatest variation in diameter at breast height (DBH) (Figure 2 B.). The only site that does not show as consistent variation in isolation frequency is the Downtown site, which is also the site with the smalles isolation frequencies.
 
@@ -95,13 +75,13 @@ Species richness
 
 ![](eg_thesis_files/figure-markdown_github/rarefaction-1.png)
 
-### Figure 3. Species accumulation curve showing species richness in all trees & sites
+**Figure 3.** Species accumulation curve showing species richness in all trees and sites for the August 2017 sampling. Each line represents the species richness of one tree, and the color represents the site which said tree is from.
 
 The species richness curve graphs the number of fungal species (OTUs) found versus the totla number of fungal isolates for each tree's microbiome. Each line represents one tree's community, and the color of the line represents which site each tree was located in. A sharply angled line indicates that the full species diversity has not been samples, and a line that plateaus indicated that most of the species available in that community have been sampled. There were 97 total OTUs found among the 30 different trees. Both isolation frequency and number of fungal species found varies notably between trees.
 
 ![](eg_thesis_files/figure-markdown_github/bar-graph-1.png)
 
-### Figure 4. Prominent Taxa in each site
+**Figure 4.** Normalized relative abundances of *Ascomycota* taxa in each site for the August 2017sampling.
 
 The most prominent taxa in each site vary considerably between sites. *Dothideomycetes*, the largest class within the ascomycetes, appears to predominate the microbiomes of most sites except for the Downtown and Bay sites. In both of these sites, *Sordariomycetes* is the most common class instead. There are several classes that are either absent or present in small numbers in most sites, but more abundant in one or several sites. For example, *Eurotiomycetes* are more common in the Downtown and Freeway sites, and *Leotiomycetes* is only abundant in the Mt. Davidson site.
 
@@ -110,20 +90,24 @@ NMDS Ordination
 
 ![](eg_thesis_files/figure-markdown_github/ordination-1.png)
 
-### Figure 5. NMDS ordination of community composition
+*Figure 5.* NMDS ordination of community composition for the Augist 2017 sampling. Each point represents the endophytic community of one tree, and the size of the point corresponds to that tree's DBH, while the color of said point corresponds to the site that tree is from. Points that are closer together indicate that the trees they represent have similar comunity compositions. The ellipses show the standard error around the centroid of all points within a site, and are also color-coded according to which site they represent.
 
-A non-metric multidimensional scaling (NMDS) ordination graphs the microbial communities of each tree by compositional similarity using the DNA sequences from each tree. Each point represents the endophytic community of one tree, and the size of the point corresponds to that tree's DBH, while the color of said point corresponds to the site that tree is from. The ellipses show the standard error around the centroid of all points within a site, and are also color-coded according to which site they represent.
+A non-metric multidimensional scaling (NMDS) ordination shows that the similarities between microbial communities of these trees vary. Some sites show very little compositional similarity, while others cluster more tightly, indicating a greater degree of compositional similarity.
 
 Discussion
 ==========
 
-Overall, the microbial composition of these urban trees' leaves varies in many aspects, from number of fungal isolates to the identities of said isolates. This variation could be explained by numerous environmental factors, as well as host physiological factors, such as the age and size of the tree. Each aspect of these complex microbimoes is likely influenced by several of these factors at once. For example, both isolation frequency and DBH varied greatly from one site to the other, and some sites showed considerable within-site differences in these factorsa well. The trees in the bay showed the greatest range in both isolation frequency and DBH (Figure 2 A and B), indicating that the size of a tree likely has a corelation with the number of fungal endophytes found within its leaves. Just as it shows the greatest range of isolation frequencies and tree sies, the Bay site also has the greatest diversity in fungal communities on the NMDS ordination. The two trees with vastly different communities are also the smallest, and therefore likely youngest (Figure 5). in this instance, it appears that the age of the trees has the largest impact on the endophytic communities. This conclusion is further supported by the fact that the Mt. Davidson site, which has the most tightly-clustered communities (Figure 5), also has fairly large trees with similar DBH. Additionaly, the Mt. Davidson trees have a larger median and range of DBH than the ocean or freeway trees (Figure 2 B.), and also have a higher median isolation frequency. This indicates that trees with a larger DBH generally have a higher number of fungal endophytes, which could be because larger trees are likely older and have had more time to acquire fungal endophytes.
+Overall, the microbial composition of these urban trees' leaves varies in many aspects, from number of fungal isolates to the identities of said isolates. This variation could be explained by numerous environmental factors, as well as host physiological factors, such as the age and size of the tree. Each aspect of these complex microbimoes is likely influenced by several of these factors at once.
+
+Both isolation frequency and DBH varied greatly from one site to the other, and some sites show considerable within-site differences in these factors as well. The trees in the bay show the greatest range in both isolation frequency and DBH (Figure 2 A and B), indicating that the size of a tree may have a corelation with the number of fungal endophytes found within its leaves. Just as it shows the greatest range of isolation frequencies and tree sies, the Bay site also has some of the least similarity between its fungal communities on the NMDS ordination (Figure 5). The two trees with vastly different communities are also the smallest, and therefore likely youngest (Figure 5). In this instance, it appears that the size of the trees has the largest impact on the endophytic communities. Furthermore, the trees in the Mt. Davidson site, which have some of the most similar communities (Figure 5), also have fairly large trees with similar DBH. The fact that these trees have similar sizes in addition to similar community composition indicates that host size may have an impact on endophytic comunity composition.
+
+However, it may be more likely that the sites that show great within-site diversity simply appear that way due to random sampling error. Although the Balboa site appears to have a high isolation frequency (Figure 2 A), many of the slant tubes that showed fungal growth failed to grow into a larger culture, leading to a low number of usable sequences (Figure 3). This low number of sequences per tree may indicate that the divergence in community composition that appears to be present might be due to the low sample size, rather than actual diference between the microbial communities between the Balboa trees (Figure 5). That said, it is still possible that the size of the trees might have an impact on the size of the endophytic communities. The Mt. Davidson trees have a larger median and range of DBH than the ocean or freeway trees (Figure 2 B.), and also have a higher median isolation frequency, which could indicate that trees with a larger DBH may also have a higher number of fungal endophytes.
 
 Although there appears to be a general pattern with larger trees hosting a greater number of fungal endophytes, DBH cannot explain all of the variation in isolation frequencies, as demonstrated by the Downtown and Balboa sites. Although the trees from the downtown site have a larger median DBH (Figure 2 B.), the trees from the Balboa site have considerably more endophytes (Figure 2 A.), which demonstrates that larger trees do not necesarily have a higher number of fungal endophytes. In such cases, it is likely that environmental factors play a key role in shaping the endophytic communities of these trees. While the impact of environmental factors may be less evident when considering the number of fungal endophytes in a tree's microbiome, it becomes more apparent when looking at the identities of these endophytes. The composition of these communities can vary greatly among trees with similar isolation frequencies, as demonstrated by the taxonomic composition of the Mt. Davidson and bay sites (Figure 4). In general, there was more compostitional similarity between trees from the same location than between trees of a similar size (Figure 5).
 
-These findings indicate that urban environmental factors play a considerable role in shaping the endophytic communities of these trees. Most of the trees within the same site cluster together on the NMDS ordination, and sites that cluster closer together are typically geographically close together, indicating that disperal mechanisms and/or common environmental factors may be shaping these community compositions (Figure 5). However, disperal alone does not sufficiently explain the compositional similarity of the downtown and freeway sites cluster together despite being fairly distant geographically (Figure 1). This indicates that these sites share a common environmental factor that shapes their communities, such as traffic and polution levels.
+These findings indicate that the endophytic microbiomes of urban trees are complex and diverse, and may show a degree of biogeographic structure that reflects their natural counterparts. Additionally, it is likely that urban environmental factors play a considerable role in shaping the endophytic communities of these trees. Most of the trees within the same site cluster together on the NMDS ordination, and although some communities show much greater within-site diversity than others, the general pattern suggests a notable degree of biogeographic structure (Figure 5). Similarly, sites that cluster closer together are typically geographically close together, such as how the Ocean and Balboa sites overlap, but not the Balboa and Downtown sites (Figure 5). This suggests that disperal mechanisms and/or common environmental factors may be shaping these community compositions. However, disperal alone does not sufficiently explain the compositional similarity of the downtown and freeway sites cluster together despite being fairly distant geographically (Figure 1). This indicates that these sites share a common environmental factor that shapes their communities, such as traffic and polution levels.
 
-This study has demonstrated that the urban endophytic microbiome contains a great amount of diversity and appears to be influenced by unique urban environmental factors. Nearly all of the species accumulation curves indicate that the full diversity of these endophytic communities has yet to be sampled (Figure 3). Even in the small geographic area of San Francisco, we found notable trends in microbiome composition that appear to vary with uniquely urban environmental factors, such as traffic. A combination of environmental factors and host physiology appear to be the driving force behind the diversity of these microbiomes. While tree age and size may have a major impact on the number of fungal endophytes in a tree's microbiome, the composition of these comunities is more directly influenced by environmental factors.
+This study has demonstrated that the urban endophytic microbiome contains a great amount of diversity and appears to be influenced by unique urban environmental factors. Nearly all of the species accumulation curves indicate that the full diversity of these endophytic communities has yet to be sampled (Figure 3). Even in the small geographic area of San Francisco, we found notable trends in microbiome composition that appear to vary with uniquely urban environmental factors, such as traffic. A combination of environmental factors and host physiology appear to be the driving force behind the diversity of these microbiomes. While it is difficult to determine the exact mechanisms that influence these communities, the amount of species diversity and biogeographic structure indicate that the foliar microbiomes of urban trees may be just as complex and dynamic as those of trees in nature, and warrant further study.
 
 Sources Cited
 =============
