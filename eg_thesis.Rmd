@@ -247,7 +247,8 @@ The most prominent taxa in each site vary considerably between sites. *Dothideom
 ## NMDS Ordination
 
 ```{r ordination_setup, include=FALSE}
-ord_obj <- metaMDS(otu_table)
+set.seed(42)
+ord_obj <- metaMDS(otu_table, trymax = 100)
 
 # fix row names to be more readable
 row.names(otu_table) <- c(paste("Balboa - Tree", 1:5),
