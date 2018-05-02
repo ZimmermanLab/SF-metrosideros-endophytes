@@ -11,9 +11,9 @@
 library("dplyr")
 
 # load data
-culturing <- read.csv("metadata/culturing_worksheet.csv")
-extractions <- read.csv("metadata/Extraction_worksheet.csv")
-trees <- read.csv("metadata/M_excel_tree_metadata_with_isolationfreq.csv")
+culturing <- read.csv("data/metadata/culturing_worksheet.csv")
+extractions <- read.csv("data/metadata/Extraction_worksheet.csv")
+trees <- read.csv("data/metadata/M_excel_tree_metadata_with_isolationfreq.csv")
 
 # 4 levels of joining since we can't recursively join
 joined <- extractions %>%
@@ -58,7 +58,7 @@ joined_tree_ID <- joined_tree_ID %>%
 
 # write out complete csv for use in next script
 write.table(joined_tree_ID,
-            file = "groupfile.tsv",
+            file = "output/processed_sequence_files/groupfile.tsv",
             sep = "\t",
             col.names = FALSE,
             row.names = FALSE,
