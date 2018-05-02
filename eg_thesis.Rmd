@@ -94,31 +94,9 @@ After two weeks, we evaluated them for fungal growth and subcultured the fungi f
 
 We extracted DNA from the fungal cells using a bead-beater and the Extract ‘n Amp DNA extraction kit. First, we added fungal tissue to sterile tubes filled with small beads, then added 100 μL Extract 'n' Amp DNA extraction solution. Next, we put the tubes in the bead-beater for one minute, which vigorously shook the tubes so that the zirconium oxide beads inside could physically ground up the fungal tissue. This step is necessary in fungal DNA extractions because fungi have cell walls, which are difficult for extraction solution to break up without this physical grinding step. Next, the samples were placed on heat blocks at 95°C for 10 minutes. After the heating step, we added a dilution buffer to each tube and stored them in a refrigerator to prevent degradation until PCR.
 
-We performed PCR on the ITS region, a commonly-accepted fungal barcode gene, using the ITS1F forward primer and ITS4 reverse primer. We used 1 μL of template DNA from the extraction, and the following master master mix recipie (per reaction):
+We performed PCR on the ITS region, a commonly-accepted fungal barcode gene, using the ITS1F forward primer and ITS4 reverse primer. For each PCR reaction, we used 1 μL of template DNA, 10 μL Extract ‘n Amp Taq polymerase, 6.4 μL PCR-grade water, 1 μL bovine serum albumin, 0.8 μL ITS1F forward primer, and 0.8 μL ITS4 reverse primer. For the PCR reaction, we used a BioRAD T100 thermal cycler with the following 35-repeat heat cycle: 95°C for 3 minutes, 95°C for 30 seconds, 54°C for 30 seconds, 72°C for 30 seconds, repeat steps 2-4 34 times, 72°C for 10 minutes, and then infinite hold at 4°C. To ensure that the fungal DNA successfully amplified, and that the master mix was not contaminated, we ran 5 μL of each sample on a 10% agarose gel with 1X Tris-acetate-EDTA (TEA) buffer and SYBR Safe, which ran at 120 volts for 20 minutes. Successful PCR samples with clean negative controls were kept at 4°C until sequencing preparation.
 
-* 10 μL Extract ‘n Amp Taq polymerase
-* 6.4 μL PCR-grade water
-* 1 μL bovine serum albumin
-* 0.8 μL ITS1F forward primer
-* 0.8 μL ITS4 reverse primer
-
-For the PCR reaction, we used a BioRAD T100 thermal cycler with the following 35-repeat heat cycle:
-
-1. 95°C for 3 minutes
-2. 95°C for 30 seconds
-3. 54°C for 30 seconds
-4. 72°C for 30 seconds
-5. repeat from step 2. 34 times
-6. 72°C for 10 minutes
-7. 4°C infinite hold
-
-To ensure that the fungal DNA successfully amplified, and that the master mix was not contaminated, we ran 5 μL of each sample on a 10% agarose gel with 1X Tris-acetate-EDTA (TEA) buffer and SYBR Safe, which ran at 120 volts for 20 minutes. Successful PCR samples with clean negative controls were kept at 4°C until sequencing preparation, when they were then cleaned with 1 μL Shrimp Alkaline Phopsphatase Exonuclease (ExoSap) per sample. To clean the samples, we used the following cycle on the same BioRAD T100 thermal cycler:
-
-1. 37°C for 15 minutes
-2. 80°C for 15 minutes
-3. 4°C infinite hold
-
-After cleaning, samples were kept at 4°C until they were ready to be sent for sequencing. Directly before being sent for sequencing, cleaned samples that showed bright bands on their gels were diluted with an additional 15 μL PCR water before sequencing, although a small number of samples that had faint bands on the gels were not diluted this way. Cleaned samples were sent to MCLabs for Sanger sequencing.
+To prepare successful samples for sequencin, they were first cleaned with 1 μL Shrimp Alkaline Phopsphatase Exonuclease (ExoSap) per sample. To clean the samples, we used the following cycle on the same BioRAD T100 thermal cycler: 37°C for 15 minutes, 80°C for 15 minutes, then infinite hold at 4°C. After cleaning, samples were kept at 4°C until they were ready to be sent for sequencing. Directly before being sent for sequencing, cleaned samples that showed bright bands on their gels were diluted with an additional 15 μL PCR water before sequencing, although a small number of samples that had faint bands on the gels were not diluted this way. Cleaned samples were sent to MCLabs for Sanger sequencing.
 
 ## Computational Methods
 
@@ -127,6 +105,8 @@ We analyzed the data using three tools: Geneious, Mothur, and the R programming 
 Because ITS1 has a lot of variation and is therefore difficult to construct phylogenies with, we used the Tree-Based Alignment Selector (TBAS) toolkit to construct a phylogeny and assign taxonomies to the data [@tbas]. This toolkit matches unknown ITS sequences to the most similar ITS sequences in a large multi-gene phylogeny of confidently-assigned taxa.
 
 # Results
+
+Overall, we found a great amount of diversity in several aspects of these endophytic communities, including number of fungal isolates, species diversity, and community composition. While some communities showed a low number of fungal isolates, species richness analyyses showed that in nearly all of the microbial communities analyzed, our sampling did not encompas the complete microbial diversity within these microbiomes. While the species diversity within some sites exceeds 20 OTUs, there appears to be greater species diversity in these endophytic communities than this study was able to document. Furthermore, the taxonomic variation between different sites is also considerable, as there is no taxa that dominates all sites, although there are several taxa that show a degree of prominence in all sites.
 
 ## Isolation Frequency
 
@@ -241,6 +221,7 @@ write.csv(TBAS_with_site,
 
 TBAS_with_site %>% 
   group_by(site_ID, Class.level_assignment) %>%
+  filter(Taxon_assignment != "Excluded because not Ascomycota") %>%
   tally() %>%
   ggplot(aes(x = site_ID,
              y = n,
