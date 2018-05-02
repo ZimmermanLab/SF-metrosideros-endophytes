@@ -1,6 +1,0 @@
-#!/bin/bash
-
-#Emma Gibson, February 22, 2018
-#a quick, temporary script to count the species abundances in preliminary sequences
-
-cut -d, -f1 $file | sort | uniq -c | sort -n > output/BLAST_summaries/$(basename -s .csv $file)_summary.txt
