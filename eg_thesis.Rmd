@@ -12,7 +12,7 @@ bibliography: references.bib
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 ```
 
-```{r run-pre-rmd-scripts}
+```{r run-pre-rmd-scripts, include=FALSE}
 source("scripts/02_join_metadata.R")
 source("scripts/03_make_otu_table.R")
 ```
@@ -236,7 +236,7 @@ TBAS_with_site <- TBAS_names_fixed %>%
   na.omit()
 
 write.csv(TBAS_with_site,
-          file = "metadata/TBS_with_site.csv",
+          file = "data/metadata/TBS_with_site.csv",
           row.names = FALSE)
 
 TBAS_with_site %>% 
@@ -266,7 +266,8 @@ The most prominent taxa in each site vary considerably between sites. *Dothideom
 ## NMDS Ordination
 
 ```{r ordination_setup, include=FALSE}
-ord_obj <- metaMDS(otu_table)
+set.seed(42)
+ord_obj <- metaMDS(otu_table, trymax = 100)
 
 # fix row names to be more readable
 row.names(otu_table) <- c(paste("Balboa - Tree", 1:5),
