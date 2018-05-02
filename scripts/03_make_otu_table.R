@@ -13,9 +13,9 @@ library("tidyr")
 library("vegan")
 
 # load files
-otus <- read.table("seq_with_OTU_ID.txt")
-groups <- read.table("groupfile.tsv")
-trees <- read.csv("metadata/M_excel_tree_metadata.csv",
+otus <- read.table("output/processed_sequence_files/seq_with_OTU_ID.txt")
+groups <- read.table("output/processed_sequence_files/groupfile.tsv")
+trees <- read.csv("data/metadata/M_excel_tree_metadata.csv",
                   stringsAsFactors = FALSE)
 
 # count by groups instead of trees
