@@ -236,7 +236,7 @@ TBAS_with_site <- TBAS_names_fixed %>%
   na.omit()
 
 write.csv(TBAS_with_site,
-          file = "metadata/TBS_with_site.csv",
+          file = "data/metadata/TBS_with_site.csv",
           row.names = FALSE)
 
 TBAS_with_site %>% 
