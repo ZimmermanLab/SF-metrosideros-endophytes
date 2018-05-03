@@ -195,6 +195,7 @@ if (reproject) {
                     crs = 32610) # UTM 10N
 
   # convert from UTM to WGS84 and add back to data frame
+  # see here for projection codes http://spatialreference.org/ref/epsg/32610/
   df_sp <- st_transform(x = df_sp, crs = 4326) # WGS84 lat long projection
   df_sp$lon <- st_coordinates(df_sp)[,1] # get coordinates
   df_sp$lat <- st_coordinates(df_sp)[,2] # get coordinates
