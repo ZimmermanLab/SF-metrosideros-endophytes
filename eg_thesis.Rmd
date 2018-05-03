@@ -3,8 +3,8 @@ title: "Urban biogeography of fungal endophytes across San Francisco"
 author: "Emma Gibson"
 date: "4/17/2018"
 output:
-    github_document: default
     word_document: default
+    github_document: default
 bibliography: references.bib
 ---
 
