@@ -3,10 +3,24 @@ Urban biogeography of fungal endophytes across San Francisco
 Emma Gibson
 4/17/2018
 
+-   [Abstract](#abstract)
+-   [Introduction](#introduction)
+-   [Methods](#methods)
+    -   [Sample Collection](#sample-collection)
+    -   [Culturing](#culturing)
+    -   [Molecular Methods](#molecular-methods)
+    -   [Computational Methods](#computational-methods)
+-   [Results](#results)
+    -   [Isolation Frequency](#isolation-frequency)
+    -   [Species richness](#species-richness)
+    -   [NMDS Ordination](#nmds-ordination)
+-   [Discussion](#discussion)
+-   [Sources Cited](#sources-cited)
+
 Abstract
 ========
 
-In natural and agricultural systems, the plant microbiome —the microbial organisms associated with plant tissues—has been shown to have important effects on host physiology and ecology, yet we know little about how these plant-microbe relationships play out in urban environments. Here we characterize the composition of fungal communities associated with leaves of one of the most common sidewalk trees in the city of San Francisco, California. We focus our efforts on endophytic fungi (asymptomatic microfungi that live inside healthy leaves), which have been shown in other systems to have large ecological effects on the health of their plant hosts. Specifically, we characterized the foliar fungal microbiome of Metrosideros excelsa trees growing in a variety of urban environmental conditions. We used high-throughput culturing, PCR, and Sanger sequencing of the ITS nrDNA region to quantify the composition and structure of fungal communities growing within healthy leaves of 30 M. excelsa trees from 6 distinct sites, which were selected to capture the range of environmental conditions found within city limits. Sequencing resulted in over 900 high-quality ITS sequences. These sequences clustered into 97 Operational Taxonomic Units (97% VSEARCH OTUs). We found that these communities encompass relatively high alpha (within) and beta (between-site) diversity. Because the communities are all from the same host tree species, and located in relatively close geographical proximity to one another, these analyses suggest that urban environmental factors such as urban heat islands or differences in traffic density (and associated air quality) could potentially be influencing the composition of these fungal communities. We are performing additional analyses to quantify how urban abiotic and anthropogenic factors may shape the composition of these trees' endophytic microbiomes. These biogeographic patterns provide evidence that plant microbiomes in urban environments can be as dynamic and complex as their natural counterparts. As human populations continue to transition out of rural areas and into cities, understanding the factors that shape environmental microbial communities in urban ecosystems stands to become increasingly important.
+In natural and agricultural systems, the plant microbiome —the microbial organisms associated with plant tissues—has been shown to have important effects on host physiology and ecology, yet we know little about how these plant-microbe relationships play out in urban environments. Here we characterize the composition of fungal communities associated with leaves of one of the most common sidewalk trees in the city of San Francisco, California. We focus our efforts on endophytic fungi (asymptomatic microfungi that live inside healthy leaves), which have been shown in other systems to have large ecological effects on the health of their plant hosts. Specifically, we characterized the foliar fungal microbiome of *Metrosideros excelsa* trees growing in a variety of urban environmental conditions. We used high-throughput culturing, PCR, and Sanger sequencing of the ITS nrDNA region to quantify the composition and structure of fungal communities growing within healthy leaves of 30 *M. excelsa* trees from 6 distinct sites, which were selected to capture the range of environmental conditions found within city limits. Sequencing resulted in over 900 high-quality ITS sequences. These sequences clustered into 88 Operational Taxonomic Units (97% VSEARCH OTUs). We found that these communities encompass relatively high alpha (within) and beta (between-site) diversity. Because the communities are all from the same host tree species, and located in relatively close geographical proximity to one another, these analyses suggest that urban environmental factors such as urban heat islands or differences in traffic density (and associated air quality) could potentially be influencing the composition of these fungal communities. We are performing additional analyses to quantify how urban abiotic and anthropogenic factors may shape the composition of these trees' endophytic microbiomes. These biogeographic patterns provide evidence that plant microbiomes in urban environments can be as dynamic and complex as their natural counterparts. As human populations continue to transition out of rural areas and into cities, understanding the factors that shape environmental microbial communities in urban ecosystems stands to become increasingly important.
 
 Introduction
 ============
@@ -36,7 +50,7 @@ We collected samples on two days; once on April 2 2017, and once on August 26 20
 Culturing
 ---------
 
-After we brought the branches back, we selected a subset of dark green asymptomatic leaves to culture fungi from. These leaves were surface-sterilize with bleach and ethanol to kill off any surface microbes. Then we cut the leaves into small pieces and put them into slant tubes filled with malt extract agar (MEA). We used MEA because it is considered the standard media for isolating the largest variety of fungal species. For each tree, we prepared 6 leaves and made 100 tubes, except for the trees from the downtown site. For these trees, we prepared 150 tubes per tree because they had low isolation frequencies in our preliminary sampling. All leaves were prepared this way within 48 hours of the initial leaf sampling, to prevent death of the leaf tissue from altering the fungal community composition.
+After we brought the branches back, we selected a subset of dark green asymptomatic leaves to culture fungi from. We surface-sterilized the leaves by first rinsing them with distiled water to remove any dirt, then rinsing them in a petri dish with 95% ethanol for 10 seconds, 10% NaOCl for 2 minutes, then 70% ethanol for another 2 minutee, emptying the dish beween rinses and leaving it closed until inside a biosafety cabinet after the last rinse. Then we cut the leaves into small (around 2mm) pieces and put them into slant tubes filled with malt extract agar (MEA). We used MEA because it is considered the standard media for isolating the largest variety of fungal species. For each tree, we prepared 6 leaves and made 100 tubes, except for the trees from the downtown site. For these trees, we prepared 150 tubes per tree because they had low isolation frequencies in our preliminary sampling. All leaves were prepared this way within 48 hours of the initial leaf sampling, to prevent death of the leaf tissue from altering the fungal community composition.
 
 After two weeks, we evaluated them for fungal growth and subcultured the fungi from tubes with growth onto 35mm MEA in order to better evaluate their morphotypes and accumulate sufficient tissue for future barcode gene sequencing and voucher preparation. We re-evaluated and subcultured these tubes another week later to find any late-growing fungi.
 
@@ -73,11 +87,21 @@ The isolation frequency, or the percentage of leaf pieces that yielded fungal is
 Species richness
 ----------------
 
+**Table 1.** Abundance of *Ascomycota* classes in all trees. Class assignments were determined using TBAS, and 2 *Basidiomycota* samples are not included.
+
+| Fungal class    |  Number of sequences|
+|:----------------|--------------------:|
+| Dothideomycetes |                  450|
+| Sordariomycetes |                  341|
+| Eurotiomycetes  |                   57|
+| Pezizomycetes   |                   52|
+| Leotiomycetes   |                   19|
+
 ![](eg_thesis_files/figure-markdown_github/rarefaction-1.png)
 
-**Figure 3.** Species accumulation curve showing species richness in all trees and sites for the August 2017 sampling. Each line represents the species richness of one tree, and the color represents the site which said tree is from.
+**Figure 3.** Species accumulation curve showing species richness in all sites for the August 2017 sampling. Each line represents the combined species richness of all trees in one site, and the color represents the site which said tree is from.
 
-The species richness curve graphs the number of fungal species (OTUs) found versus the totla number of fungal isolates for each tree's microbiome. Each line represents one tree's community, and the color of the line represents which site each tree was located in. A sharply angled line indicates that the full species diversity has not been samples, and a line that plateaus indicated that most of the species available in that community have been sampled. There were 97 total OTUs found among the 30 different trees. Both isolation frequency and number of fungal species found varies notably between trees.
+The species richness curve graphs the number of fungal species (OTUs) found versus the totla number of fungal isolates for each tree's microbiome. Each line represents one tree's community, and the color of the line represents which site each tree was located in. A sharply angled line indicates that the full species diversity has not been samples, and a line that plateaus indicated that most of the species available in that community have been sampled. There were 88 total OTUs found among the 30 different trees. Both isolation frequency and number of fungal species found varies notably between trees.
 
 ![](eg_thesis_files/figure-markdown_github/bar-graph-1.png)
 

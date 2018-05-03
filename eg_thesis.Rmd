@@ -3,8 +3,12 @@ title: "Urban biogeography of fungal endophytes across San Francisco"
 author: "Emma Gibson"
 date: "4/17/2018"
 output:
-    word_document: default
-    github_document: default
+    word_document:
+      toc: true
+      toc_depth: 2
+    github_document:
+      toc: true
+      toc_depth: 2
 bibliography: references.bib
 ---
 
@@ -25,6 +29,7 @@ library("vegan")
 library("ggplot2")
 library("tidyverse")
 library("ggpubr")
+library("knitr")
 ```
 
 ```{r read-in-data}
@@ -60,7 +65,7 @@ otu_table <- otu_table[1:30,]
 
 # Abstract
 
-In natural and agricultural systems, the plant microbiome —the microbial organisms associated with plant tissues—has been shown to have important effects on host physiology and ecology, yet we know little about how these plant-microbe relationships play out in urban environments. Here we characterize the composition of fungal communities associated with leaves of one of the most common sidewalk trees in the city of San Francisco, California. We focus our efforts on endophytic fungi (asymptomatic microfungi that live inside healthy leaves), which have been shown in other systems to have large ecological effects on the health of their plant hosts. Specifically, we characterized the foliar fungal microbiome of Metrosideros excelsa trees growing in a variety of urban environmental conditions. We used high-throughput culturing, PCR, and Sanger sequencing of the ITS nrDNA region to quantify the composition and structure of fungal communities growing within healthy leaves of 30 M. excelsa trees from 6 distinct sites, which were selected to capture the range of environmental conditions found within city limits. Sequencing resulted in over 900 high-quality ITS sequences. These sequences clustered into 97 Operational Taxonomic Units (97% VSEARCH OTUs). We found that these communities encompass relatively high alpha (within) and beta (between-site) diversity. Because the communities are all from the same host tree species, and located in relatively close geographical proximity to one another, these analyses suggest that urban environmental factors such as urban heat islands or differences in traffic density (and associated air quality) could potentially be influencing the composition of these fungal communities. We are performing additional analyses to quantify how urban abiotic and anthropogenic factors may shape the composition of these trees' endophytic microbiomes. These biogeographic patterns provide evidence that plant microbiomes in urban environments can be as dynamic and complex as their natural counterparts. As human populations continue to transition out of rural areas and into cities, understanding the factors that shape environmental microbial communities in urban ecosystems stands to become increasingly important.
+In natural and agricultural systems, the plant microbiome —the microbial organisms associated with plant tissues—has been shown to have important effects on host physiology and ecology, yet we know little about how these plant-microbe relationships play out in urban environments. Here we characterize the composition of fungal communities associated with leaves of one of the most common sidewalk trees in the city of San Francisco, California. We focus our efforts on endophytic fungi (asymptomatic microfungi that live inside healthy leaves), which have been shown in other systems to have large ecological effects on the health of their plant hosts. Specifically, we characterized the foliar fungal microbiome of *Metrosideros excelsa* trees growing in a variety of urban environmental conditions. We used high-throughput culturing, PCR, and Sanger sequencing of the ITS nrDNA region to quantify the composition and structure of fungal communities growing within healthy leaves of 30 *M. excelsa* trees from 6 distinct sites, which were selected to capture the range of environmental conditions found within city limits. Sequencing resulted in over 900 high-quality ITS sequences. These sequences clustered into 88 Operational Taxonomic Units (97% VSEARCH OTUs). We found that these communities encompass relatively high alpha (within) and beta (between-site) diversity. Because the communities are all from the same host tree species, and located in relatively close geographical proximity to one another, these analyses suggest that urban environmental factors such as urban heat islands or differences in traffic density (and associated air quality) could potentially be influencing the composition of these fungal communities. We are performing additional analyses to quantify how urban abiotic and anthropogenic factors may shape the composition of these trees' endophytic microbiomes. These biogeographic patterns provide evidence that plant microbiomes in urban environments can be as dynamic and complex as their natural counterparts. As human populations continue to transition out of rural areas and into cities, understanding the factors that shape environmental microbial communities in urban ecosystems stands to become increasingly important.
 
 # Introduction
 
@@ -86,7 +91,7 @@ We collected samples on two days; once on April 2 2017, and once on August 26 20
 
 ## Culturing
 
-After we brought the branches back, we selected a subset of dark green asymptomatic leaves to culture fungi from. These leaves were surface-sterilize with bleach and ethanol to kill off any surface microbes. Then we cut the leaves into small pieces and put them into slant tubes filled with malt extract agar (MEA). We used MEA because it is considered the standard media for isolating the largest variety of fungal species. For each tree, we prepared 6 leaves and made 100 tubes, except for the trees from the downtown site. For these trees, we prepared 150 tubes per tree because they had low isolation frequencies in our preliminary sampling. All leaves were prepared this way within 48 hours of the initial leaf sampling, to prevent death of the leaf tissue from altering the fungal community composition.
+After we brought the branches back, we selected a subset of dark green asymptomatic leaves to culture fungi from. We surface-sterilized the leaves by first rinsing them with distiled water to remove any dirt, then rinsing them in a petri dish with 95% ethanol for 10 seconds, 10% NaOCl for 2 minutes, then 70% ethanol for another 2 minutee, emptying the dish beween rinses and leaving it closed until inside a biosafety cabinet after the last rinse. Then we cut the leaves into small (around 2mm) pieces and put them into slant tubes filled with malt extract agar (MEA). We used MEA because it is considered the standard media for isolating the largest variety of fungal species. For each tree, we prepared 6 leaves and made 100 tubes, except for the trees from the downtown site. For these trees, we prepared 150 tubes per tree because they had low isolation frequencies in our preliminary sampling. All leaves were prepared this way within 48 hours of the initial leaf sampling, to prevent death of the leaf tissue from altering the fungal community composition.
 
 After two weeks, we evaluated them for fungal growth and subcultured the fungi from tubes with growth onto 35mm MEA in order to better evaluate their morphotypes and accumulate sufficient tissue for future barcode gene sequencing and voucher preparation. We re-evaluated and subcultured these tubes another week later to find any late-growing fungi.
 
@@ -133,7 +138,9 @@ trees %>%
                                      "Bay",
                                      "Freeway",
                                      "Ocean")) +
-  ggtitle("A. Isolation Frequencies")
+  ggtitle("A. Isolation Frequencies") +
+  xlab("Site") +
+  ylab("Isolation Frequency")
 
 trees %>%
  filter(Site_ID != "Parker") %>%
@@ -151,7 +158,9 @@ trees %>%
                                      "Bay",
                                      "Freeway",
                                      "Ocean")) +
-  ggtitle("B. Diameter at Breast Height")
+  ggtitle("B. Diameter at Breast Height") +
+  xlab("Site") +
+  ylab("Diameter at Breast height (cm)")
 ```
 
 **Figure 2.** Isolation frequencies (A) and tree diameters (B) at each site. Isolation frequency (A) is only shown for the August 2017 sampling, and is a measure of how many slant tubes showed signs of fungal growth, out of how many total slant tubes were made. 100 slant tubes were made for each tree except for the trees in the downtown site, which had 140 slant tubes per tree because they had low isolation frequencies during the initial sampling.
@@ -159,48 +168,72 @@ trees %>%
 The isolation frequency, or the percentage of leaf pieces that yielded fungal isolates, varied considerably between sites (Figure 2 A.). In most sites, the isolation frequency also varies between trees, especially in the Bay site. Trees within the Bay site also show the greatest variation in diameter at breast height (DBH) (Figure 2 B.). The only site that does not show as consistent variation in isolation frequency is the Downtown site, which is also the site with the smalles isolation frequencies.
 
 ## Species richness
+
+**Table 1.** Abundance of *Ascomycota* classes in all trees. Class assignments were determined using TBAS, and 2 *Basidiomycota* samples are not included.
+
+```{r abund_table}
+TBAS %>%
+  filter(Taxon_assignment != "Excluded because not Ascomycota") %>%
+  group_by(Class.level_assignment) %>%
+  tally() %>%
+  arrange(desc(n)) %>%
+  kable(col.names = c("Fungal class", "Number of sequences"))
+```
+
 ```{r rarefaction, fig.height=7}
 #set colors
-rare_color = c(rep("#ff5e62", 5),
-               rep("#f0a200", 5),
-               rep("#007f36", 5),
-               rep("#8781e6", 5),
-               rep("#00005a", 5),
-               rep("#81005e", 5))
+rare_color_c = c(rep("#ff5e62"),
+               rep("#f0a200"),
+               rep("#007f36"),
+               rep("#8781e6"),
+               rep("#00005a"),
+               rep("#81005e"))
 
-#rename sites to be more readable
-group_labels <- c(rep("Balboa", 5),
-                  rep("Downtown", 5),
-                  rep("Mt. Davidson", 5),
-                  rep("Bay", 5),
-                  rep("Freeway", 5),
-                  rep("Ocean", 5))
+group_labels_c <- c(rep("Balboa"),
+                  rep("Downtown"),
+                  rep("Mt. Davidson"),
+                  rep("Bay"),
+                  rep("Freeway"),
+                  rep("Ocean"))
 
-#draw the species richness curves
-rarecurve(otu_table,
+otu_table_combined <- otus %>%
+  left_join(groups, by = c("V1" = "V1")) %>%
+  mutate(V2.y = gsub("T[0-9]", "", V2.y)) %>%
+  group_by(V2.x, V2.y) %>%
+  summarize(count = n()) %>%
+  spread(V2.x, count, fill = 0)
+
+otu_table_combined <- as.data.frame(na.omit(otu_table_combined))
+
+row.names(otu_table_combined) <- otu_table_combined[, 1]
+otu_table_combined <- otu_table_combined[, -1]
+
+rarecurve(otu_table_combined,
           main = "Species accumulation curves for endophytic fungi",
-          col = rare_color,
+          col = rare_color_c,
           label = FALSE,
-          lwd = 2,
+          lwd = 7,
           xlab = "Number of fungal isolates",
-          ylab = "Number of fungal species (97% ITS OTUs)")
+          ylab = "Number of fungal species (97% ITS OTUs)",
+          cex.lab = 1.4,
+          cex.main = 1.65)
 
-#add a legend for greater readability
 legend("bottomright",
-       legend = levels(factor(group_labels)),
+       legend = levels(factor(group_labels_c)),
        pch = 16,
+       cex = 1,
+       pt.cex = 2,
        col = c(rep("#ff5e62"),
                rep("#8781e6"),
                rep("#f0a200"),
                rep("#00005a"),
                rep("#007f36"),
                rep("#81005e")))
-
 ```
 
-**Figure 3.** Species accumulation curve showing species richness in all trees and sites for the August 2017 sampling. Each line represents the species richness of one tree, and the color represents the site which said tree is from. 
+**Figure 3.** Species accumulation curve showing species richness in all sites for the August 2017 sampling. Each line represents the combined species richness of all trees in one site, and the color represents the site which said tree is from. 
 
-The species richness curve graphs the number of fungal species (OTUs) found versus the totla number of fungal isolates for each tree's microbiome. Each line represents one tree's community, and the color of the line represents which site each tree was located in. A sharply angled line indicates that the full species diversity has not been samples, and a line that plateaus indicated that most of the species available in that community have been sampled. There were 97 total OTUs found among the 30 different trees. Both isolation frequency and number of fungal species found varies notably between trees.
+The species richness curve graphs the number of fungal species (OTUs) found versus the totla number of fungal isolates for each tree's microbiome. Each line represents one tree's community, and the color of the line represents which site each tree was located in. A sharply angled line indicates that the full species diversity has not been samples, and a line that plateaus indicated that most of the species available in that community have been sampled. There were 88 total OTUs found among the 30 different trees. Both isolation frequency and number of fungal species found varies notably between trees.
 
 ```{r bar-graph}
 extraction_with_tree <- read.table("output/processed_sequence_files/groupfile.tsv",
