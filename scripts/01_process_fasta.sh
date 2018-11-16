@@ -12,15 +12,19 @@
 ## TODO: Need to add echo statements to let use know what is happening
 ## TODO: Need to adjust paths to new directory structure, or use ARGV
 
+# correct digits in old sequences
+sed 's/EUSF0/EUSF00/' data/sequences/hand-cleaned_seqs/2017_august_hand_cleaned_seqs_not_including_failed.fasta > output/processed_sequence_files/aug_2017_seqs_corrected.fasta
+
 # combine all individual fasta files into single combined fasta
-cat data/sequences/hand-cleaned_seqs/2017_august_hand_cleaned_seqs_not_including_failed.fasta > output/processed_sequence_files/all_seqs.fasta
+cat output/processed_sequence_files/aug_2017_seqs_corrected.fasta \
+  data/sequences/hand-cleaned_seqs/new_seq_EG_thesis_cleaned.fasta > output/processed_sequence_files/all_seqs.fasta
 
 # count number of non-failed sequences
 # need to install bioawk if it is not already installed
 bioawk -c fastx '!/FAILED/ && !/FALIED/ {print ">"$name"\n"$seq}' output/processed_sequence_files/all_seqs.fasta | grep -c ">"
 
 # get rid of failed sequences and all but first EUSF00001 sequence
-bioawk -c fastx '!/FAILED/ && !/FALIED/ && !/EUSF00001_ITS1F_[BG]/ {print ">"$name"\n"$seq}' output/processed_sequence_files/all_seqs.fasta > output/processed_sequence_files/good_seqs.fasta
+bioawk -c fastx '!/FAILED/ && !/FALIED/ && !/EUSF00001_ITS1F_[BG]/ && !/EUSF01865_ITS1F_A09_cleaned/ {print ">"$name"\n"$seq}' output/processed_sequence_files/all_seqs.fasta > output/processed_sequence_files/good_seqs.fasta
 
 # check if all sequence names are unique
 sed 's/>\(.*\)_ITS1F.*/\1/' output/processed_sequence_files/good_seqs.fasta | grep "EUSF" | sort | uniq -c | head
@@ -37,6 +41,9 @@ grep "EUSF" output/processed_sequence_files/good_seqs_short_names.fasta | sort |
 
 # get rid of 462 sequence
 bioawk -c fastx '!/EUSF00462/ {print ">"$name"\n"$seq}' output/processed_sequence_files/good_seqs_short_names.fasta > output/processed_sequence_files/good_seqs_short_names_checked.fasta
+
+# get rid of both 1917 sequences because they are two different sequences with the same identifier
+bioawk -c fastx '!/EUSF01917/ {print ">"$name"\n"$seq}' output/processed_sequence_files/good_seqs_short_names.fasta > output/processed_sequence_files/good_seqs_short_names_checked.fasta
 
 # make names file
 bioawk -c fastx '// {print $name}' output/processed_sequence_files/good_seqs_short_names_checked.fasta > output/processed_sequence_files/seq_names.txt
