@@ -62,7 +62,8 @@ grep "EUSF" output/processed_sequence_files/good_seqs_short_names_checked.fasta 
 
 # cluster using vsearch
 # need to install mothur if it is not already installed
-mothur "#count.seqs(name=seq_names.txt, inputdir=./output/processed_sequence_files, outputdir=./output/processed_sequence_files)"
+
+mothur "#unique.seqs(fasta=good_seqs_short_names_checked.fasta, inputdir=./output/processed_sequence_files, outputdir=./output/processed_sequence_files)"
 
 mothur "#cluster(fasta=good_seqs_short_names_checked.fasta, method=agc, inputdir=./output/processed_sequence_files, outputdir=./output/processed_sequence_files);"
 
@@ -76,3 +77,13 @@ head -2 output/processed_sequence_files/good_seqs_short_names_checked.agc.list |
 paste output/processed_sequence_files/otu_temp.txt output/processed_sequence_files/seq_ids_temp.txt |\
   perl -n -e 'chomp(); @_ = split(/\t/, $_); @seqs = split(/,/, @_[1]); foreach (@seqs) { print("$_\t@_[0]\n"); }' >\
   output/processed_sequence_files/seq_with_OTU_ID.txt
+  
+sort output/processed_sequence_files/seq_with_OTU_ID.txt > output/processed_sequence_files/otu_seq_sorted.txt
+
+sort output/processed_sequence_files/good_seqs_short_names_checked.names > output/processed_sequence_files/names_sorted.txt
+
+join output/processed_sequence_files/otu_seq_sorted.txt output/processed_sequence_files/names_sorted.txt | cut -f 2- -d " " > output/processed_sequence_files/joined_otu_seqs.txt
+
+# join these two colums together, then melt the second -- use sed?
+cat output/processed_sequence_files/joined_otu_seqs.txt | perl -n -e 'chomp(); @_ = split(/ /, $_); @seqs = split(/,/, @_[1]); foreach (@seqs) { print("$_\t@_[0]\n"); }' \
+   > output/processed_sequence_files/seq_with_OTU_ID.txt

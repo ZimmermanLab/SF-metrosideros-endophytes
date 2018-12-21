@@ -65,7 +65,6 @@ extractions$original_sample[extractions$original_sample == "Test Sample"] <-
 # fix zero padding errors in extraction IDs
 extractions <- extractions %>%
   mutate_if(is.factor, as.character) %>%
-  mutate(Label_ID = gsub("EUSF0", "EUSF", Label_ID)) %>%
   select(Label_ID, original_sample)
 
 # write out complete csv for use in next script
