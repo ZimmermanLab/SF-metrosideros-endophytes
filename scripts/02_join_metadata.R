@@ -59,8 +59,8 @@ for (i in 1:nrow(extractions)) {
 }
 
 # Manually set name for USF testing sample
-levels(extractions$original_sample)[
-  levels(extractions$original_sample) == "Test Sample"] <- "Test_Sample"
+extractions$original_sample[extractions$original_sample == "Test Sample"] <-
+  "Test_Sample"
 
 # fix zero padding errors in extraction IDs
 extractions <- extractions %>%
