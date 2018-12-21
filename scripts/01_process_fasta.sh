@@ -19,6 +19,10 @@ sed 's/EUSF0/EUSF00/' data/sequences/hand-cleaned_seqs/2017_august_hand_cleaned_
 cat output/processed_sequence_files/aug_2017_seqs_corrected.fasta \
   data/sequences/hand-cleaned_seqs/new_seq_EG_thesis_cleaned.fasta > output/processed_sequence_files/all_seqs.fasta
 
+sed -r 's/>EUSF([0-9]{4})_(.*)/>EUSF0\1_\2/' output/processed_sequence_files/all_seqs.fasta > output/processed_sequence_files/all_seqs_std.fasta
+
+mv output/processed_sequence_files/all_seqs_std.fasta output/processed_sequence_files/all_seqs.fasta
+
 # count number of non-failed sequences
 # need to install bioawk if it is not already installed
 bioawk -c fastx '!/FAILED/ && !/FALIED/ {print ">"$name"\n"$seq}' output/processed_sequence_files/all_seqs.fasta | grep -c ">"
@@ -47,14 +51,6 @@ bioawk -c fastx '!/EUSF01917/ {print ">"$name"\n"$seq}' output/processed_sequenc
 
 # make names file
 bioawk -c fastx '// {print $name}' output/processed_sequence_files/good_seqs_short_names_checked.fasta > output/processed_sequence_files/seq_names.txt
-
-
-
-
-## FIXME Need to fix the zero-padding problem in the fasta files as well as in the names file
-
-
-
 
 # cd output/processed_sequence_files
 
