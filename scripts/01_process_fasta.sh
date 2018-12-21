@@ -16,6 +16,9 @@
 sed 's/EUSF0/EUSF00/' data/sequences/hand-cleaned_seqs/2017_august_hand_cleaned_seqs_not_including_failed.fasta > output/processed_sequence_files/aug_2017_seqs_corrected.fasta
 
 # combine all individual fasta files into single combined fasta
+# NOTE this does not include the first round of preliminary sampling at 3 sites
+# that could be added by also including 2017_april_hand_cleaned_seqs_not_including_failed.fasta
+# in the following statement
 cat output/processed_sequence_files/aug_2017_seqs_corrected.fasta \
   data/sequences/hand-cleaned_seqs/new_seq_EG_thesis_cleaned.fasta > output/processed_sequence_files/all_seqs.fasta
 
@@ -52,6 +55,9 @@ bioawk -c fastx '!/EUSF01917/ {print ">"$name"\n"$seq}' output/processed_sequenc
 # make names file
 bioawk -c fastx '// {print $name}' output/processed_sequence_files/good_seqs_short_names_checked.fasta > output/processed_sequence_files/seq_names.txt
 
+# check again after cleaning, all should have 1s (be unique)
+grep "EUSF" output/processed_sequence_files/good_seqs_short_names_checked.fasta | sort | uniq -c | sort | tail
+
 # cd output/processed_sequence_files
 
 # cluster using vsearch
@@ -62,4 +68,11 @@ mothur "#cluster(fasta=good_seqs_short_names_checked.fasta, method=agc, inputdir
 
 mothur "#bin.seqs(list=good_seqs_short_names_checked.agc.list, fasta=good_seqs_short_names_checked.fasta, inputdir=./output/processed_sequence_files, outputdir=./output/processed_sequence_files);"
 
-grep ">" output/processed_sequence_files/good_seqs_short_names_checked.agc.0.03.fasta | sed 's/>//' > output/processed_sequence_files/seq_with_OTU_ID.txt
+head -1 output/processed_sequence_files/good_seqs_short_names_checked.agc.list | cut -f 3- | sed 's/\t/\n/g' > output/processed_sequence_files/otu_temp.txt
+
+head -2 output/processed_sequence_files/good_seqs_short_names_checked.agc.list | tail -1 | cut -f 3- | sed 's/\t/\n/g' > output/processed_sequence_files/seq_ids_temp.txt
+
+# join these two colums together, then melt the second -- use sed?
+paste output/processed_sequence_files/otu_temp.txt output/processed_sequence_files/seq_ids_temp.txt |
+  perl -n -e 'chomp(); @_ = split(/\t/, $_); @seqs = split(/,/, @_[1]); foreach (@seqs) { print("$_\t@_[0]\n"); }' > 
+  output/processed_sequence_files/seq_with_OTU_ID.txt
