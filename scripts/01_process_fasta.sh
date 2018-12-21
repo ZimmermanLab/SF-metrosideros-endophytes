@@ -73,6 +73,6 @@ head -1 output/processed_sequence_files/good_seqs_short_names_checked.agc.list |
 head -2 output/processed_sequence_files/good_seqs_short_names_checked.agc.list | tail -1 | cut -f 3- | sed 's/\t/\n/g' > output/processed_sequence_files/seq_ids_temp.txt
 
 # join these two colums together, then melt the second -- use sed?
-paste output/processed_sequence_files/otu_temp.txt output/processed_sequence_files/seq_ids_temp.txt |
-  perl -n -e 'chomp(); @_ = split(/\t/, $_); @seqs = split(/,/, @_[1]); foreach (@seqs) { print("$_\t@_[0]\n"); }' > 
+paste output/processed_sequence_files/otu_temp.txt output/processed_sequence_files/seq_ids_temp.txt |\
+  perl -n -e 'chomp(); @_ = split(/\t/, $_); @seqs = split(/,/, @_[1]); foreach (@seqs) { print("$_\t@_[0]\n"); }' >\
   output/processed_sequence_files/seq_with_OTU_ID.txt
