@@ -32,59 +32,44 @@ find_top_level_parent_of_culture <- function(culture_id) {
   }
 }
 
+# test to make sure it works
 stopifnot(find_top_level_parent_of_culture("ZUSF02440") == "S5T3")
 
-# 4 levels of joining since we can't recursively join
-joined <- extractions %>%
-  left_join(culturing, by = c("Culture_Label_ID" = "Label_ID")) %>%
-  left_join(culturing, by = c("From_Label_ID" = "Label_ID")) %>%
-  left_join(culturing, by = c("From_Label_ID.y" = "Label_ID")) %>%
-  left_join(culturing, by = c("From_Label_ID.y.y" = "Label_ID")) %>%
-  left_join(culturing, by = c("From_Label_ID.y.y.y" = "Label_ID")) %>%
-  left_join(culturing, by = c("From_Label_ID.y.y.y.y" = "Label_ID")) %>%
-    select(starts_with("From_Label_ID"))
+find_top_level_parent_of_culture("ZUSF00641")
 
-# set NAs appropriately
-joined[grepl(joined[, 1], pattern = "^Z"), 1] <- NA
-joined[grepl(joined[, 2], pattern = "^Z"), 2] <- NA
-joined[grepl(joined[, 3], pattern = "^Z"), 3] <- NA
-joined[grepl(joined[, 4], pattern = "^Z"), 4] <- NA
-joined[grepl(joined[, 5], pattern = "^Z"), 5] <- NA
-joined[grepl(joined[, 6], pattern = "^Z"), 6] <- NA
+extractions$original_sample <- NA
 
-# convert to character
-joined$From_Label_ID <- as.character(joined$From_Label_ID)
-
-# merge all together
-joined$all <- joined$From_Label_ID.x  # your new merged column start with x
-joined$all[!is.na(joined$From_Label_ID.y)] <- joined$From_Label_ID.y[!is.na(joined$From_Label_ID.y)]  # merge with y
-joined$all[!is.na(joined$From_Label_ID.y.y)] <- joined$From_Label_ID.y.y[!is.na(joined$From_Label_ID.y.y)]  # merge with y
-joined$all[!is.na(joined$From_Label_ID.y.y.y)] <- joined$From_Label_ID.y.y[!is.na(joined$From_Label_ID.y.y.y)]
-joined$all[!is.na(joined$From_Label_ID.y.y.y.y)] <- joined$From_Label_ID.y.y[!is.na(joined$From_Label_ID.y.y.y.y)]
-joined$all[!is.na(joined$From_Label_ID)] <- joined$From_Label_ID[!is.na(joined$From_Label_ID)]  # merge with y
-
-# join now by Tree ID
-joined_tree_ID <- extractions %>%
-  left_join(culturing, by = c("Culture_Label_ID" = "Label_ID")) %>%
-  left_join(culturing, by = c("From_Label_ID" = "Label_ID")) %>%
-  left_join(culturing, by = c("From_Label_ID.y" = "Label_ID")) %>%
-  left_join(culturing, by = c("From_Label_ID.y.y" = "Label_ID")) %>%
-  left_join(culturing, by = c("From_Label_ID.y.y.y" = "Label_ID")) %>%
-  left_join(culturing, by = c("From_Label_ID.y.y.y.y" = "Label_ID")) %>%
-  select(Label_ID) %>%
-  cbind(all = joined$all) %>%
-  na.omit()
+for (i in 1:nrow(extractions)) {
+  # because the data are messy we need to first check only for those culture
+  # IDs that match the proper naming convention
+  if (grepl(pattern = "^ZUSF[0-9]{5}", x = extractions$Culture_Label_ID[i]) &
+      
+      # and then we also need to check that they don't occur multiple times
+      # in the culturing sheet (due to typos)
+      (!extractions$Culture_Label_ID[i] %in%
+       culturing$Label_ID[duplicated(culturing$Label_ID)])) {
+    
+    # if both of those ocnditions are met, then find the parent of the culture
+    # using the recursive lookup function defined above and assign into the
+    # column 'original_sample' in the extractions data frame
+    extractions$original_sample[i] <-
+      find_top_level_parent_of_culture(
+        extractions$Culture_Label_ID[i])
+  }
+}
 
 # Manually set name for USF testing sample
-levels(joined_tree_ID$all)[levels(joined_tree_ID$all) == "Test Sample"] <- "Test_Sample"
+levels(extractions$original_sample)[
+  levels(extractions$original_sample) == "Test Sample"] <- "Test_Sample"
 
 # fix zero padding errors in extraction IDs
-joined_tree_ID <- joined_tree_ID %>%
+extractions <- extractions %>%
   mutate_if(is.factor, as.character) %>%
-  mutate(Label_ID = gsub("EUSF0", "EUSF", Label_ID))
+  mutate(Label_ID = gsub("EUSF0", "EUSF", Label_ID)) %>%
+  select(Label_ID, original_sample)
 
 # write out complete csv for use in next script
-write.table(joined_tree_ID,
+write.table(extractions,
             file = "output/processed_sequence_files/groupfile.tsv",
             sep = "\t",
             col.names = FALSE,
