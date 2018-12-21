@@ -48,6 +48,14 @@ bioawk -c fastx '!/EUSF01917/ {print ">"$name"\n"$seq}' output/processed_sequenc
 # make names file
 bioawk -c fastx '// {print $name}' output/processed_sequence_files/good_seqs_short_names_checked.fasta > output/processed_sequence_files/seq_names.txt
 
+
+
+
+## FIXME Need to fix the zero-padding problem in the fasta files as well as in the names file
+
+
+
+
 # cd output/processed_sequence_files
 
 # cluster using vsearch
