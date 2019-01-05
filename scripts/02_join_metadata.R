@@ -10,6 +10,9 @@
 # load library
 library("dplyr")
 
+# set debug
+debug <- FALSE
+
 # load data
 culturing <- read.csv("data/metadata/culturing_worksheet.csv",
                       stringsAsFactors = FALSE)
@@ -32,13 +35,16 @@ find_top_level_parent_of_culture <- function(culture_id) {
   }
 }
 
-# test to make sure it works
+# test to make sure the functin works
 stopifnot(find_top_level_parent_of_culture("ZUSF02440") == "S5T3")
 
-find_top_level_parent_of_culture("ZUSF00641")
+# another check
+if (debug) find_top_level_parent_of_culture("ZUSF00641")
 
+# populate parent column with NAs to start
 extractions$original_sample <- NA
 
+# resursively lookup top-level parent of each culture and add to parent column
 for (i in 1:nrow(extractions)) {
   # because the data are messy we need to first check only for those culture
   # IDs that match the proper naming convention

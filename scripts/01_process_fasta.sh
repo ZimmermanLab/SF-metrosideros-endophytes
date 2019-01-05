@@ -8,6 +8,7 @@
 # August 24, 2017
 
 # Modified May 1, 2018 to reflect updated project dir structure
+# Modified Dec 20, 2018 to allow for newer data to be incorporated
 
 ## TODO: Need to add echo statements to let use know what is happening
 ## TODO: Need to adjust paths to new directory structure, or use ARGV
@@ -22,8 +23,10 @@ sed 's/EUSF0/EUSF00/' data/sequences/hand-cleaned_seqs/2017_august_hand_cleaned_
 cat output/processed_sequence_files/aug_2017_seqs_corrected.fasta \
   data/sequences/hand-cleaned_seqs/new_seq_EG_thesis_cleaned.fasta > output/processed_sequence_files/all_seqs.fasta
 
+# Fix all 4 digit EUSF identifiers and make 5 digit so joins and lookups will work
 sed -r 's/>EUSF([0-9]{4})_(.*)/>EUSF0\1_\2/' output/processed_sequence_files/all_seqs.fasta > output/processed_sequence_files/all_seqs_std.fasta
 
+# rename standardized file so subsequent steps will still work
 mv output/processed_sequence_files/all_seqs_std.fasta output/processed_sequence_files/all_seqs.fasta
 
 # count number of non-failed sequences
@@ -62,6 +65,7 @@ grep "EUSF" output/processed_sequence_files/good_seqs_short_names_checked.fasta 
 
 # cluster using vsearch
 # need to install mothur if it is not already installed
+# also this step is pretty version specific -- new versions of mothurmay not work
 
 mothur "#unique.seqs(fasta=good_seqs_short_names_checked.fasta, inputdir=./output/processed_sequence_files, outputdir=./output/processed_sequence_files)"
 
@@ -73,17 +77,16 @@ head -1 output/processed_sequence_files/good_seqs_short_names_checked.agc.list |
 
 head -2 output/processed_sequence_files/good_seqs_short_names_checked.agc.list | tail -1 | cut -f 3- | sed 's/\t/\n/g' > output/processed_sequence_files/seq_ids_temp.txt
 
-# join these two colums together, then melt the second -- use sed?
+# join these two colums together, then melt the second using perl
 paste output/processed_sequence_files/otu_temp.txt output/processed_sequence_files/seq_ids_temp.txt |\
   perl -n -e 'chomp(); @_ = split(/\t/, $_); @seqs = split(/,/, @_[1]); foreach (@seqs) { print("$_\t@_[0]\n"); }' >\
   output/processed_sequence_files/seq_with_OTU_ID.txt
-  
+
+# sort to be able to join using bash 
 sort output/processed_sequence_files/seq_with_OTU_ID.txt > output/processed_sequence_files/otu_seq_sorted.txt
-
 sort output/processed_sequence_files/good_seqs_short_names_checked.names > output/processed_sequence_files/names_sorted.txt
-
 join output/processed_sequence_files/otu_seq_sorted.txt output/processed_sequence_files/names_sorted.txt | cut -f 2- -d " " > output/processed_sequence_files/joined_otu_seqs.txt
 
-# join these two colums together, then melt the second -- use sed?
+# join these two colums together, then melt the second using perl
 cat output/processed_sequence_files/joined_otu_seqs.txt | perl -n -e 'chomp(); @_ = split(/ /, $_); @seqs = split(/,/, @_[1]); foreach (@seqs) { print("$_\t@_[0]\n"); }' \
    > output/processed_sequence_files/seq_with_OTU_ID.txt
