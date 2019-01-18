@@ -23,7 +23,8 @@ otu_table <- otus %>%
   left_join(groups, by = c("V1" = "V1")) %>%
   group_by(V2.x, V2.y) %>%
   summarize(count = n()) %>%
-  spread(V2.x, count, fill = 0)
+  spread(V2.x, count, fill = 0) %>%
+  filter(grepl(V2.y, pattern = "^S"))
 
 # get rid of rows with NA
 otu_table <- as.data.frame(na.omit(otu_table))
@@ -32,8 +33,8 @@ otu_table <- as.data.frame(na.omit(otu_table))
 row.names(otu_table) <- otu_table[, 1]
 otu_table <- otu_table[, -1]
 
-# drop out USF test sample
-otu_table <- otu_table[1:30,]
+# Get rid of OTUs without sequences
+otu_table <- otu_table[, colSums(otu_table) > 0]
 
 # do and plot ordination with this matrix
 plot(metaMDS(otu_table), type = "t", display = "sites", cex = 1.5)
