@@ -65,6 +65,9 @@ grep "EUSF" output/processed_sequence_files/good_seqs_short_names_checked.fasta 
 
 # cluster using vsearch
 # need to install mothur if it is not already installed
+# Linux 64Bit Version
+# Mothur version=1.39.5
+# Release Date=3/20/2017
 # also this step is pretty version specific -- new versions of mothurmay not work
 
 mothur "#unique.seqs(fasta=good_seqs_short_names_checked.fasta, inputdir=./output/processed_sequence_files, outputdir=./output/processed_sequence_files)"
