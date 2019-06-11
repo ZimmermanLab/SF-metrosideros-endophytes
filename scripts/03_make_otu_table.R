@@ -144,7 +144,7 @@ plot(specaccum(otu_table, method = "rare"), xvar = "individuals")
 
 
 # more sophisticaed multi-step ordination plotting
-ord_obj <- metaMDS(otu_table)
+ord_obj <- metaMDS(otu_table, trymax = 100)
 
 #make a subset that only containt trees from the second round of sampling
 trees_aug <- subset(trees, as.POSIXct(trees$Date_sampled) > as.POSIXct("2017-08-01"))
@@ -171,7 +171,7 @@ points(ord_obj,
                rep("#8781e6", 5),
                rep("#00005a", 5),
                rep("#81005e", 5)),
-       cex = trees_aug$DBH_cm/10,
+       cex = trees_aug$DBH_cm/10, # comment out to remove dbh sizing
        pch = 16)
 
 legend("bottomleft",
