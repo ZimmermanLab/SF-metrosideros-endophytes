@@ -152,7 +152,7 @@ trees_aug <- subset(trees, as.POSIXct(trees$Date_sampled) > as.POSIXct("2017-08-
 adonis(otu_table ~ trees_aug$DBH_cm)
 
 
-pdf("figures/prelim_ordination_proper_color_DBH.pdf")
+pdf("figures/prelim_ordination_proper_color_no-DBH.pdf")
 plot(ord_obj,
      display = "sites",
      type = "n",
@@ -171,7 +171,7 @@ points(ord_obj,
                rep("#8781e6", 5),
                rep("#00005a", 5),
                rep("#81005e", 5)),
-       cex = trees_aug$DBH_cm/10, # comment out to remove dbh sizing
+       cex = 25/10, # comment out to remove dbh sizing
        pch = 16)
 
 legend("bottomleft",
