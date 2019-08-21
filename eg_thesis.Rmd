@@ -45,7 +45,7 @@ TBAS <- read.csv("data/metadata/TBAS_taxonomies.csv")
 culturing <- read.csv("data/metadata/culturing_worksheet.csv")
 extractions <- read.csv("data/metadata/Extraction_worksheet.csv")
 
-#properly format sequence names in OUT table
+#properly format sequence names in OTU table
 otus$V1 <- gsub("EUSF00", "EUSF0", otus$V1)
 
 # count by groups instead of trees
@@ -64,6 +64,9 @@ otu_table <- otu_table[, -1]
 
 # drop out USF test sample
 otu_table <- otu_table[1:30,]
+
+# drop OTUs with 0 sequences
+otu_table <- otu_table[, which(colSums(otu_table) > 0)]
 ```
 
 ##### Page Break
@@ -448,7 +451,7 @@ TBAS_with_site %>%
 
 ```{r ordination_setup, include=FALSE}
 set.seed(42)
-#ord_obj <- metaMDS(otu_table, trymax = 100)
+ord_obj <- metaMDS(otu_table, trymax = 100)
 
 # fix row names to be more readable
 row.names(otu_table) <- c(paste("Balboa - Tree", 1:5),
@@ -470,7 +473,9 @@ plot(ord_obj,
      xlab = "",
      ylab = "",
      tck = 0,
-     labels = FALSE)
+     labels = TRUE,
+     ylim = c(-1000, 1000),
+     xlim = c(-1000, 1000))
 
 ordiellipse(ord_obj,
             groups =group_labels,
@@ -493,6 +498,9 @@ points(ord_obj,
                rep("#81005e", 5)),
        cex = trees_aug$DBH_cm/10,
        pch = 16)
+
+text(ord_obj,
+     display = "sites")
 
 legend("bottomright",
        legend = levels(factor(group_labels)),
