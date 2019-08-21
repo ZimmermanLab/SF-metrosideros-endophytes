@@ -149,7 +149,7 @@ ord_obj <- metaMDS(otu_table, trymax = 100)
 #make a subset that only containt trees from the second round of sampling
 trees_aug <- subset(trees, as.POSIXct(trees$Date_sampled) > as.POSIXct("2017-08-01"))
 
-adonis(otu_table ~ trees_aug$DBH_cm)
+adonis(otu_table ~ trees_aug$Site_ID)
 
 
 pdf("figures/prelim_ordination_proper_color_no-DBH.pdf")
