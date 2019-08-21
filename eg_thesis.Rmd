@@ -408,6 +408,8 @@ extraction_with_tree <- read.table("output/processed_sequence_files/groupfile.ts
 TBAS_names_fixed <- TBAS %>%
   mutate(Extraction_ID = substr(Query_sequence, 1, 8))
 
+TBAS_names_fixed$Extraction_ID <- gsub(pattern = "EUSF",replacement = "EUSF0",TBAS_names_fixed$Extraction_ID)
+
 TBAS_with_site <- TBAS_names_fixed %>%
   left_join(extraction_with_tree, by = "Extraction_ID") %>%
   na.omit()
@@ -446,7 +448,7 @@ TBAS_with_site %>%
 
 ```{r ordination_setup, include=FALSE}
 set.seed(42)
-ord_obj <- metaMDS(otu_table, trymax = 100)
+#ord_obj <- metaMDS(otu_table, trymax = 100)
 
 # fix row names to be more readable
 row.names(otu_table) <- c(paste("Balboa - Tree", 1:5),
