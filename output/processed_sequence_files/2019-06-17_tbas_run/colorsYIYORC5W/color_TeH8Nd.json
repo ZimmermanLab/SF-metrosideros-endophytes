@@ -1,0 +1,13 @@
+{
+  "Ascomycota": "DFBC61", 
+  "Chytridiomycota": "A5C54A", 
+  "Microsporidia": "0E825D", 
+  "Apicomplexa": "16A8AA", 
+  "unknown_query": "CCCCCC", 
+  "Chromista": "286ABC", 
+  "Plantae": "5848FD", 
+  "Basidiomycota": "AC76F5", 
+  "Glomeromycota": "8A198D", 
+  "Animalia": "FC54C9", 
+  "Zygomycota": "803A5D"
+}

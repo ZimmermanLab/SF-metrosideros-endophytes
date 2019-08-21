@@ -1,0 +1,17 @@
+{
+  "Mycetozoa": "8A5738", 
+  "Ascomycota": "DFBC61", 
+  "Chytridiomycota": "A5C54A", 
+  "Rhodophyta": "7DDB65", 
+  "Chlorophyta": "1C8F2B", 
+  "Microsporidia": "0E825D", 
+  "Apicomplexa": "16A8AA", 
+  "unknown_query": "CCCCCC", 
+  "Chromista": "286ABC", 
+  "Plantae": "5848FD", 
+  "Basidiomycota": "AC76F5", 
+  "Glomeromycota": "8A198D", 
+  "Animalia": "FC54C9", 
+  "Zygomycota": "803A5D", 
+  "Choano-flagellida": "FE768C"
+}

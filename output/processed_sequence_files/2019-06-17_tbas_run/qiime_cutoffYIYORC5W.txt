@@ -1,0 +1,4 @@
+Similarity value  Total number of OTUs
+0.97, 97
+Similarity value 0.97 selected
+Second run of qiime is skipped
