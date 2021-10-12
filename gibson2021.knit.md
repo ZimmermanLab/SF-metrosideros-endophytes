@@ -22,63 +22,15 @@ output:
     base_format: rticles::peerj_article # for using bookdown features like \@ref()
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
-```
-```{r run-pre-rmd-scripts, include=FALSE}
-source("scripts/02_join_metadata.R")
-source("scripts/03_make_otu_table.R")
-```
-```{r load-libraries}
-# load libraries
-library("dplyr")
-library("tidyr")
-library("vegan")
-library("ggplot2")
-library("tidyverse")
-library("ggpubr")
-library("knitr")
-library("ggmap")
-library("rgdal")
-```
-```{r read-in-data}
-# load files
-otus <- read.table("output/processed_sequence_files/seq_with_OTU_ID.txt")
-groups <- read.table("output/processed_sequence_files/groupfile.tsv")
-trees <- read.csv("data/metadata/M_excel_tree_metadata_with_isolationfreq.csv",
-                  stringsAsFactors = FALSE)
-TBAS <- read.csv("data/metadata/TBAS_taxonomies.csv")
-culturing <- read.csv("data/metadata/culturing_worksheet.csv")
-extractions <- read.csv("data/metadata/Extraction_worksheet.csv")
 
-#properly format sequence names in OTU table
-otus$V1 <- gsub("EUSF00", "EUSF0", otus$V1)
 
-# count by groups instead of trees
-otu_table <- otus %>%
-  left_join(groups, by = c("V1" = "V1")) %>%
-  group_by(V2.x, V2.y) %>%
-  summarize(count = n()) %>%
-  spread(V2.x, count, fill = 0)
 
-# get rid of rows with NA
-otu_table <- as.data.frame(na.omit(otu_table))
 
-# fix row name problems for vegan
-row.names(otu_table) <- otu_table[, 1]
-otu_table <- otu_table[, -1]
-
-# drop out USF test sample
-otu_table <- otu_table[1:30,]
-
-# drop OTUs with 0 sequences
-otu_table <- otu_table[, which(colSums(otu_table) > 0)]
-```
 
 
 # Introduction {-}
 
-Although major cities and urban centers only cover a small portion the Earth's total geographic area, more than 50% of the human population lives in these urban centers, and the impact that these cities have on the environment can be seen worldwide [@schneider2009new]. As people continue to move to urban environments, understanding the ecology of cities and urban settings will become critical to human health and well being. Despite their comparatively small geographic size, the high density of human populations in these environments makes them distinct ecosystems with their own unique dynamics [@sukopp1998urban]. Urban environments represent the convergence of humans from around the world, any plant or animal species those humans might have brought with them, and infrastructures such as roads, sewers, and tall buildings. Despite the complexity that these ecosystems present, they are often overlooked by ecologists because more traditional ecology has focused on 'natural' systems. In urban systems, however, human influence is a primary ecological factor [@mcdonnell2011history]. In recent years, ecologists have begun studying the urban environment just as they would a natural environment, in order to understand the novel environmental conditions this setting presents to the organisms that live there [@wu2014urban]. 
+Although major cities and urban centers only cover a small portion the Earth's total geographic area, more than 50% of the human population lives in these urban centers, and the impact that these cities have on the environment can be seen worldwide [@schneider2009new]. As people continue to move to urban environments, understanding the ecology of cities and urban settings will become critical to human health and well being. Despite their comparatively small geographic size, the high density of human populations in these environments makes them distinct ecosystems with their own unique dynamics [@sukopp1998urban]. Urban environments represent the convergence of humans from around the world, any plant or animal species those humans might have brought with them, and infrastructures such as roads, sewers, and tall buildings. Despite their complexity that these ecosystems present, they are often overlooked by ecologists because more traditional ecology has focused on 'natural' systems. In urban systems, however, human influence is a primary ecological factor [@mcdonnell2011history]. In recent years, ecologists have begun studying the urban environment just as they would a natural environment, in order to understand the novel environmental conditions this setting presents to the organisms that live there [@wu2014urban]. 
 
 In this study, we focus on the urban ecology of trees in San Francisco, California. Urban trees can play a major role in shaping the ecosystem of a city. Just as the trees in a forest have a considerable impact on its climate and ecology, trees in cities can have notable effects on a city's environment. For example, plant life in cities can impact temperature, air quality, and other aspects of human health [@Willis374]. The urban heat island effect, which occurs when 'islands' of heat form as heat gets trapped between tall buildings, is one of the most well-documented unique urban anthropogenic environmental conditions [@oke1973city]. Trees in urban environments have been shown to interact with these city-specific environmental factors [@salford40381]. For example, trees in cities have been shown to improve urban air quality by taking up significant amounts of carbon dioxide from city air [@NOWAK2014119]. As pollution generated in urban centers is one of the major contributing factors to worldwide pollution, trees in urban environments may have a role in managing the environmental impacts of urbanization [@alberti2003integrating].
 
@@ -86,7 +38,7 @@ Due to their importance, there is growing interest in understanding and maintain
 
 The endosphere is  is an ideal system for biogeographic studies, both because it is highly diverse and because it is a major interface between the host plant and its environment [@meyer2012microbiology]. 
 
-Endophytic microbes are naturally found in the spacious interior of leaves, whether introduced by natural wounds or openings in the leaf surface, or through penetrating the plant surface with hydrolytic enzymes [@hallmann1997bacterial] Although some of these microbes may be latent pathogens or decomposers waiting for the leaf to die, others are mutualists that may confer a benefit to their host [@carroll1988fungal]. In wild grasses, symbiotic fungi have been shown to protect their hosts by discouraging herbivory, and can even affect host reproductive viability in those same systems [@clay1988fungal]. In controlled settings, inoculation experiments have shown that specific species of endophytes can have an impact on their host’s overall health, including factors such as resistance and susceptibility to disease [@Busby2016]. In nature, the fungal microbial communities can have impacts on their host's physiology, such as limiting pathogen damage [@arnold2003fungal]. 
+Endophytic microbes are naturally found in the spacious interior of leaves, whether introduced by natural wounds or openings in the leaf surface, or through penetrating the plant sirface with hydrolytic enzymes [@hallmann1997bacterial] Although some of these microbes may be latent pathogens or decomposers waiting for the leaf to die, others are mutualists that may confer a benefit to their host [@carroll1988fungal]. In wild grasses, symbiotic fungi have been shown to protect their hosts by discouraging herbivory, and can even affect host reproductive viability in those same systems [@clay1988fungal]. In controlled settings, inoculation experiments have shown that specific species of endophytes can have an impact on their host’s overall health, including factors such as resistance and susceptibility to disease [@Busby2016]. In nature, the fungal microbial communities can have impacts on their host's physiology, such as limiting pathogen damage [@arnold2003fungal]. 
 
 In the wild, endophytic communities display species diversity comparable to that of any macroscopic community, even among individual trees from the same species [@gazis2011]. However, what factors influence this diversity and to what extent is still poorly understood. The biodiversity of these communities can be quite high, especially in areas like tropical forests [@arnold2007diversity]. In such natural settings, plant-associated microbial community compositions can show clear biogeographic structure [@andrews2000ecology]. The urban setting, however, may be distinct, because factors such as rainfall and elevation will likely be less apparent over a smaller geographic area, but new factors such as proximity to roads and tall buildings may introduce effects of their own. Studies of suburban forests in Japan have indicated that an urban setting has a notable impact on endophytic diversity [@MATSUMURA2013191]. However, the full impact of urban environmental factors on endophytic communities has yet to be completely understood.
 
@@ -100,12 +52,12 @@ We chose to focus on *Metrosideros excelsa* individuals (Figure 1). *Metrosideri
 
 ## Site Selection
 
-We selected six sites across the city to collect leaf samples from. When selecting sites, we took factors such as traffic levels, temperature, proximity to tall buildings, elevation, and proximity to the ocean into account. In selecting the sites, we wanted to capture the greatest range of potential urban climates as we could. We used the Urban Forest Map, which documents the location and species of every tree in San Francisco, to choose unique locations around the city with sufficient densities of Metrosideros excelsa individuals (Figure 1).
+We selected six sites across the city tocollect leaf samples from. When selecting sites, we took factors such as traffic levels, temperature, proximity to tall buildings, elevation, and proximity to the ocean into account. In selecting the sites, we wanted to capture the greatest range of potential urban climates as we could. We used the Urban Forest Map, which documents the location and species of every tree in San Francisco, to choose unique locations around the city with sufficient densities of Metrosideros excelsa individuals (Figure 1).
 
 
 ## Sample Collection
 
-We collected small branches from 5 trees in each of these sites using a clipper pole, collected at least 3 sun-facing outer branches from each tree. We controlled for leaf age by picking leaves that appeared to be older than one year. Because *M. excelsa* is an evergreen tree and the newer leaves are likely to contain fewer fungi, we only collected branches that contained dark green leaves that appeared to be at least one year old. We collected all samples on the same day, August 26, 2017, to ensure that daily weather patterns and seasonal effects would not have an impact on the microbial community composition. Once collected, leaves were stored in labeled plastic bags and stored at 4$^{\circ}$C until culturing. All leaves were processed within 48 hours of collection.
+We collected small branches from 5 trees in each of these sites using a clipper pole, collected at least 3 sun-facing outer branches from each tree. We controlled for leaf age by picking leaves that appeared to be older than one year. Because *M. excelsa* is an evergreen tree, and the newer leaves are likely to contain fewer fungi, we only collected branches that contained dark green leaves that appeared to be at least one year old. We collected all samples on the same day, August 26, 2017, to ensure that daily weather patterns and seasonal effects would not have an impact on the microbial community composition. Once collected, leaves were stored in labeled plastic bags and stored at 4$^{\circ}$C until culturing. All leaves were processed within 48 hours of collection.
 
 ## Culturing
 
@@ -115,7 +67,7 @@ After two weeks, we evaluated the tubes for fungal growth and subcultured the em
 
 ## Molecular Methods
 
-We extracted DNA from fungal mycelium using the Sigma RED Extract ‘n Amp DNA extraction kit and following previously published protocols [@uren2012a]. First, we added fungal tissue to sterile tubes filled with 1 mm zirconium oxide beads, then added 100 $\mu$L of Extract 'n' Amp DNA extraction solution. Next, we put the tubes in the bead-beater for one minute. The samples were then placed on a heat block at 95$^{\circ}$C for 10 minutes. After the heating step, we added a dilution buffer to each tube and stored them at 4$^{\circ}$C until PCR.
+We extracted DNA from fungal mycelium using the Sigma RED Extract ‘n Amp DNA extraction kit and following previously published protocols [@uren2012a]. First, we added fungal tissue to sterile tubes filled with 1 mm zirconium oxide beads, then added 100 microliters of Extract 'n' Amp DNA extraction solution. Next, we put the tubes in the bead-beater for one minute. The samples were then placed on a heat block at 95$^{\circ}$C for 10 minutes. After the heating step, we added a dilution buffer to each tube and stored them at 4$^{\circ}$C until PCR.
 
 We performed PCR on the Internal Transcribed Spacer region, a commonly-accepted fungal barcode locus [@schoch2012nuclear], using the ITS1F forward primer (5'-CTT GGT CAT TTA GAG GAA GTA A-3') and ITS4 reverse primer (5'-TCC TCC GCT TAT TGA TAT GC-3'). For each PCR reaction, we used 1 $\mu$L of template DNA, 10 $\mu$L Extract ‘n Amp Taq polymerase, 6.4 $\mu$L PCR-grade water, 1 $\mu$L bovine serum albumin, 0.8 $\mu$L ITS1F forward primer, and 0.8 $\mu$L ITS4 reverse primer [@uren2012a]. For the PCR reaction, we used a BioRAD T100 thermal cycler with the following cycles: 95$^{\circ}$C for 3 minutes, 95$^{\circ}$C for 30 seconds, 54$^{\circ}$C for 30 seconds, 72$^{\circ}$C for 30 seconds, repeat steps 2-4 34 times and then, 72$^{\circ}$C for 10 minutes. To ensure that the fungal DNA successfully amplified, and that the master mix was not contaminated, we ran 5 $\mu$L of each sample and a negative PCR control on a 1% agarose gel with 1X Tris-acetate-EDTA (TEA) buffer and SYBR Safe. The gel was run at 120 volts for 20 minutes and visualized using UV transmission. Successful PCR samples with clean negative controls were kept at 4$^{\circ}$C until sequencing preparation.
 
@@ -189,318 +141,43 @@ These findings indicate that the endophytic microbiomes of urban trees are compl
 
 **Table 1.** Abundances of *Ascomycota* classes across all trees and sites.
 
-```{r abund}
-TBAS %>%
-  filter(Taxon_assignment != "Excluded because not Ascomycota") %>%
-  group_by(Class.level_assignment) %>%
-  tally() %>%
-  arrange(desc(n)) %>%
-  kable(col.names = c("Fungal class", "Number of sequences"))
-```
+
+|Fungal class    | Number of sequences|
+|:---------------|-------------------:|
+|Dothideomycetes |                 450|
+|Sordariomycetes |                 341|
+|Eurotiomycetes  |                  57|
+|Pezizomycetes   |                  52|
+|Leotiomycetes   |                  19|
 
 ##### Page Break
 
 # Figures
 
-```{r map}
-# set to TRUE to reproject
-# this may cause knitting to fail due to Google download
-reproject <- FALSE
-
-if (reproject) {
-  library("sf")
-  
-  # load tree metadata as spatial object with coord system
-  df_sp <- st_as_sf(trees_aug,
-                    coords = c("Lat_m", "Long_m"),
-                    crs = 32610) # UTM 10N
-
-  # convert from UTM to WGS84 and add back to data frame
-  # see here for projection codes http://spatialreference.org/ref/epsg/32610/
-  df_sp <- st_transform(x = df_sp, crs = 4326) # WGS84 lat long projection
-  df_sp$lon <- st_coordinates(df_sp)[,1] # get coordinates
-  df_sp$lat <- st_coordinates(df_sp)[,2] # get coordinates
-  
-  # write out csv with decimal degree coordinates
-  write.csv(df_sp, "data/metadata/M_excel_tree_metadata_with_isolationfreq_wgs_lat_long.csv")
-  
-  # get the satellite imagery for San Francisco
-  sf_map <- get_map(location = "San Francisco",
-                  maptype = "satellite",
-                  source = "google",
-                  zoom = 12)
-  
-  # save the base map to a file so it doesn't need to be downloaded every time
-  save(sf_map, file = "output/sf_basemap.Rdata")
-}
-
-# load tree metadata with decimal degree coordinates
-tree_coords <- read.csv("data/metadata/M_excel_tree_metadata_with_isolationfreq_wgs_lat_long.csv")
-
-# fix downtown spurious coordinates
-tree_coords[tree_coords$Site_ID ==
-              "Montgomery and Washington", ][, c("lon")] <- -122.402300
-tree_coords[tree_coords$Site_ID ==
-              "Montgomery and Washington", ][, c("lat")] <- 37.7948
-
-# fix Ocean spurious coordinates
-tree_coords[tree_coords$X == "S6T1-B", "lat"] <- NA
-tree_coords[tree_coords$X == "S6T1-B", "lon"] <- NA
-
-# group tree coordinates by site and take the mean
-tree_coords <- tree_coords %>%
-  group_by(Site_ID) %>%
-  summarize(mean_lat = mean(lat, na.rm = TRUE),
-            mean_lon = mean(lon, na.rm = TRUE))
-
-# load base map
-load("output/sf_basemap.Rdata")
-
-# plot map and adjust legend as needed
-ggmap(sf_map) + 
-  geom_point(data = tree_coords,
-             mapping = aes(x = mean_lon,
-                           y = mean_lat,
-                           color = Site_ID),
-             pch = 16,
-             size = 5) +
-  # Manually set colors and labels to match other figures
-  scale_color_manual(name = "Sites",
-                     labels = c("Freeway",
-                              "Balboa",
-                              "Mt. Davidson",
-                              "Bay",
-                              "Ocean",
-                              "Downtown"),
-                     values = c("#00005a",
-                                "#ff5e62",
-                                "#007f36",
-                                "#8781e6",
-                                "#81005e",
-                                "#f0a200"))
-
-```
+![](gibson2021_files/figure-latex/map-1.pdf)<!-- --> 
 
 **Figure 1.** A map of the locations sampled across the city of San Francisco, California, USA. Five trees from each site were sampled. Sites were selected to span the range of environmental conditions across the city.
 
-```{r isolation, fig.height=5}
-trees %>%
-  filter(Site_ID != "Parker") %>%
-  filter(Date_sampled > "2017-08-25") %>%
-  separate(isolation_freq,
-           into = c("grew", "total"),
-           sep = "/") %>%
-  mutate(grew = as.numeric(grew),
-         total = as.numeric(total)) %>%
-  mutate(isoFreq = grew/total) %>%
-  ggplot(aes(x = Site_ID,
-             y = isoFreq)) +
-  geom_boxplot() +
-  theme(axis.text.x = element_text(angle = 45,
-                                   vjust = 1,
-                                   hjust = 1)) +
-  stat_compare_means(method = "kruskal") +
-  scale_x_discrete(labels = c("Balboa",
-                              "Downtown",
-                              "Mt. Davidson",
-                              "Bay",
-                              "Freeway",
-                              "Ocean")) +
-  ggtitle("A. Isolation Frequencies") +
-  xlab("Site") +
-  ylab("Isolation Frequency")
-```
+![](gibson2021_files/figure-latex/isolation-1.pdf)<!-- --> 
 
-```{r dbh, fig.height=5}
-trees %>%
-  filter(Site_ID != "Parker") %>%
-  filter(Date_sampled > "2017-08-25") %>%
-  ggplot(aes(x = Site_ID,
-             y = DBH_cm)) +
-  geom_boxplot() +
-  theme(axis.text.x = element_text(angle = 45,
-                                   vjust = 1,
-                                   hjust = 1)) +
-  stat_compare_means(method = "kruskal") +
-  scale_x_discrete(labels = c("Balboa",
-                              "Downtown",
-                              "Mt. Davidson",
-                              "Bay",
-                              "Freeway",
-                              "Ocean")) +
-  ggtitle("B. Diameter at Breast Height") +
-  xlab("Site") +
-  ylab("Diameter at Breast height (cm)")
-```
+![](gibson2021_files/figure-latex/dbh-1.pdf)<!-- --> 
 
 **Figure 2.** Isolation frequencies (A) and tree diameters (B) at each site. Isolation frequency (A) is a measure of how many slant tubes showed signs of fungal growth, out of how many total slant tubes were made. 100 slant tubes were made for each tree except for the trees in the downtown site, which had 140 slant tubes per tree because they had low isolation frequencies during the initial sampling.
 
 
-```{r rarefaction, fig.height=5}
-#set colors
-rare_color_c <- c(rep("#ff5e62"),
-               rep("#f0a200"),
-               rep("#007f36"),
-               rep("#8781e6"),
-               rep("#00005a"),
-               rep("#81005e"))
-
-group_labels_c <- c(rep("Balboa"),
-                  rep("Downtown"),
-                  rep("Mt. Davidson"),
-                  rep("Bay"),
-                  rep("Freeway"),
-                  rep("Ocean"))
-
-otu_table_combined <- otus %>%
-  left_join(groups, by = c("V1" = "V1")) %>%
-  mutate(V2.y = gsub("T[0-9]", "", V2.y)) %>%
-  group_by(V2.x, V2.y) %>%
-  summarize(count = n()) %>%
-  spread(V2.x, count, fill = 0)
-
-otu_table_combined <- as.data.frame(na.omit(otu_table_combined))
-
-row.names(otu_table_combined) <- otu_table_combined[, 1]
-otu_table_combined <- otu_table_combined[, -1]
-
-rarecurve(otu_table_combined,
-          main = "Species accumulation curves for endophytic fungi",
-          col = rare_color_c,
-          label = FALSE,
-          lwd = 7,
-          cex.main = 1,
-          xlab = "Number of fungal isolates",
-          ylab = "Number of fungal species (97% ITS OTUs)")
-
-legend("bottomright",
-       legend = levels(factor(group_labels_c)),
-       pch = 16,
-       cex = 1,
-       pt.cex = 2,
-       col = c(rep("#ff5e62"),
-               rep("#8781e6"),
-               rep("#f0a200"),
-               rep("#00005a"),
-               rep("#007f36"),
-               rep("#81005e")))
-```
+![](gibson2021_files/figure-latex/rarefaction-1.pdf)<!-- --> 
 
 **Figure 3.** Species accumulation curve showing species richness in each site. Each line represents the combined species richness of all trees in one site. 
 
 
-```{r bar-graph, fig.height=5}
-extraction_with_tree <- read.table("output/processed_sequence_files/groupfile.tsv",
-                                   sep = "\t",
-                                   col.names = c("Extraction_ID", "Tree_ID")) %>%
-  mutate(site_ID = substr(Tree_ID, 1, 2))
-
-TBAS_names_fixed <- TBAS %>%
-  mutate(Extraction_ID = substr(Query_sequence, 1, 8))
-
-TBAS_names_fixed$Extraction_ID <- gsub(pattern = "EUSF",replacement = "EUSF0",TBAS_names_fixed$Extraction_ID)
-
-TBAS_with_site <- TBAS_names_fixed %>%
-  left_join(extraction_with_tree, by = "Extraction_ID") %>%
-  na.omit()
-
-write.csv(TBAS_with_site,
-          file = "data/metadata/TBS_with_site.csv",
-          row.names = FALSE)
-
-TBAS_with_site %>% 
-  group_by(site_ID, Class.level_assignment) %>%
-  filter(Taxon_assignment != "Excluded because not Ascomycota") %>%
-  tally() %>%
-  ggplot(aes(x = site_ID,
-             y = n,
-             fill = Class.level_assignment)) +
-  geom_col(position = position_fill()) +
-  scale_fill_discrete(name = "Class") +
-  scale_x_discrete(labels = c("Balboa",
-                              "Downtown",
-                              "Mt. Davidson",
-                              "Bay",
-                              "Freeway",
-                              "Ocean")) +
-  ggtitle("Relative abundances of fungal classes by site") +
-  ylab("Relative abundance") +
-  xlab("Site") +
-  theme(axis.text.x = element_text(angle = 45,
-                                   vjust = 1,
-                                   hjust = 1))
-
-```
+![](gibson2021_files/figure-latex/bar-graph-1.pdf)<!-- --> 
 
 **Figure 4.** Normalized relative abundances of *Ascomycota* taxa in each site.
 
 
-```{r ordination_setup, include=FALSE}
-set.seed(42)
-ord_obj <- metaMDS(otu_table, trymax = 100)
 
-# fix row names to be more readable
-row.names(otu_table) <- c(paste("Balboa - Tree", 1:5),
-                         paste("Downtown - Tree", 1:5),
-                         paste("Mt. Davidson - Tree", 1:5),
-                         paste("Bay - Tree", 1:5),
-                         paste("Freeway - Tree", 1:5),
-                         paste("Ocean - Tree", 1:5))
 
-trees_aug <- subset(trees, as.POSIXct(trees$Date_sampled) > as.POSIXct("2017-08-01"))
-```
-
-```{r ordination, fig.height=5}
-plot(ord_obj,
-     display = "sites",
-     type = "n",
-     main = "NMDS ordination of fungal community composition",
-     cex.main = 1,
-     xlab = "",
-     ylab = "",
-     tck = 0,
-     labels = TRUE,
-     ylim = c(-1000, 1000),
-     xlim = c(-1000, 1000))
-
-ordiellipse(ord_obj,
-            groups =group_labels,
-            label = FALSE,
-            col = c(rep("#ff5e62"),
-                    rep("#8781e6"),
-                    rep("#f0a200"),
-                    rep("#00005a"),
-                    rep("#007f36"),
-                    rep("#81005e")),
-            lwd = 4)
-
-points(ord_obj,
-       display = "sites",
-       col = c(rep("#ff5e62", 5),
-               rep("#f0a200", 5),
-               rep("#007f36", 5),
-               rep("#8781e6", 5),
-               rep("#00005a", 5),
-               rep("#81005e", 5)),
-       cex = trees_aug$DBH_cm/10,
-       pch = 16)
-
-text(ord_obj,
-     display = "sites")
-
-legend("bottomright",
-       legend = levels(factor(group_labels)),
-       pch = 16,
-       cex = 0.6,
-       pt.cex = 0.6,
-       col = c(rep("#ff5e62"),
-               rep("#8781e6"),
-               rep("#f0a200"),
-               rep("#00005a"),
-               rep("#007f36"),
-               rep("#81005e")))
-
-```
+![](gibson2021_files/figure-latex/ordination-1.pdf)<!-- --> 
 
 **Figure 5.** NMDS ordination of community compositions. Each point represents the endophytic community of one tree, and the size of the point corresponds to that tree's DBH, while the color of said point corresponds to the site that tree is from. Points that are closer together indicate that the trees they represent have similar community compositions. The ellipses show the standard error around the centroid of all points within a site, and are also color-coded according to which site they represent.
 
