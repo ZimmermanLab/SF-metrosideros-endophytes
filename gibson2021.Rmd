@@ -1,5 +1,5 @@
 ---
-title: "Urban biogeography of fungal endophytes across San Francisco"
+title: Urban biogeography of fungal endophytes across San Francisco
 preprint: false
 author: 
   - name: Emma Gibson
@@ -12,9 +12,9 @@ affiliation:
   - code: 1
     address: (unsure)
   - code: 2
-    address: University of San Francisco 2130 Fulton StreetSan Francisco, CA 94117-1080 USA
+    address: (unsure)
 abstract: >
-  In natural and agricultural systems, the plant microbiome —the microbial organisms associated with plant tissues—has been shown to have important effects on host physiology and ecology, yet we know little about how these plant-microbe relationships play out in urban environments. Here we characterize the composition of fungal communities associated with leaves of one of the most common sidewalk trees in the city of San Francisco, California. We focus our efforts on endophytic fungi (asymptomatic microfungi that live inside healthy leaves), which have been shown in other systems to have large ecological effects on the health of their plant hosts. Specifically, we characterized the foliar fungal microbiome of *Metrosideros excelsa* trees growing in a variety of urban environmental conditions. We used high-throughput culturing, PCR, and Sanger sequencing of the ITS nrDNA region to quantify the composition and structure of fungal communities growing within healthy leaves of 30 *M. excelsa* trees from 6 distinct sites, which were selected to capture the range of environmental conditions found within city limits. Sequencing resulted in 921 high-quality ITS sequences. These sequences clustered into 88 Operational Taxonomic Units (97% VSEARCH OTUs). We found that these communities encompass relatively high alpha (within) and beta (between-site) diversity. Because the communities are all from the same host tree species, and located in relatively close geographical proximity to one another, these analyses suggest that urban environmental factors such as urban heat islands or differences in traffic density (and associated air quality) could potentially be influencing the composition of these fungal communities. These biogeographic patterns provide evidence that plant microbiomes in urban environments can be as dynamic and complex as their natural counterparts. As human populations continue to transition out of rural areas and into cities, understanding the factors that shape environmental microbial communities in urban ecosystems stands to become increasingly important.
+ In natural and agricultural systems, the plant microbiome —the microbial organisms associated with plant tissues—has been shown to have important effects on host physiology and ecology, yet we know little about how these plant-microbe relationships play out in urban environments. Here we characterize the composition of fungal communities associated with leaves of one of the most common sidewalk trees in the city of San Francisco, California. We focus our efforts on endophytic fungi (asymptomatic microfungi that live inside healthy leaves), which have been shown in other systems to have large ecological effects on the health of their plant hosts. Specifically, we characterized the foliar fungal microbiome of *Metrosideros excelsa* trees growing in a variety of urban environmental conditions. We used high-throughput culturing, PCR, and Sanger sequencing of the ITS nrDNA region to quantify the composition and structure of fungal communities growing within healthy leaves of 30 *M. excelsa* trees from 6 distinct sites, which were selected to capture the range of environmental conditions found within city limits. Sequencing resulted in 921 high-quality ITS sequences. These sequences clustered into 88 Operational Taxonomic Units (97% VSEARCH OTUs). We found that these communities encompass relatively high alpha (within) and beta (between-site) diversity. Because the communities are all from the same host tree species, and located in relatively close geographical proximity to one another, these analyses suggest that urban environmental factors such as urban heat islands or differences in traffic density (and associated air quality) could potentially be influencing the composition of these fungal communities. These biogeographic patterns provide evidence that plant microbiomes in urban environments can be as dynamic and complex as their natural counterparts. As human populations continue to transition out of rural areas and into cities, understanding the factors that shape environmental microbial communities in urban ecosystems stands to become increasingly important.
 bibliography: references.bib
 output:
   rticles::peerj_article: default
@@ -25,12 +25,10 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 ```
-
 ```{r run-pre-rmd-scripts, include=FALSE}
 source("scripts/02_join_metadata.R")
 source("scripts/03_make_otu_table.R")
 ```
-
 ```{r load-libraries}
 # load libraries
 library("dplyr")
@@ -43,7 +41,6 @@ library("knitr")
 library("ggmap")
 library("rgdal")
 ```
-
 ```{r read-in-data}
 # load files
 otus <- read.table("output/processed_sequence_files/seq_with_OTU_ID.txt")
@@ -108,7 +105,7 @@ We selected six sites across the city tocollect leaf samples from. When selectin
 
 ## Sample Collection
 
-We collected small branches from 5 trees in each of these sites using a clipper pole, collected at least 3 sun-facing outer branches from each tree. We controlled for leaf age by picking leaves that appeared to be older than one year. Because *M. excelsa* is an evergreen tree, and the newer leaves are likely to contain fewer fungi, we only collected branches that contained dark green leaves that appeared to be at least one year old. We collected all samples on the same day, August 26, 2017, to ensure that daily weather patterns and seasonal effects would not have an impact on the microbial community composition. Once collected, leaves were stored in labeled plastic bags and stored at 4°C until culturing. All leaves were processed within 48 hours of collection.
+We collected small branches from 5 trees in each of these sites using a clipper pole, collected at least 3 sun-facing outer branches from each tree. We controlled for leaf age by picking leaves that appeared to be older than one year. Because *M. excelsa* is an evergreen tree, and the newer leaves are likely to contain fewer fungi, we only collected branches that contained dark green leaves that appeared to be at least one year old. We collected all samples on the same day, August 26, 2017, to ensure that daily weather patterns and seasonal effects would not have an impact on the microbial community composition. Once collected, leaves were stored in labeled plastic bags and stored at 4$^{\circ}$C until culturing. All leaves were processed within 48 hours of collection.
 
 ## Culturing
 
@@ -118,11 +115,11 @@ After two weeks, we evaluated the tubes for fungal growth and subcultured the em
 
 ## Molecular Methods
 
-We extracted DNA from fungal mycelium using the Sigma RED Extract ‘n Amp DNA extraction kit and following previously published protocols [@uren2012a]. First, we added fungal tissue to sterile tubes filled with 1 mm zirconium oxide beads, then added 100 μL Extract 'n' Amp DNA extraction solution. Next, we put the tubes in the bead-beater for one minute. The samples were then placed on a heat block at 95°C for 10 minutes. After the heating step, we added a dilution buffer to each tube and stored them at 4°C until PCR.
+We extracted DNA from fungal mycelium using the Sigma RED Extract ‘n Amp DNA extraction kit and following previously published protocols [@uren2012a]. First, we added fungal tissue to sterile tubes filled with 1 mm zirconium oxide beads, then added 100 microliters of Extract 'n' Amp DNA extraction solution. Next, we put the tubes in the bead-beater for one minute. The samples were then placed on a heat block at 95$^{\circ}$C for 10 minutes. After the heating step, we added a dilution buffer to each tube and stored them at 4$^{\circ}$C until PCR.
 
-We performed PCR on the Internal Transcribed Spacer region, a commonly-accepted fungal barcode locus [@schoch2012nuclear], using the ITS1F forward primer (5'-CTT GGT CAT TTA GAG GAA GTA A-3') and ITS4 reverse primer (5'-TCC TCC GCT TAT TGA TAT GC-3'). For each PCR reaction, we used 1 μL of template DNA, 10 μL Extract ‘n Amp Taq polymerase, 6.4 μL PCR-grade water, 1 μL bovine serum albumin, 0.8 μL ITS1F forward primer, and 0.8 μL ITS4 reverse primer [@uren2012a]. For the PCR reaction, we used a BioRAD T100 thermal cycler with the following cycles: 95°C for 3 minutes, 95°C for 30 seconds, 54°C for 30 seconds, 72°C for 30 seconds, repeat steps 2-4 34 times and then, 72°C for 10 minutes. To ensure that the fungal DNA successfully amplified, and that the master mix was not contaminated, we ran 5 μL of each sample and a negative PCR control on a 1% agarose gel with 1X Tris-acetate-EDTA (TEA) buffer and SYBR Safe. The gel was run at 120 volts for 20 minutes and visualized using UV transmission. Successful PCR samples with clean negative controls were kept at 4°C until sequencing preparation.
+We performed PCR on the Internal Transcribed Spacer region, a commonly-accepted fungal barcode locus [@schoch2012nuclear], using the ITS1F forward primer (5'-CTT GGT CAT TTA GAG GAA GTA A-3') and ITS4 reverse primer (5'-TCC TCC GCT TAT TGA TAT GC-3'). For each PCR reaction, we used 1 $\mu$L of template DNA, 10 $\mu$L Extract ‘n Amp Taq polymerase, 6.4 $\mu$L PCR-grade water, 1 $\mu$L bovine serum albumin, 0.8 $\mu$L ITS1F forward primer, and 0.8 $\mu$L ITS4 reverse primer [@uren2012a]. For the PCR reaction, we used a BioRAD T100 thermal cycler with the following cycles: 95$^{\circ}$C for 3 minutes, 95$^{\circ}$C for 30 seconds, 54$^{\circ}$C for 30 seconds, 72$^{\circ}$C for 30 seconds, repeat steps 2-4 34 times and then, 72$^{\circ}$C for 10 minutes. To ensure that the fungal DNA successfully amplified, and that the master mix was not contaminated, we ran 5 $\mu$L of each sample and a negative PCR control on a 1% agarose gel with 1X Tris-acetate-EDTA (TEA) buffer and SYBR Safe. The gel was run at 120 volts for 20 minutes and visualized using UV transmission. Successful PCR samples with clean negative controls were kept at 4$^{\circ}$C until sequencing preparation.
 
-To prepare successful samples for Sanger sequencing, they were first cleaned with 1 μL Thermo Fisher Shrimp Alkaline Phopsphatase Exonuclease (ExoSap) per sample. To clean the samples, we used the following cycle on the same BioRAD T100 thermal cycler: 37°C for 15 minutes, 80°C for 15 minutes, then infinite hold at 4°C. After cleaning, samples were kept at 4°C until they were ready to be sent for sequencing. Directly before being sent for sequencing, cleaned samples that showed bright bands on their gels were diluted with an additional 15 μL PCR water before sequencing, although a small number of samples that had faint bands on the gels were not diluted. Cleaned samples were sent to MCLabs (South San Francsisco, CA) for Sanger sequencing.
+To prepare successful samples for Sanger sequencing, they were first cleaned with 1 $\mu$L Thermo Fisher Shrimp Alkaline Phopsphatase Exonuclease (ExoSap) per sample. To clean the samples, we used the following cycle on the same BioRAD T100 thermal cycler: 37$^{\circ}$C for 15 minutes, 80$^{\circ}$C for 15 minutes, then infinite hold at 4$^{\circ}$C. After cleaning, samples were kept at 4$^{\circ}$C until they were ready to be sent for sequencing. Directly before being sent for sequencing, cleaned samples that showed bright bands on their gels were diluted with an additional 15 $\mu$L PCR water before sequencing, although a small number of samples that had faint bands on the gels were not diluted. Cleaned samples were sent to MCLabs (South San Francsisco, CA) for Sanger sequencing.
 
 ## Computational and Statistical Methods
 
@@ -286,8 +283,6 @@ ggmap(sf_map) +
 
 **Figure 1.** A map of the locations sampled across the city of San Francisco, California, USA. Five trees from each site were sampled. Sites were selected to span the range of environmental conditions across the city.
 
-##### Page Break
-
 ```{r isolation, fig.height=5}
 trees %>%
   filter(Site_ID != "Parker") %>%
@@ -340,7 +335,6 @@ trees %>%
 
 **Figure 2.** Isolation frequencies (A) and tree diameters (B) at each site. Isolation frequency (A) is a measure of how many slant tubes showed signs of fungal growth, out of how many total slant tubes were made. 100 slant tubes were made for each tree except for the trees in the downtown site, which had 140 slant tubes per tree because they had low isolation frequencies during the initial sampling.
 
-##### Page Break
 
 ```{r rarefaction, fig.height=5}
 #set colors
@@ -394,7 +388,6 @@ legend("bottomright",
 
 **Figure 3.** Species accumulation curve showing species richness in each site. Each line represents the combined species richness of all trees in one site. 
 
-##### Page Break
 
 ```{r bar-graph, fig.height=5}
 extraction_with_tree <- read.table("output/processed_sequence_files/groupfile.tsv",
@@ -441,7 +434,6 @@ TBAS_with_site %>%
 
 **Figure 4.** Normalized relative abundances of *Ascomycota* taxa in each site.
 
-##### Page Break
 
 ```{r ordination_setup, include=FALSE}
 set.seed(42)
