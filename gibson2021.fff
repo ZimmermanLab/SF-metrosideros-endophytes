@@ -1,0 +1,31 @@
+\begin{figure}[p!]
+\includegraphics{gibson2021_files/figure-latex/site-map-1} \caption{A map of the locations sampled across the city of San Francisco, California, USA. Five trees from each site were sampled. Sites were selected to span the range of environmental conditions across the city. Map data © 2021 Google.}\label{fig:site-map}
+\end{figure}
+\efloatseparator
+ 
+\begin{figure}
+\centering
+\includegraphics{gibson2021_files/figure-latex/isolation-dbh-freq-plots-1.pdf}
+\caption{\label{fig:isolation-dbh-freq-plots}Isolation frequencies (A) and tree diameters (B) at each site. Isolation frequency (A) is a measure of how many slant tubes showed signs of fungal growth, out of how many total slant tubes were made. 100 slant tubes were made for each tree except for the trees in the downtown site, which had 140 slant tubes per tree because they had low isolation frequencies during the initial sampling.}
+\end{figure}
+\efloatseparator
+ 
+\begin{figure}
+\centering
+\includegraphics{gibson2021_files/figure-latex/rarefaction-plot-1.pdf}
+\caption{\label{fig:rarefaction-plot}Species accumulation curve showing species richness in each site. Each line represents the combined species richness of all trees in one site.}
+\end{figure}
+\efloatseparator
+ 
+\begin{figure}
+\centering
+\includegraphics{gibson2021_files/figure-latex/taxonomy-by-site-plot-1.pdf}
+\caption{\label{fig:taxonomy-by-site-plot}Normalized relative abundances of Ascomycota taxa in each site.}
+\end{figure}
+\efloatseparator
+ 
+\begin{figure}
+\centering
+\includegraphics{gibson2021_files/figure-latex/nmds-plot-1.pdf}
+\caption{\label{fig:nmds-plot}NMDS ordination of community compositions. Each point represents the endophytic community of one tree, and the size of the point corresponds to that tree's DBH, while the color of said point corresponds to the site that tree is from. Points that are closer together indicate that the trees they represent have similar community compositions. The ellipses show the standard error around the centroid of all points within a site, and are also color-coded according to which site they represent.}
+\end{figure}
