@@ -1,0 +1,16 @@
+\begin{table}[!h]
+
+\caption{\label{tab:abund}Abundances of classes of Ascomycota across all trees and sites.}
+\centering
+\begin{tabular}[t]{lr}
+\toprule
+Fungal class & Number of sequences\\
+\midrule
+Dothideomycetes & 450\\
+Sordariomycetes & 341\\
+Eurotiomycetes & 57\\
+Pezizomycetes & 52\\
+Leotiomycetes & 19\\
+\bottomrule
+\end{tabular}
+\end{table}
