@@ -13,8 +13,8 @@ library("tidyr")
 library("vegan")
 
 # load files
-otus <- read.table("output/processed_sequence_files/seq_with_OTU_ID.txt")
-groups <- read.table("output/processed_sequence_files/groupfile.tsv")
+otus <- read.table("output/mothur_pipeline/seq_with_OTU_ID.txt")
+groups <- read.table("output/mothur_pipeline/groupfile.tsv")
 trees <- read.csv("data/metadata/M_excel_tree_metadata.csv",
                   stringsAsFactors = FALSE)
 
@@ -50,12 +50,12 @@ row.names(otu_table) <- c(paste("Balboa - Tree", 1:5),
 
 #save a pdf of the rarefaction curve
 pdf("figures/prelim_rarecurve.pdf")
-rare_color = c(rep("#ff5e62", 5),
-               rep("#f0a200", 5),
-               rep("#007f36", 5),
-               rep("#8781e6", 5),
-               rep("#00005a", 5),
-               rep("#81005e", 5))
+rare_color <- c(rep("#ff5e62", 5),
+                rep("#f0a200", 5),
+                rep("#007f36", 5),
+                rep("#8781e6", 5),
+                rep("#00005a", 5),
+                rep("#81005e", 5))
 
 group_labels <- c(rep("Balboa", 5),
                   rep("Downtown", 5),
@@ -89,12 +89,12 @@ dev.off()
 
 #save a pdf of a rarefaction curve with one line per site
 pdf("figures/prelim_rarecurve_combined.pdf")
-rare_color_c = c(rep("#ff5e62"),
-               rep("#f0a200"),
-               rep("#007f36"),
-               rep("#8781e6"),
-               rep("#00005a"),
-               rep("#81005e"))
+rare_color_c <- c(rep("#ff5e62"),
+                  rep("#f0a200"),
+                  rep("#007f36"),
+                  rep("#8781e6"),
+                  rep("#00005a"),
+                  rep("#81005e"))
 
 group_labels_c <- c(rep("Balboa"),
                   rep("Downtown"),
@@ -147,7 +147,8 @@ plot(specaccum(otu_table, method = "rare"), xvar = "individuals")
 ord_obj <- metaMDS(otu_table, trymax = 100)
 
 #make a subset that only containt trees from the second round of sampling
-trees_aug <- subset(trees, as.POSIXct(trees$Date_sampled) > as.POSIXct("2017-08-01"))
+trees_aug <- subset(trees,
+                    as.POSIXct(trees$Date_sampled) > as.POSIXct("2017-08-01"))
 
 adonis(otu_table ~ trees_aug$Site_ID)
 
@@ -171,7 +172,7 @@ points(ord_obj,
                rep("#8781e6", 5),
                rep("#00005a", 5),
                rep("#81005e", 5)),
-       cex = 25/10, # comment out to remove dbh sizing
+       cex = 25 / 10, # comment out to remove dbh sizing
        pch = 16)
 
 legend("bottomleft",
@@ -187,7 +188,7 @@ legend("bottomleft",
                rep("#81005e")))
 
 ordiellipse(ord_obj,
-            groups =group_labels,
+            groups = group_labels,
             label = FALSE,
             col = c(rep("#ff5e62"),
                     rep("#8781e6"),
