@@ -48,7 +48,7 @@ row.names(otu_table) <- c(paste("Balboa - Tree", 1:5),
                          paste("Ocean - Tree", 1:5))
 
 
-#save a pdf of the rarefaction curve
+# save a pdf of the rarefaction curve
 pdf("figures/prelim_rarecurve.pdf")
 rare_color <- c(rep("#ff5e62", 5),
                 rep("#f0a200", 5),
