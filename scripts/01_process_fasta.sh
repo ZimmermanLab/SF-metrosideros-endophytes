@@ -93,7 +93,7 @@ echo -e "\n#####################################################################
 
 # check for success
 echo "Check that sequence identifiers look clean in good_seqs_short_names.fasta"
-grep ">" output/processed_sequence_files/good_seqs_short_names.fasta
+grep ">" output/processed_sequence_files/good_seqs_short_names.fasta | sort
 
 echo -e "\n####################################################################################\n"
 
@@ -101,24 +101,28 @@ echo -e "\n#####################################################################
 echo "Checking for any remaining duplicates after trimming names..."
 grep "EUSF" output/processed_sequence_files/good_seqs_short_names.fasta | sort | uniq -c | sort -n | tail
 
-# clustering fails b/c also a double of 462
-# looks like the two 462 sequences are completely different, dropping both
-echo "Removing duplicate sequence ID 1917"
 
-# get rid of 462 sequences
 # get rid of both 1917 sequences because they are two different sequences with the same identifier
+echo "Removing duplicate sequence ID 1917"
 bioawk -c fastx '!/EUSF01917/ {print ">"$name"\n"$seq}' \
   output/processed_sequence_files/good_seqs_short_names.fasta > \
   output/processed_sequence_files/good_seqs_short_names_checked.fasta
 
 echo "Confirming that they are removed--there should be no lines returned here:"
-grep "EUSF01917" output/processed_sequence_files/good_seqs_short_names_checked.fasta
+echo "$(grep 'EUSF01917' output/processed_sequence_files/good_seqs_short_names_checked.fasta)"
 
 echo -e "\n####################################################################################\n"
 
 # count number of non-failed sequences
 echo "The number of remaining sequences is:"
 grep -c ">" output/processed_sequence_files/good_seqs_short_names_checked.fasta
+
+echo -e "\n####################################################################################\n"
+
+# check again after cleaning, all should have 1s (be unique)
+echo "Checking again for any duplicates after cleaning, this should return all 1s"
+grep "EUSF" output/processed_sequence_files/good_seqs_short_names_checked.fasta | \
+  sort | uniq -c | sort -n | tail
 
 echo -e "\n####################################################################################\n"
 
@@ -130,15 +134,6 @@ bioawk -c fastx '{print $name}' \
 head output/processed_sequence_files/seq_names.txt
 
 echo -e "\n####################################################################################\n"
-
-# check again after cleaning, all should have 1s (be unique)
-echo "Checking again for any duplicates after cleaning, this should return all 1s"
-grep "EUSF" output/processed_sequence_files/good_seqs_short_names_checked.fasta | \
-  sort | uniq -c | sort -n | tail
-
-echo -e "\n####################################################################################\n"
-
-sleep 60
 
 # cluster using vsearch
 # need to install mothur if it is not already installed
