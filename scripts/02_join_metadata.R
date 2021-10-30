@@ -44,7 +44,7 @@ if (debug) find_top_level_parent("ZUSF00641")
 extractions$original_sample <- NA
 
 # resursively lookup top-level parent of each culture and add to parent column
-for (i in seq_len(extractions)) {
+for (i in seq_len(nrow(extractions))) {
   # because the data are messy we need to first check only for those culture
   # IDs that match the proper naming convention
   if (grepl(pattern = "^ZUSF[0-9]{5}", x = extractions$Culture_Label_ID[i]) &
