@@ -4,8 +4,7 @@
 # Originally written by Naupaka Zimmerman
 # nzimmerman@usfca.edu
 # August 24, 2017
-
-## TODO: Fix paths for the files
+# updated October 29, 2021
 
 # load libraries
 library("dplyr")
@@ -13,18 +12,23 @@ library("tidyr")
 library("vegan")
 
 # load files
-otus <- read.table("output/mothur_pipeline/seq_with_OTU_ID.txt")
-groups <- read.table("output/mothur_pipeline/groupfile.tsv")
+otus <- read.table("output/mothur_pipeline/08_seq_with_OTU_ID.txt",
+                   col.names = c("sequence_id",
+                                 "otu_id"))
+groups <- read.table("output/metadata_tables/groupfile.tsv",
+                     col.names = c("sequence_id",
+                                   "tree_id"))
 trees <- read.csv("data/metadata/M_excel_tree_metadata.csv",
                   stringsAsFactors = FALSE)
 
 # count by groups instead of trees
+# FIXME this is by trees though
 otu_table <- otus %>%
-  left_join(groups, by = c("V1" = "V1")) %>%
-  group_by(V2.x, V2.y) %>%
+  left_join(groups, by = c("sequence_id" = "sequence_id")) %>%
+  group_by(tree_id, otu_id) %>%
   summarize(count = n()) %>%
-  spread(V2.x, count, fill = 0) %>%
-  filter(grepl(V2.y, pattern = "^S"))
+  spread(otu_id, count, fill = 0) %>%
+  filter(grepl(tree_id, pattern = "^S"))
 
 # get rid of rows with NA
 otu_table <- as.data.frame(na.omit(otu_table))
@@ -87,7 +91,7 @@ legend("bottomright",
                rep("#81005e")))
 dev.off()
 
-#save a pdf of a rarefaction curve with one line per site
+# save a pdf of a rarefaction curve with one line per site
 pdf("figures/prelim_rarecurve_combined.pdf")
 rare_color_c <- c(rep("#ff5e62"),
                   rep("#f0a200"),
@@ -104,11 +108,11 @@ group_labels_c <- c(rep("Balboa"),
                   rep("Ocean"))
 
 otu_table_combined <- otus %>%
-  left_join(groups, by = c("V1" = "V1")) %>%
-  mutate(V2.y = gsub("T[0-9]", "", V2.y)) %>%
-  group_by(V2.x, V2.y) %>%
+  left_join(groups, by = c("sequence_id" = "sequence_id")) %>%
+  mutate(site_id = gsub("T[0-9]", "", tree_id)) %>%
+  group_by(otu_id, site_id) %>%
   summarize(count = n()) %>%
-  spread(V2.x, count, fill = 0)
+  spread(otu_id, count, fill = 0)
 
 otu_table_combined <- as.data.frame(na.omit(otu_table_combined))
 
@@ -198,3 +202,4 @@ ordiellipse(ord_obj,
                     rep("#81005e")),
             lwd = 7)
 dev.off()
+
