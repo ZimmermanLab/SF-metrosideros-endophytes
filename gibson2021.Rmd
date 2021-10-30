@@ -169,7 +169,9 @@ library("patchwork")
 otus <- read.table("output/mothur_pipeline/08_seq_with_OTU_ID.txt",
                    col.names = c("sequence_id",
                                  "otu_id"))
-groups <- read.table("output/metadata_tables/groupfile.tsv")
+groups <- read.table("output/metadata_tables/groupfile.tsv",
+                     col.names = c("sequence_id",
+                                   "tree_id"))
 trees <- read.csv("data/metadata/M_excel_tree_metadata_with_isolationfreq.csv",
                   stringsAsFactors = FALSE)
 tbas <- read.csv("data/metadata/TBAS_taxonomies.csv")
@@ -182,9 +184,9 @@ otus$sequence_id <- gsub("EUSF00", "EUSF0", otus$sequence_id)
 # count by groups instead of trees
 otu_table <- otus %>%
   left_join(groups, by = c("sequence_id" = "sequence_id")) %>%
-  group_by(otu_id.x, otu_id.y) %>%
+  group_by(tree_id, otu_id) %>%
   summarize(count = n()) %>%
-  spread(otu_id.x, count, fill = 0)
+  spread(otu_id, count, fill = 0)
 
 # get rid of rows with NA
 otu_table <- as.data.frame(na.omit(otu_table))
@@ -368,11 +370,11 @@ group_labels_c <- c(rep("Balboa"),
                   rep("Ocean"))
 
 otu_table_combined <- otus %>%
-  left_join(groups, by = c("V1" = "V1")) %>%
-  mutate(V2.y = gsub("T[0-9]", "", V2.y)) %>%
-  group_by(V2.x, V2.y) %>%
+  left_join(groups, by = c("sequence_id" = "sequence_id")) %>%
+  mutate(tree_id = gsub("T[0-9]", "", tree_id)) %>%
+  group_by(otu_id, tree_id) %>%
   summarize(count = n()) %>%
-  spread(V2.x, count, fill = 0)
+  spread(otu_id, count, fill = 0)
 
 otu_table_combined <- as.data.frame(na.omit(otu_table_combined))
 
@@ -403,10 +405,10 @@ legend("bottomright",
 
 ```{r taxonomy-by-site-plot, fig.width=5, fig.cap="Normalized relative abundances of Ascomycota taxa in each site."}
 extraction_with_tree <- read.table(
-  "output/processed_sequence_files/groupfile.tsv",
+  "output/metadata_tables/groupfile.tsv",
   sep = "\t",
-  col.names = c("Extraction_ID", "Tree_ID")) %>%
-  mutate(site_id = substr(Tree_ID, 1, 2))
+  col.names = c("extraction_id", "tree_id")) %>%
+  mutate(site_id = substr(tree_id, 1, 2))
 
 tbas_names_fixed <- tbas %>%
   mutate(extraction_id = substr(Query_sequence, 1, 8))
