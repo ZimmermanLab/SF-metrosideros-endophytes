@@ -23,13 +23,13 @@ echo -e "\n#####################################################################
 echo "Combining all sequences into output/processed_sequence_files/all_seqs.fasta"
 cat data/sequences/hand-cleaned_seqs/2017_august_hand_cleaned_seqs_not_including_failed.fasta \
   data/sequences/hand-cleaned_seqs/new_seq_EG_thesis_cleaned.fasta > \
-  output/processed_sequence_files/01_all_seqs.fasta
-head output/processed_sequence_files/01_all_seqs.fasta
+  output/mothur_pipeline/01_all_seqs.fasta
+head output/mothur_pipeline/01_all_seqs.fasta
 
 echo -e "\n####################################################################################\n"
 
-echo "Setting working directory to output/processed_sequence_files"
-cd output/processed_sequence_files
+echo "Setting working directory to output/mothur_pipeline"
+cd output/mothur_pipeline
 
 echo -e "\n####################################################################################\n"
 
