@@ -6,10 +6,6 @@
 # August 24, 2017
 # Updated October 29, 2021
 
-# load packages
-library("dplyr")
-
-
 # load data
 cultures <- read.csv("data/metadata/culturing_worksheet_emma.csv",
                       stringsAsFactors = FALSE)
