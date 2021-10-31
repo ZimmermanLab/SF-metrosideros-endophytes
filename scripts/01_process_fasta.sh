@@ -23,8 +23,22 @@ awk 'NR==1 || /EmmaG/' data/metadata/culturing_worksheet.csv > \
   data/metadata/culturing_worksheet_emma.csv
 
 # create table of extractions created by Emma Gibson and keep header
-awk 'NR==1 || /EmmaG/' data/metadata/Extraction_worksheet.csv > \
+awk 'NR==1 || /EmmaG/' data/metadata/extraction_worksheet.csv > \
   data/metadata/extraction_worksheet_emma.csv
+
+# keep only sequences from the current project (Emma's sequences)
+# first pull out the column of DNA extraction IDs
+tail +2 data/metadata/extraction_worksheet_emma.csv | \
+  cut -d, -f2 > data/metadata/emma_extraction_ids.txt
+
+# turn this from a column into a | delimited set of IDs
+# and remove the last one
+tr '\n' '|' <  data/metadata/emma_extraction_ids.txt | \
+  sed 's/|$//' > data/metadata/emma_extraction_ids_oneline.txt
+
+# output only sequences from Emma's extractions (the others are from other projects)
+bioawk -c fastx -v pattern="$(cat data/metadata/emma_extraction_ids_oneline.txt)" \
+  '$0~pattern { print ">"$name"\n"$seq}' output/mothur_pipeline/02_good_seqs.fasta
 
 # combine all individual fasta files into single combined fasta
 # NOTE this does not include the first round of preliminary sampling at 3 sites
