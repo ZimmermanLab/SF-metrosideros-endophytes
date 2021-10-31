@@ -14,8 +14,8 @@ RUN mkdir -p /home/code/tools \
 ##### mothur #####
 RUN curl -L https://github.com/mothur/mothur/releases/download/v1.39.5/Mothur.linux_64_static.zip -o /home/Mothur.linux_64_static.zip \
  && unzip /home/Mothur.linux_64_static.zip -d /home
- 
- 
+
+
 ###### R Packages ######
 COPY . /home/manuscript
 WORKDIR /home/manuscript
@@ -33,6 +33,6 @@ WORKDIR /home
 RUN echo "export PATH=${PATH}:/home/code/tools/bioawk/:/home/mothur" >> /home/.profile
 RUN echo "/usr/bin/bash" >> /home/.profile
 
-CMD ["/init_docker.sh"]
+CMD ["/usr/bin/bash", "/init_docker.sh"]
 
 EXPOSE 8787
