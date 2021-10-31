@@ -30,10 +30,9 @@ RUN R -e 'renv::restore()'
 COPY init_docker.sh /
 WORKDIR /home
 
-RUN echo "export PATH=${PATH}:/home/code/tools/sratoolkit.2.11.1-ubuntu64/bin/:/home/code/tools/bioawk/:/home/mothur" >> /home/.profile
+RUN echo "export PATH=${PATH}:/home/code/tools/bioawk/:/home/mothur" >> /home/.profile
 RUN echo "/usr/bin/bash" >> /home/.profile
 
 CMD ["/init_docker.sh"]
 
-# mosh 3838
-EXPOSE 22 8787
+EXPOSE 8787
