@@ -1,8 +1,8 @@
 #!/bin/sh
 
-chown -R $USER:$USER /data
 mkdir /home/$USER
 cp /home/.profile /home/$USER/
+mv /home/manuscript /home/$USER/manuscript
 
 ## Setup SSH and cron. s6 supervisor already installed for RStudio, so
 ## just create the run and finish scripts
