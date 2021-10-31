@@ -17,8 +17,8 @@ RUN curl -L https://github.com/mothur/mothur/releases/download/v1.39.5/Mothur.li
 
 
 ###### R Packages ######
+COPY . /home/rstudio/sfendos
 WORKDIR /home/rstudio/sfendos
-COPY renv.lock renv.lock
 
 ENV RENV_VERSION 0.14.0
 RUN R -e "install.packages('remotes', repos = c(CRAN = 'https://cloud.r-project.org'))"
