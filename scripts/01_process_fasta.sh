@@ -116,16 +116,6 @@ echo -e "\n#####################################################################
 echo "Checking for any remaining duplicates after trimming names..."
 grep "EUSF" 03_good_seqs_short_names.fasta | sort | uniq -c | sort -n | tail
 
-
-# get rid of both 1917 sequences because they are two different sequences with the same identifier
-echo "Removing duplicate sequence ID 1917"
-bioawk -c fastx '!/EUSF01917/ {print ">"$name"\n"$seq}' \
-  03_good_seqs_short_names.fasta > \
-  04_good_seqs_short_names_checked.fasta
-
-echo "Confirming that they are removed--there should be no lines returned here:"
-echo "$(grep 'EUSF01917' 04_good_seqs_short_names_checked.fasta)"
-
 echo -e "\n####################################################################################\n"
 
 # count number of non-failed sequences
