@@ -163,7 +163,7 @@ library("knitr")
 library("kableExtra")
 library("patchwork")
 
-devtools::sessionInfo() %>%
+devtools::session_info() %>%
   capture.output(file = "output/log_files/r_session_info.txt")
 ```
 
@@ -181,8 +181,8 @@ trees <- read.csv("data/metadata/m_excel_tree_metadata_with_isolationfreq.csv",
                   stringsAsFactors = FALSE)
 
 tbas <- read.csv("data/metadata/tbas_taxonomies.csv")
-culturing <- read.csv("data/metadata/culturing_worksheet.csv")
-extractions <- read.csv("data/metadata/Extraction_worksheet.csv")
+culturing <- read.csv("data/metadata/culturing_worksheet_emma.csv")
+extractions <- read.csv("data/metadata/extraction_worksheet_emma.csv")
 
 # properly format sequence names in OTU table
 otus$sequence_id <- gsub("EUSF00", "EUSF0", otus$sequence_id)
