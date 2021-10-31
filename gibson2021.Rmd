@@ -168,42 +168,7 @@ devtools::session_info() %>%
 ```
 
 ```{r read-in-data}
-# load files
-otus <- read.table("output/mothur_pipeline/08_seq_with_OTU_ID.txt",
-                   col.names = c("sequence_id", "otu_id"))
-
-groups <- read.table("output/metadata_tables/groupfile.tsv",
-                     col.names = c("sequence_id", "tree_id"))
-
-trees <- read.csv("data/metadata/m_excel_tree_metadata_with_isolationfreq.csv",
-                  stringsAsFactors = FALSE)
-
 tbas <- read.csv("data/metadata/tbas_taxonomies.csv")
-culturing <- read.csv("data/metadata/culturing_worksheet_emma.csv")
-extractions <- read.csv("data/metadata/extraction_worksheet_emma.csv")
-
-# properly format sequence names in OTU table
-otus$sequence_id <- gsub("EUSF00", "EUSF0", otus$sequence_id)
-
-# count by groups instead of trees
-otu_table <- otus %>%
-  left_join(groups, by = c("sequence_id" = "sequence_id")) %>%
-  group_by(tree_id, otu_id) %>%
-  summarize(count = n()) %>%
-  spread(otu_id, count, fill = 0)
-
-# get rid of rows with NA
-otu_table <- as.data.frame(na.omit(otu_table))
-
-# fix row name problems for vegan
-row.names(otu_table) <- otu_table[, 1]
-otu_table <- otu_table[, -1]
-
-# drop out USF test sample
-otu_table <- otu_table[1:30, ]
-
-# drop OTUs with 0 sequences
-otu_table <- otu_table[, which(colSums(otu_table) > 0)]
 ```
 
 ```{r setup-maps}
@@ -311,8 +276,6 @@ ggmap(sf_map) +
 
 ```{r isolation-dbh-freq-plots, fig.width=6, fig.height=8, fig.cap="Isolation frequencies (A) and tree diameters (B) at each site. Isolation frequency (A) is a measure of how many slant tubes showed signs of fungal growth, out of how many total slant tubes were made. 100 slant tubes were made for each tree except for the trees in the downtown site, which had 140 slant tubes per tree because they had low isolation frequencies during the initial sampling."}
 iso_freq_plot <- trees %>%
-  filter(Site_ID != "Parker") %>%
-  filter(Date_sampled > "2017-08-25") %>%
   separate(isolation_freq,
            into = c("grew", "total"),
            sep = "/") %>%
@@ -337,8 +300,6 @@ iso_freq_plot <- trees %>%
   ylab("Isolation Frequency")
 
 dbh_plot <- trees %>%
-  filter(Site_ID != "Parker") %>%
-  filter(Date_sampled > "2017-08-25") %>%
   ggplot(aes(x = Site_ID,
              y = DBH_cm)) +
   geom_boxplot() +
@@ -359,45 +320,32 @@ dbh_plot <- trees %>%
 iso_freq_plot / dbh_plot + plot_annotation(tag_levels = "A")
 ```
 
-```{r rarefaction-plot, fig.width=5, fig.cap="Species accumulation curve showing species richness in each site. Each line represents the combined species richness of all trees in one site."}
-#set colors
-rare_color_c <- c(rep("#ff5e62"),
-               rep("#f0a200"),
-               rep("#007f36"),
-               rep("#8781e6"),
-               rep("#00005a"),
-               rep("#81005e"))
+```{r rarefaction-plot, fig.width=6, fig.cap="Species accumulation curve showing species richness in each site. Each line represents the combined species richness of all trees in one site."}
 
-group_labels_c <- c(rep("Balboa"),
-                  rep("Downtown"),
-                  rep("Mt. Davidson"),
-                  rep("Bay"),
-                  rep("Freeway"),
-                  rep("Ocean"))
+rare_color_sites <- c(rep("#ff5e62"),
+                      rep("#f0a200"),
+                      rep("#007f36"),
+                      rep("#8781e6"),
+                      rep("#00005a"),
+                      rep("#81005e"))
 
-otu_table_combined <- otus %>%
-  left_join(groups, by = c("sequence_id" = "sequence_id")) %>%
-  mutate(tree_id = gsub("T[0-9]", "", tree_id)) %>%
-  group_by(otu_id, tree_id) %>%
-  summarize(count = n()) %>%
-  spread(otu_id, count, fill = 0)
+group_labels_sites <- c(rep("Balboa"),
+                        rep("Downtown"),
+                        rep("Mt. Davidson"),
+                        rep("Bay"),
+                        rep("Freeway"),
+                        rep("Ocean"))
 
-otu_table_combined <- as.data.frame(na.omit(otu_table_combined))
-
-row.names(otu_table_combined) <- otu_table_combined[, 1]
-otu_table_combined <- otu_table_combined[, -1]
-
-rarecurve(otu_table_combined,
+rarecurve(otu_table_sites,
           main = "Species accumulation curves for endophytic fungi",
-          col = rare_color_c,
+          col = rare_color_sites,
           label = FALSE,
           lwd = 7,
-          cex.main = 1,
           xlab = "Number of fungal isolates",
           ylab = "Number of fungal species (97% ITS OTUs)")
 
 legend("bottomright",
-       legend = levels(factor(group_labels_c)),
+       legend = levels(factor(group_labels_sites)),
        pch = 16,
        cex = 1,
        pt.cex = 2,
@@ -407,6 +355,7 @@ legend("bottomright",
                rep("#00005a"),
                rep("#007f36"),
                rep("#81005e")))
+
 ```
 
 ```{r taxonomy-by-site-plot, fig.width=5, fig.cap="Normalized relative abundances of Ascomycota taxa in each site."}
@@ -456,33 +405,46 @@ tbas_with_site %>%
 ```
 
 ```{r ordination_setup, include=FALSE}
+
 set.seed(42)
-ord_obj <- metaMDS(otu_table, trymax = 100)
+ord_obj <- metaMDS(otu_table_trees, trymax = 100)
+adonis(otu_table_trees ~ trees$Site_ID)
 
-# fix row names to be more readable
-row.names(otu_table) <- c(paste("Balboa - Tree", 1:5),
-                         paste("Downtown - Tree", 1:5),
-                         paste("Mt. Davidson - Tree", 1:5),
-                         paste("Bay - Tree", 1:5),
-                         paste("Freeway - Tree", 1:5),
-                         paste("Ocean - Tree", 1:5))
-
-trees_aug <- subset(trees,
-                    as.POSIXct(trees$Date_sampled) > as.POSIXct("2017-08-01"))
 ```
 
-```{r nmds-plot, fig.width=5, fig.cap="NMDS ordination of community compositions. Each point represents the endophytic community of one tree, and the size of the point corresponds to that tree's DBH, while the color of said point corresponds to the site that tree is from. Points that are closer together indicate that the trees they represent have similar community compositions. The ellipses show the standard error around the centroid of all points within a site, and are also color-coded according to which site they represent."}
+```{r nmds-plot, fig.width=6, fig.cap="NMDS ordination of community compositions. Each point represents the endophytic community of one tree, and the size of the point corresponds to that tree's DBH, while the color of said point corresponds to the site that tree is from. Points that are closer together indicate that the trees they represent have similar community compositions. The ellipses show the standard error around the centroid of all points within a site, and are also color-coded according to which site they represent."}
+
 plot(ord_obj,
      display = "sites",
      type = "n",
      main = "NMDS ordination of fungal community composition",
-     cex.main = 1,
      xlab = "",
      ylab = "",
      tck = 0,
-     labels = TRUE,
-     ylim = c(-1000, 1000),
-     xlim = c(-1000, 1000))
+     labels = FALSE)
+
+points(ord_obj,
+       display = "sites",
+       col = c(rep("#ff5e62", 5),
+               rep("#f0a200", 5),
+               rep("#007f36", 5),
+               rep("#8781e6", 5),
+               rep("#00005a", 5),
+               rep("#81005e", 5)),
+       pch = 16,
+       cex = 1.2)
+
+legend("bottomleft",
+       legend = levels(factor(group_labels)),
+       pch = 16,
+       cex = 0.7,
+       pt.cex = 1.3,
+       col = c(rep("#ff5e62"),
+               rep("#8781e6"),
+               rep("#f0a200"),
+               rep("#00005a"),
+               rep("#007f36"),
+               rep("#81005e")))
 
 ordiellipse(ord_obj,
             groups = group_labels,
@@ -493,33 +455,7 @@ ordiellipse(ord_obj,
                     rep("#00005a"),
                     rep("#007f36"),
                     rep("#81005e")),
-            lwd = 4)
-
-points(ord_obj,
-       display = "sites",
-       col = c(rep("#ff5e62", 5),
-               rep("#f0a200", 5),
-               rep("#007f36", 5),
-               rep("#8781e6", 5),
-               rep("#00005a", 5),
-               rep("#81005e", 5)),
-       cex = trees_aug$DBH_cm / 10,
-       pch = 16)
-
-text(ord_obj,
-     display = "sites")
-
-legend("bottomright",
-       legend = levels(factor(group_labels)),
-       pch = 16,
-       cex = 0.6,
-       pt.cex = 0.6,
-       col = c(rep("#ff5e62"),
-               rep("#8781e6"),
-               rep("#f0a200"),
-               rep("#00005a"),
-               rep("#007f36"),
-               rep("#81005e")))
+            lwd = 5)
 ```
 
 # References

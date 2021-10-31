@@ -40,11 +40,28 @@ otu_table_trees_ids <- otu_table_trees$tree_id
 otu_table_trees <- subset(otu_table_trees, select = -tree_id)
 row.names(otu_table_trees) <- otu_table_trees_ids
 
-# error if any trees are lacking sequences
+# error if any trees or OTUs are lacking sequences
 stopifnot(all(rowSums(otu_table_trees)))
-
-# error if any OTUs are lacking sequences
 stopifnot(all(colSums(otu_table_trees)))
+
+otu_table_sites <- otus %>%
+  inner_join(groups, by = c("sequence_id" = "sequence_id")) %>%
+  mutate(site_id = gsub("T[0-9]", "", tree_id)) %>%
+  group_by(otu_id, site_id) %>%
+  summarize(count = n()) %>%
+  spread(otu_id, count, fill = 0)
+
+# fix row name problems for vegan
+otu_table_site_ids <- otu_table_sites$site_id
+otu_table_sites <- subset(otu_table_sites, select = -site_id)
+row.names(otu_table_sites) <- otu_table_site_ids
+
+# error if any sites or OTUs are lacking sequences
+stopifnot(all(rowSums(otu_table_sites)))
+stopifnot(all(colSums(otu_table_sites)))
+
+
+##########################################
 
 # do and plot ordination with this matrix
 plot(metaMDS(otu_table_trees), type = "t", display = "sites", cex = 1.5)
@@ -97,115 +114,8 @@ legend("bottomright",
                rep("#81005e")))
 dev.off()
 
-# save a pdf of a rarefaction curve with one line per site
-pdf("figures/prelim_rarecurve_combined.pdf")
-rare_color_sites <- c(rep("#ff5e62"),
-                      rep("#f0a200"),
-                      rep("#007f36"),
-                      rep("#8781e6"),
-                      rep("#00005a"),
-                      rep("#81005e"))
 
-group_labels_sites <- c(rep("Balboa"),
-                        rep("Downtown"),
-                        rep("Mt. Davidson"),
-                        rep("Bay"),
-                        rep("Freeway"),
-                        rep("Ocean"))
-
-otu_table_sites <- otus %>%
-  inner_join(groups, by = c("sequence_id" = "sequence_id")) %>%
-  mutate(site_id = gsub("T[0-9]", "", tree_id)) %>%
-  group_by(otu_id, site_id) %>%
-  summarize(count = n()) %>%
-  spread(otu_id, count, fill = 0)
-
-# fix row name problems for vegan
-otu_table_site_ids <- otu_table_sites$site_id
-otu_table_sites <- subset(otu_table_sites, select = -site_id)
-row.names(otu_table_sites) <- otu_table_site_ids
-
-# error if any trees are lacking sequences
-stopifnot(all(rowSums(otu_table_sites)))
-
-# error if any OTUs are lacking sequences
-stopifnot(all(colSums(otu_table_sites)))
-
-rarecurve(otu_table_sites,
-          main = "Species accumulation curves for endophytic fungi",
-          col = rare_color_sites,
-          label = FALSE,
-          lwd = 7,
-          xlab = "Number of fungal isolates",
-          ylab = "Number of fungal species (97% ITS OTUs)",
-          cex.lab = 1.4,
-          cex.main = 1.65)
-
-legend("bottomright",
-       legend = levels(factor(group_labels_sites)),
-       pch = 16,
-       cex = 1,
-       pt.cex = 2,
-       col = c(rep("#ff5e62"),
-               rep("#8781e6"),
-               rep("#f0a200"),
-               rep("#00005a"),
-               rep("#007f36"),
-               rep("#81005e")))
-dev.off()
 
 # some more species accumulation curves
 plot(colSums(otu_table_sites))
 plot(specaccum(otu_table_sites, method = "rare"), xvar = "individuals")
-
-# more sophisticated multi-step ordination plotting
-ord_obj <- metaMDS(otu_table_trees, trymax = 100)
-adonis(otu_table_trees ~ trees$Site_ID)
-
-
-pdf("figures/prelim_ordination_proper_color_no-DBH.pdf")
-plot(ord_obj,
-     display = "sites",
-     type = "n",
-     main = "NMDS ordination of fungal community composition",
-     cex.main = 1.6,
-     xlab = "",
-     ylab = "",
-     tck = 0,
-     labels = FALSE)
-
-points(ord_obj,
-       display = "sites",
-       col = c(rep("#ff5e62", 5),
-               rep("#f0a200", 5),
-               rep("#007f36", 5),
-               rep("#8781e6", 5),
-               rep("#00005a", 5),
-               rep("#81005e", 5)),
-       cex = 25 / 10, # comment out to remove dbh sizing
-       pch = 16)
-
-legend("bottomleft",
-       legend = levels(factor(group_labels)),
-       pch = 16,
-       cex = 1,
-       pt.cex = 2,
-       col = c(rep("#ff5e62"),
-               rep("#8781e6"),
-               rep("#f0a200"),
-               rep("#00005a"),
-               rep("#007f36"),
-               rep("#81005e")))
-
-ordiellipse(ord_obj,
-            groups = group_labels,
-            label = FALSE,
-            col = c(rep("#ff5e62"),
-                    rep("#8781e6"),
-                    rep("#f0a200"),
-                    rep("#00005a"),
-                    rep("#007f36"),
-                    rep("#81005e")),
-            lwd = 7)
-dev.off()
-
