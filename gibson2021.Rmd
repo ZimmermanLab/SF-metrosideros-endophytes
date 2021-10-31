@@ -170,12 +170,10 @@ devtools::session_info() %>%
 ```{r read-in-data}
 # load files
 otus <- read.table("output/mothur_pipeline/08_seq_with_OTU_ID.txt",
-                   col.names = c("sequence_id",
-                                 "otu_id"))
+                   col.names = c("sequence_id", "otu_id"))
 
 groups <- read.table("output/metadata_tables/groupfile.tsv",
-                     col.names = c("sequence_id",
-                                   "tree_id"))
+                     col.names = c("sequence_id", "tree_id"))
 
 trees <- read.csv("data/metadata/m_excel_tree_metadata_with_isolationfreq.csv",
                   stringsAsFactors = FALSE)
@@ -271,6 +269,7 @@ load("output/sf_basemap.Rdata")
 <!-- tables -->
 
 ```{r class-abundance-table}
+# FIXME Need to only use sequences in analysis
 tbas %>%
   filter(Taxon_assignment != "Excluded because not Ascomycota") %>%
   group_by(Class.level_assignment) %>%
