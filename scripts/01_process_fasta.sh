@@ -115,15 +115,7 @@ grep "EUSF" 03_good_seqs_short_names.fasta | sort | uniq -c | sort -n
 
 echo -e "\n####################################################################################\n"
 
-# count number of non-failed sequences
-echo "The number of remaining sequences is:"
-grep -c ">" 04_good_seqs_short_names_checked.fasta
-
-echo -e "\n####################################################################################\n"
-
-# check again after cleaning, all should have 1s (be unique)
-echo "Checking again for any duplicates after cleaning, this should return all 1s"
-grep "EUSF" 04_good_seqs_short_names_checked.fasta | sort | uniq -c | sort -n
+mv -v 03_good_seqs_short_names.fasta 04_good_seqs_short_names_checked.fasta
 
 echo -e "\n####################################################################################\n"
 
