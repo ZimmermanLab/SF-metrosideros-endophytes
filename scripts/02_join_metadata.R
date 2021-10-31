@@ -13,11 +13,11 @@ cultures <- read.csv("data/metadata/culturing_worksheet_emma.csv",
 extractions <- read.csv("data/metadata/extraction_worksheet_emma.csv",
                         stringsAsFactors = FALSE)
 
-trees <- read.csv("data/metadata/m_excel_tree_metadata_with_isolationfreq.csv",
-                  stringsAsFactors = FALSE)
-
 vouchers <- read.csv("data/metadata/water_voucher_worksheet_emma.csv",
                      stringsAsFactors = FALSE)
+
+trees <- read.csv("data/metadata/m_excel_tree_metadata_with_isolationfreq.csv",
+                  stringsAsFactors = FALSE)
 
 seq_ids_passing_checks <- read.table("output/mothur_pipeline/05_seq_names.txt",
                                      col.names = "seq_id")

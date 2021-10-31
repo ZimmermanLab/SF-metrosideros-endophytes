@@ -10,6 +10,7 @@ extraction_with_tree <- read.table(
   col.names = c("extraction_id", "tree_id")) %>%
   mutate(site_id = substr(tree_id, 1, 2))
 
+tbas <- read.csv("data/metadata/tbas_taxonomies.csv")
 
 tbas_with_site <- tbas %>%
   mutate(extraction_id = substr(Query_sequence, 1, 8)) %>%
