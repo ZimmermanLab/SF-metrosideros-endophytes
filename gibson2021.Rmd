@@ -162,6 +162,9 @@ library("rgdal")
 library("knitr")
 library("kableExtra")
 library("patchwork")
+
+devtools::sessionInfo() %>%
+  capture.output(file = "output/log_files/r_session_info.txt")
 ```
 
 ```{r read-in-data}
@@ -205,39 +208,40 @@ otu_table <- otu_table[, which(colSums(otu_table) > 0)]
 ```{r setup-maps}
 # set to TRUE to reproject
 # this may cause knitting to fail due to Google download
+# Google API key needed for download
 reproject <- FALSE
 
 if (reproject) {
   library("sf")
-
+  
   # load tree metadata as spatial object with coord system
   df_sp <- st_as_sf(trees_aug,
                     coords = c("Lat_m", "Long_m"),
                     crs = 32610) # UTM 10N
-
+  
   # convert from UTM to WGS84 and add back to data frame
   # see here for projection codes http://spatialreference.org/ref/epsg/32610/
   df_sp <- st_transform(x = df_sp, crs = 4326) # WGS84 lat long projection
   df_sp$lon <- st_coordinates(df_sp)[, 1] # get coordinates
   df_sp$lat <- st_coordinates(df_sp)[, 2] # get coordinates
-
+  
   # write out csv with decimal degree coordinates
   write.csv(df_sp,
-            paste0("data/metadata/",
+            paste0("output/metadata_tables/",
                    "M_excel_tree_metadata_with_isolationfreq_wgs_lat_long.csv"))
-
+  
   # get the satellite imagery for San Francisco
   sf_map <- get_map(location = "San Francisco",
                     maptype = "satellite",
                     source = "google",
                     zoom = 12)
-
+  
   # save the base map to a file so it doesn't need to be downloaded every time
   save(sf_map, file = "output/sf_basemap.Rdata")
 }
 
 # load tree metadata with decimal degree coordinates
-tree_coords <- read.csv(paste0("data/metadata/",
+tree_coords <- read.csv(paste0("output/metadata_tables/",
                                "M_excel_tree_metadata_with_",
                                "isolationfreq_wgs_lat_long.csv"))
 

@@ -15,14 +15,16 @@ library("vegan")
 otus <- read.table("output/mothur_pipeline/08_seq_with_OTU_ID.txt",
                    col.names = c("sequence_id",
                                  "otu_id"))
+
 groups <- read.table("output/metadata_tables/groupfile.tsv",
                      col.names = c("sequence_id",
                                    "tree_id"))
+
 trees <- read.csv("data/metadata/M_excel_tree_metadata.csv",
                   stringsAsFactors = FALSE)
 
 # count by groups instead of trees
-# FIXME this is by trees though
+# FIXME this is by trees though?
 otu_table <- otus %>%
   left_join(groups, by = c("sequence_id" = "sequence_id")) %>%
   group_by(tree_id, otu_id) %>%

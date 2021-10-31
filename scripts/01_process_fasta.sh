@@ -2,7 +2,7 @@
 
 set -eou pipefail
 
-# Draft of bash script to clean ITS fasta sequences
+# bash script to clean ITS fasta sequences
 # and cluster them using mothur
 
 # Originally written by Naupaka Zimmerman
@@ -12,8 +12,19 @@ set -eou pipefail
 # Modified May 1, 2018 to reflect updated project dir structure
 # Modified Dec 20, 2018 to allow for newer data to be incorporated
 # Modified October 29, 2021 for submission to PeerJ
+echo "Beginning sequence processing"
 
 echo -e "\n####################################################################################\n"
+
+echo "Subset to only include sequences for the current project"
+
+# create table of cultures created by Emma Gibson and keep header
+awk 'NR==1 || /EmmaG/' data/metadata/culturing_worksheet.csv > \
+  data/metadata/culturing_worksheet_emma.csv
+
+# create table of extractions created by Emma Gibson and keep header
+awk 'NR==1 || /EmmaG/' data/metadata/Extraction_worksheet.csv > \
+  data/metadata/extraction_worksheet_emma.csv
 
 # combine all individual fasta files into single combined fasta
 # NOTE this does not include the first round of preliminary sampling at 3 sites
