@@ -26,8 +26,9 @@ vouchers <- read.csv("data/metadata/water_voucher_worksheet_emma.csv",
 seq_ids_passing_checks <- read.table("output/mothur_pipeline/05_seq_names.txt",
                                      col.names = "seq_id")
 
-# get rid of data entry typo row
+# get rid of data entry typo row and extraction from culture not logged
 extractions <- extractions[extractions$Culture_Label_ID != "ZUSF002481", ]
+extractions <- extractions[extractions$Culture_Label_ID != "ZUSF01038", ]
 
 # function to check if a parent exists
 # 'exists' in this case means was part of this project and so is
