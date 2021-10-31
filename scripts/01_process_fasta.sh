@@ -49,8 +49,7 @@ echo -e "\n#####################################################################
 
 # count number of non-failed sequences
 # need to install bioawk if it is not already installed
-echo "The number of sequences is:"
-grep -c ">" 01_all_seqs.fasta
+echo "The number of sequences is: $(grep -c '>' 01_all_seqs.fasta)"
 
 echo -e "\n####################################################################################\n"
 
@@ -65,8 +64,7 @@ head 02_good_seqs.fasta
 echo -e "\n####################################################################################\n"
 
 # count number of remaining sequences
-echo "The number of remaining sequences is:"
-grep -c ">" 02_good_seqs.fasta
+echo "The number of remaining sequences is: $(grep -c '>' 02_good_seqs.fasta)"
 
 echo -e "\n####################################################################################\n"
 
@@ -80,14 +78,14 @@ EXTIDS=$(tail +2 ../../data/metadata/extraction_worksheet_emma.csv | \
   cut -d, -f2 | tr '\n' '|' | sed 's/|$//')
 
 # output only sequences from Emma's extractions (the others are from other projects)
+# approach from https://stackoverflow.com/a/39384347
 bioawk -c fastx -v pattern="$EXTIDS" \
   '$0~pattern { print ">"$name"\n"$seq}' 02_good_seqs.fasta > 02_good_seqs_proj.fasta
   
 mv -v 02_good_seqs_proj.fasta 02_good_seqs.fasta
 
 # count number of remaining sequences
-echo "The number of remaining sequences is:"
-grep -c ">" 02_good_seqs.fasta
+echo "The number of remaining sequences is: $(grep -c '>' 02_good_seqs.fasta)"
   
 echo -e "\n####################################################################################\n"
 
@@ -100,8 +98,7 @@ echo -e "\n#####################################################################
 # Keep only sequence name
 echo "Removing unnecessary parts of sequence headers..."
 echo "Creating 03_good_seqs_short_names.fasta"
-sed 's/>\(.*\)_ITS1F.*/>\1/' 02_good_seqs.fasta > \
-  03_good_seqs_short_names.fasta
+sed 's/>\(.*\)_ITS1F.*/>\1/' 02_good_seqs.fasta > 03_good_seqs_short_names.fasta
 head 03_good_seqs_short_names.fasta
 
 echo -e "\n####################################################################################\n"
@@ -114,7 +111,7 @@ echo -e "\n#####################################################################
 
 # looking for any remaining duplicates with the trimmed names
 echo "Checking for any remaining duplicates after trimming names..."
-grep "EUSF" 03_good_seqs_short_names.fasta | sort | uniq -c | sort -n | tail
+grep "EUSF" 03_good_seqs_short_names.fasta | sort | uniq -c | sort -n
 
 echo -e "\n####################################################################################\n"
 
@@ -126,16 +123,13 @@ echo -e "\n#####################################################################
 
 # check again after cleaning, all should have 1s (be unique)
 echo "Checking again for any duplicates after cleaning, this should return all 1s"
-grep "EUSF" 04_good_seqs_short_names_checked.fasta | \
-  sort | uniq -c | sort -n | tail
+grep "EUSF" 04_good_seqs_short_names_checked.fasta | sort | uniq -c | sort -n
 
 echo -e "\n####################################################################################\n"
 
 # make names file
 echo "Creating names file seq_names.txt"
-bioawk -c fastx '{print $name}' \
-  04_good_seqs_short_names_checked.fasta > \
-  05_seq_names.txt
+bioawk -c fastx '{print $name}' 04_good_seqs_short_names_checked.fasta > 05_seq_names.txt
 head 05_seq_names.txt
 
 echo -e "\n####################################################################################\n"
@@ -157,15 +151,13 @@ mothur "#bin.seqs(list=04_good_seqs_short_names_checked.agc.list, fasta=04_good_
 echo -e "\n####################################################################################\n"
 
 echo "Pulling out list of OTU names/numbers from mothur output and storing into output/mothur_output/otu_temp.txt"
-head -1 04_good_seqs_short_names_checked.agc.list | \
-  cut -f 3- | sed 's/\t/\n/g' > 06_otu_temp.txt
+head -1 04_good_seqs_short_names_checked.agc.list | cut -f 3- | sed 's/\t/\n/g' > 06_otu_temp.txt
 head 06_otu_temp.txt
 
 echo -e "\n####################################################################################\n"
 
 echo "Pulling out list of sequence names for each OTU from mothur output and storing into output/mothur_output/seq_ids_temp.txt"
-head -2 04_good_seqs_short_names_checked.agc.list | \
-  tail -1 | cut -f 3- | sed 's/\t/\n/g' > 07_seq_ids_temp.txt
+head -2 04_good_seqs_short_names_checked.agc.list | tail -1 | cut -f 3- | sed 's/\t/\n/g' > 07_seq_ids_temp.txt
 head 07_seq_ids_temp.txt
 
 echo -e "\n####################################################################################\n"
@@ -193,8 +185,7 @@ echo -e "\n#####################################################################
 
 # join these two colums together, then melt the second using perl
 perl -n -e 'chomp(); @_ = split(/ /, $_); @seqs = split(/,/, @_[1]); foreach (@seqs) { print("$_\t@_[0]\n"); }' \
-  11_joined_otu_seqs.txt \
-   > 12_seq_with_OTU_ID.txt
+  11_joined_otu_seqs.txt > 12_seq_with_OTU_ID.txt
 head 12_seq_with_OTU_ID.txt
 
 # move logfiles
