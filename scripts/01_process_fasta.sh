@@ -16,16 +16,6 @@ echo "Beginning sequence processing"
 
 echo -e "\n####################################################################################\n"
 
-echo "Subset to only include sequences for the current project"
-
-# create table of cultures created by Emma Gibson and keep header
-awk 'NR==1 || /EmmaG/' data/metadata/culturing_worksheet.csv > \
-  data/metadata/culturing_worksheet_emma.csv
-
-# create table of extractions created by Emma Gibson and keep header
-awk 'NR==1 || /EmmaG/' data/metadata/extraction_worksheet.csv > \
-  data/metadata/extraction_worksheet_emma.csv
-
 # combine all individual fasta files into single combined fasta
 # NOTE this does not include the first round of preliminary sampling at 3 sites
 # because those were sampled much earlier and are not directly comparable
