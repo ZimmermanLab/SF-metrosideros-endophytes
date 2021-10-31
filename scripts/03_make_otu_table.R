@@ -25,6 +25,7 @@ otu_table_trees <- otus %>%
 # fix row name problems for vegan
 otu_table_trees_ids <- otu_table_trees$tree_id
 otu_table_trees <- subset(otu_table_trees, select = -tree_id)
+otu_table_trees <- as.data.frame(otu_table_trees)
 row.names(otu_table_trees) <- otu_table_trees_ids
 
 # error if any trees or OTUs are lacking sequences
@@ -41,6 +42,7 @@ otu_table_sites <- otus %>%
 # fix row name problems for vegan
 otu_table_site_ids <- otu_table_sites$site_id
 otu_table_sites <- subset(otu_table_sites, select = -site_id)
+otu_table_sites <- as.data.frame(otu_table_sites)
 row.names(otu_table_sites) <- otu_table_site_ids
 
 # error if any sites or OTUs are lacking sequences
