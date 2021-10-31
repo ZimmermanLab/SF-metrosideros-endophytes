@@ -48,9 +48,9 @@ df_sp$lat <- st_coordinates(df_sp)[, 2] # get coordinates
 tree_coords <- df_sp
 
 # fix Downtown spurious coordinates
-tree_coords[tree_coords$Site_ID ==
+tree_coords[tree_coords$Site_name ==
               "Montgomery and Washington", ][, c("lon")] <- -122.402300
-tree_coords[tree_coords$Site_ID ==
+tree_coords[tree_coords$Site_name ==
               "Montgomery and Washington", ][, c("lat")] <- 37.7948
 
 # fix Ocean spurious coordinates
