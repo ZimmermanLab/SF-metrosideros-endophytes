@@ -1,4 +1,4 @@
-# Draft of R script to create metadata file for analysis from subculturing
+# R script to create metadata file for analysis from sub-culturing
 # worksheets and write out for later use by the next script
 
 # Originally written by Naupaka Zimmerman
@@ -48,7 +48,6 @@ check_if_parent_exists <- function(parent_culture) {
 find_culture_for_voucher <- function(voucher_id) {
   check_if_parent_exists(vouchers$Label_ID_culture[
     vouchers$Label_ID_Voucher == voucher_id])
-
 }
 
 # goal is to find the highest level parent of a given culture
@@ -104,14 +103,16 @@ for (i in seq_len(nrow(extractions))) {
 extractions$original_sample[
   extractions$original_sample == "Test Sample"] <- "Test_Sample"
 
-# select out columns of interest
+# select out columns of interest and filter out unneeded rows
+# both those that aren't from this study as well as those extractions
+# that were not successfully sequenced
 extractions <- extractions %>%
   select(Label_ID, original_sample) %>%
   filter(original_sample != "Not found") %>%
   filter(original_sample != "Test_Sample") %>%
   filter(Label_ID %in% seq_ids_passing_checks$seq_id)
 
-# write out complete csv for use in next script
+# write out complete tsv for use in next script
 write.table(extractions,
             file = "output/metadata_tables/groupfile.tsv",
             sep = "\t",
