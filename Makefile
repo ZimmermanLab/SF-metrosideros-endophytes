@@ -1,9 +1,7 @@
 R_SCRIPTS					:= $(wildcard scripts/*.R)
-SEQS_IN						:= $(data/sequences/hand-cleaned_seqs/*.fasta)
-SEQS_OUT_DIR			:= output/mothur_pipeline
-METADATA_IN_DIR		:= data/metadata
 METADATA_FILES		:= $(wildcard data/metadata/*.csv)
-METADATA_OUT_DIR	:= output/metadata_tables
+SEQS_IN						:= $(data/sequences/hand-cleaned_seqs/*.fasta)
+METADATA_IN_DIR		:= data/metadata
 
 all: gibson2021.pdf
 
