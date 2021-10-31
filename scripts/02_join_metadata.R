@@ -15,9 +15,9 @@ debug <- FALSE
 # load data
 culturing <- read.csv("data/metadata/culturing_worksheet.csv",
                       stringsAsFactors = FALSE)
-extractions <- read.csv("data/metadata/Extraction_worksheet.csv",
+extractions <- read.csv("data/metadata/extraction_worksheet.csv",
                         stringsAsFactors = FALSE)
-trees <- read.csv("data/metadata/M_excel_tree_metadata_with_isolationfreq.csv",
+trees <- read.csv("data/metadata/m_excel_tree_metadata_with_isolationfreq.csv",
                   stringsAsFactors = FALSE)
 
 

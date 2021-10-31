@@ -20,7 +20,7 @@ groups <- read.table("output/metadata_tables/groupfile.tsv",
                      col.names = c("sequence_id",
                                    "tree_id"))
 
-trees <- read.csv("data/metadata/M_excel_tree_metadata.csv",
+trees <- read.csv("data/metadata/m_excel_tree_metadata_with_isolationfreq.csv",
                   stringsAsFactors = FALSE)
 
 # count by groups instead of trees
