@@ -183,13 +183,18 @@ source("scripts/05_setup_maps_and_gis_coords.R")
 ```{r class-abundance-table}
 tbas %>%
   filter(Taxon_assignment != "Excluded because not Ascomycota") %>%
-  group_by(Class.level_assignment) %>%
+  group_by(Class.level_assignment, Order.level_assignment) %>%
   tally() %>%
-  arrange(desc(n)) %>%
-  kable(col.names = c("Fungal class", "Number of sequences"),
+  arrange(Class.level_assignment, desc(n)) %>%
+  kable(col.names = c("Class", "Order", "Number of sequences"),
         caption =
           "Abundances of classes of Ascomycota across all trees and sites.",
-        booktabs = TRUE) %>%
+        booktabs = TRUE,
+        linesep = c('', '', '', '', '', '\\addlinespace',
+                    '\\addlinespace',
+                    '\\addlinespace',
+                    '\\addlinespace',
+                    '', '', '', '', '', '')) %>%
         kableExtra::kable_styling(latex_options = "hold_position")
 ```
 
