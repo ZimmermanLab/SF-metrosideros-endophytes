@@ -26,20 +26,6 @@ awk 'NR==1 || /EmmaG/' data/metadata/culturing_worksheet.csv > \
 awk 'NR==1 || /EmmaG/' data/metadata/extraction_worksheet.csv > \
   data/metadata/extraction_worksheet_emma.csv
 
-# keep only sequences from the current project (Emma's sequences)
-# first pull out the column of DNA extraction IDs
-tail +2 data/metadata/extraction_worksheet_emma.csv | \
-  cut -d, -f2 > data/metadata/emma_extraction_ids.txt
-
-# turn this from a column into a | delimited set of IDs
-# and remove the last one
-tr '\n' '|' <  data/metadata/emma_extraction_ids.txt | \
-  sed 's/|$//' > data/metadata/emma_extraction_ids_oneline.txt
-
-# output only sequences from Emma's extractions (the others are from other projects)
-bioawk -c fastx -v pattern="$(cat data/metadata/emma_extraction_ids_oneline.txt)" \
-  '$0~pattern { print ">"$name"\n"$seq}' output/mothur_pipeline/02_good_seqs.fasta
-
 # combine all individual fasta files into single combined fasta
 # NOTE this does not include the first round of preliminary sampling at 3 sites
 # because those were sampled much earlier and are not directly comparable
@@ -92,6 +78,27 @@ echo -e "\n#####################################################################
 echo "The number of remaining sequences is:"
 grep -c ">" 02_good_seqs.fasta
 
+echo -e "\n####################################################################################\n"
+
+echo "Next we need to remove any sequences not part of the current project"
+
+# keep only sequences from the current project (Emma's sequences)
+# first pull out the column of DNA extraction IDs
+# turn this from a column into a | delimited set of IDs
+# and remove the last one
+EXTIDS=$(tail +2 ../../data/metadata/extraction_worksheet_emma.csv | \
+  cut -d, -f2 | tr '\n' '|' | sed 's/|$//')
+
+# output only sequences from Emma's extractions (the others are from other projects)
+bioawk -c fastx -v pattern="$EXTIDS" \
+  '$0~pattern { print ">"$name"\n"$seq}' 02_good_seqs.fasta > 02_good_seqs_proj.fasta
+  
+mv -v 02_good_seqs_proj.fasta 02_good_seqs.fasta
+
+# count number of remaining sequences
+echo "The number of remaining sequences is:"
+grep -c ">" 02_good_seqs.fasta
+  
 echo -e "\n####################################################################################\n"
 
 # check if all sequence names are unique
