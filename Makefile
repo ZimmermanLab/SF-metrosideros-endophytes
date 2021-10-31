@@ -35,12 +35,12 @@ $(METADATA_OUT_DIR)/groupfile.tsv: scripts/02_join_metadata.R \
 # process seqs to get clean list with OTU assignment via mothur
 $(SEQS_OUT_DIR)/12_seq_with_OTU_ID.txt: scripts/01_process_fasta.sh $(SEQS_IN) \
 		$(METADATA_IN_DIR)/extraction_worksheet_emma.csv
- 	bash scripts/01_process_fasta.sh > output/log_files/seq_script_log.txt
+	bash scripts/01_process_fasta.sh > output/log_files/seq_script_log.txt
 
 # process sequences to get clean list of names
 $(SEQS_OUT_DIR)/05_seq_names.txt: scripts/01_process_fasta.sh $(SEQS_IN) \
 		$(METADATA_IN_DIR)/extraction_worksheet_emma.csv
- 	bash scripts/01_process_fasta.sh > output/log_files/seq_script_log.txt
+	bash scripts/01_process_fasta.sh > output/log_files/seq_script_log.txt
 
 clean:
 	rm -fv output/log_files/*
