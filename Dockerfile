@@ -1,4 +1,4 @@
-FROM       rocker/geospatial
+FROM       rocker/geospatial:4.1.1
 MAINTAINER Naupaka Zimmerman "https://github.com/naupaka"
 
 RUN apt-get update
@@ -17,8 +17,8 @@ RUN curl -L https://github.com/mothur/mothur/releases/download/v1.39.5/Mothur.li
 
 
 ###### R Packages ######
-COPY . /home/manuscript
-WORKDIR /home/manuscript
+WORKDIR /home/rstudio/sfendos
+COPY renv.lock renv.lock
 
 ENV RENV_VERSION 0.14.0
 RUN R -e "install.packages('remotes', repos = c(CRAN = 'https://cloud.r-project.org'))"
@@ -28,7 +28,6 @@ RUN R -e 'renv::restore()'
 
 ##### Other misc #####
 COPY init_docker.sh /
-WORKDIR /home
 
 RUN echo "export PATH=${PATH}:/home/code/tools/bioawk/:/home/mothur" >> /home/.profile
 RUN echo "/usr/bin/bash" >> /home/.profile
