@@ -23,11 +23,14 @@ WORKDIR /home/rstudio/sfendos
 ENV RENV_VERSION 0.14.0
 RUN R -e "install.packages('remotes', repos = c(CRAN = 'https://cloud.r-project.org'))"
 RUN R -e "remotes::install_github('rstudio/renv@${RENV_VERSION}')"
-RUN R -e 'renv::restore()'
+
+RUN chown -R rstudio . \
+ && sudo -u rstudio R -e 'renv::restore()'
 
 
 ##### Other misc #####
 COPY init_docker.sh /
+WORKDIR /home
 
 RUN echo "export PATH=${PATH}:/home/code/tools/bioawk/:/home/mothur" >> /home/.profile
 RUN echo "/usr/bin/bash" >> /home/.profile
