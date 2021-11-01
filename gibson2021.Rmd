@@ -164,6 +164,7 @@ library("ggpubr")
 library("knitr")
 library("kableExtra")
 library("patchwork")
+library("rticles")
 
 # save run environment to logfile in output directory after loading all packages
 devtools::session_info() %>%
