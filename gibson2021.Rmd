@@ -233,6 +233,12 @@ iso_freq_plot <- trees %>%
   mutate(grew = as.numeric(grew),
          total = as.numeric(total)) %>%
   mutate(isoFreq = grew / total) %>%
+  mutate(Site_ID = forcats::fct_relevel(Site_ID, c("S6B",
+                                                   "S1B",
+                                                   "S3B",
+                                                   "S5B",
+                                                   "S2B",
+                                                   "S4B"))) %>%
   ggplot(aes(x = Site_ID,
              y = isoFreq)) +
   geom_boxplot() +
@@ -240,17 +246,23 @@ iso_freq_plot <- trees %>%
                                    vjust = 1,
                                    hjust = 1)) +
   stat_compare_means(method = "kruskal") +
-  scale_x_discrete(labels = c("Balboa",
-                              "Downtown",
+  scale_x_discrete(labels = c("Ocean",
+                              "Balboa",
                               "Mt. Davidson",
-                              "Bay",
                               "Freeway",
-                              "Ocean")) +
+                              "Downtown",
+                              "Bay")) +
   ggtitle("Isolation Frequencies") +
   xlab("Site") +
   ylab("Isolation Frequency")
 
 dbh_plot <- trees %>%
+  mutate(Site_ID = forcats::fct_relevel(Site_ID, c("S6B",
+                                                   "S1B",
+                                                   "S3B",
+                                                   "S5B",
+                                                   "S2B",
+                                                   "S4B"))) %>%
   ggplot(aes(x = Site_ID,
              y = DBH_cm)) +
   geom_boxplot() +
@@ -258,12 +270,12 @@ dbh_plot <- trees %>%
                                    vjust = 1,
                                    hjust = 1)) +
   stat_compare_means(method = "kruskal") +
-  scale_x_discrete(labels = c("Balboa",
-                              "Downtown",
+  scale_x_discrete(labels = c("Ocean",
+                              "Balboa",
                               "Mt. Davidson",
-                              "Bay",
                               "Freeway",
-                              "Ocean")) +
+                              "Downtown",
+                              "Bay")) +
   ggtitle("Diameter at Breast Height") +
   xlab("Site") +
   ylab("Diameter at Breast height (cm)")
@@ -352,18 +364,25 @@ mtext("B", side = 3, adj = -0.5, padj = -2.7, cex = 1.2)
 ```{r taxonomy-by-site-plot, fig.width=6, fig.height=8, fig.cap="Normalized relative abundances of Ascomycota taxa in each site."}
 
 stacked_bar_class <- tbas_with_site %>%
+  inner_join(extractions, by = c("extraction_id" = "Label_ID")) %>%
   group_by(site_id, Class.level_assignment) %>%
   tally() %>%
   ggplot(aes(x = site_id,
              y = n,
              fill = Class.level_assignment)) +
   geom_col(position = position_fill()) +
-  scale_x_discrete(labels = c("Balboa",
-                              "Downtown",
+  scale_x_discrete(limits =  c("S6",
+                               "S1",
+                               "S3",
+                               "S5",
+                               "S2",
+                               "S4"),
+                   labels = c("Ocean",
+                              "Balboa",
                               "Mt. Davidson",
-                              "Bay",
                               "Freeway",
-                              "Ocean")) +
+                              "Downtown",
+                              "Bay")) +
   ggtitle("Relative abundances of fungal classes by site") +
   ylab("Relative abundance") +
   xlab("Site") +
@@ -374,18 +393,25 @@ stacked_bar_class <- tbas_with_site %>%
                                    hjust = 1))
 
 stacked_bar_order <- tbas_with_site %>%
+  inner_join(extractions, by = c("extraction_id" = "Label_ID")) %>%
   group_by(site_id, Order.level_assignment) %>%
   tally() %>%
   ggplot(aes(x = site_id,
              y = n,
              fill = Order.level_assignment)) +
   geom_col(position = position_fill()) +
-  scale_x_discrete(labels = c("Balboa",
-                              "Downtown",
+  scale_x_discrete(limits =  c("S6",
+                               "S1",
+                               "S3",
+                               "S5",
+                               "S2",
+                               "S4"),
+                   labels = c("Ocean",
+                              "Balboa",
                               "Mt. Davidson",
-                              "Bay",
                               "Freeway",
-                              "Ocean")) +
+                              "Downtown",
+                              "Bay")) +
   ggtitle("Relative abundances of fungal orders by site") +
   ylab("Relative abundance") +
   xlab("Site") +
