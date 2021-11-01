@@ -89,17 +89,17 @@ The isolation frequency, or the percentage of leaf pieces that yielded fungal is
 
 ## Diversity Patterns {-}
 
-There were 88 total OTUs found among the 30 different trees. Both isolation frequency and number of fungal species found varied notably between trees. Species accumulation curves showed that the total amount of fungal diversity has not been completely sampled in any of the sites (Fig. \@ref(fig:rarefaction-plot)).
+There were 85 total 97% nrITS OTUs found among the 30 different trees. Both isolation frequency and number of fungal species found varied notably between trees. Species accumulation curves showed that the total amount of fungal diversity was not completely sampled in any of the sites (Fig. \@ref(fig:rarefaction-plot)).
 
 The most abundant fungal class among all communities is Dothideomycetes, followed by Sordariomycetes, which each had over 300 sequences (Table \@ref(tab:class-abundance-table)). Dothideomycetes were predominant in most sites except for the Downtown and Bay sites. In both of these sites, Sordariomycetes was the most common class instead. There are several classes that are either absent or present in small numbers in most sites, but more abundant in one or several sites. For example, Eurotiomycetes are more common in the Downtown and Freeway sites, and Leotiomycetes are only abundant in the Mt. Davidson site. Only two sequences were not identified by T-BAS. We queried these two sequences against the NCBI nt database via BLASTn and found them to match with high confidence to the Pezizomycetes, based on similarity to a strain recently identified in Australia [@catcheside2017].
 
 ## Biogeographic Patterns {-}
 
-The similarities between  microbial communities of these trees vary (Fig. \@ref(fig:nmds-plot)). Some sites show very little compositional similarity, while others cluster more tightly, indicating a greater degree of within-site beta diversity. However, sites that were closer together geographically also tended to have greater microbial community similarities.
+The similarities between microbial communities of these trees vary (Fig. \@ref(fig:nmds-plot)). Some sites show very little compositional similarity, while others cluster more tightly, indicating a greater degree of within-site beta diversity. However, sites that were closer together geographically also tended to have greater microbial community similarities.
 
 # Discussion {-}
 
-In this study, we sought to characterize the foliar microbiome of *Metrosideros excelsa* trees across the city of San Francisco. We found that he microbial composition of these urban trees' leaves varies in many aspects, from number of fungal isolates to the identities of said isolates. This variation could be explained by numerous environmental factors, as well as host physiological factors, such as the age and size of the tree. Each aspect of these complex microbiomes is likely influenced by several of these factors at once. 
+In this study, we sought to characterize the foliar microbiome of *Metrosideros excelsa* trees across the city of San Francisco. We found that the microbial composition of these urban trees' leaves varied in many aspects, from number of fungal isolates to the identities of said isolates. This variation could be explained by numerous environmental factors, as well as host physiological factors, such as the age and size of the tree. Each aspect of these complex microbiomes is likely influenced by several of these factors at once. 
 
 ## Isolation Frequency and Tree size {-}
 
