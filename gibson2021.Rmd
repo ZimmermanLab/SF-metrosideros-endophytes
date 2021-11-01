@@ -188,7 +188,7 @@ tbas_with_site %>%
   arrange(Class.level_assignment, desc(n)) %>%
   kable(col.names = c("Class", "Order", "Number of sequences"),
         caption =
-          "Abundances of classes of Ascomycota across all trees and sites.",
+          "Overall sequenced fungal isolate counts by Class and Order. All fungi successfully  sequenced in this study were placed within the Ascomycota.",
         booktabs = TRUE,
         linesep = c('', '', '', '', '', '\\addlinespace',
                     '\\addlinespace',
@@ -225,7 +225,7 @@ ggmap(sf_map) +
                                 "#f0a200"))
 ```
 
-```{r isolation-dbh-freq-plots, fig.width=6, fig.height=8, fig.cap="Isolation frequencies (A) and tree diameters (B) at each site. Isolation frequency (A) is a measure of how many slant tubes showed signs of fungal growth, out of how many total slant tubes were made. 100 slant tubes were made for each tree except for the trees in the downtown site, which had 140 slant tubes per tree because they had low isolation frequencies during the initial sampling."}
+```{r isolation-dbh-freq-plots, fig.width=6, fig.height=8, fig.cap="Isolation frequencies (A) and tree diameters (B) at each site. Isolation frequency (A) is a measure of how many slant tubes showed signs of fungal growth, out of how many total slant tubes were made. Approximately 100 slant tubes were made for each tree except for the trees in the downtown site, which had 140 slant tubes per tree because they had low isolation frequencies during the initial sampling. Sites along x axis are arranged left to right in order of their geographic location from west (left) to east (right)."}
 iso_freq_plot <- trees %>%
   separate(isolation_freq,
            into = c("grew", "total"),
@@ -361,7 +361,7 @@ mtext("B", side = 3, adj = -0.5, padj = -2.7, cex = 1.2)
 
 ```
 
-```{r taxonomy-by-site-plot, fig.width=6, fig.height=8, fig.cap="Normalized relative abundances of Ascomycota taxa in each site."}
+```{r taxonomy-by-site-plot, fig.width=6, fig.height=8, fig.cap="Normalized relative abundances of taxonomic groupings (Classes in A and Orders in B) in each site. Sites along x axis are arranged left to right in order of their geographic location from west (left) to east (right)."}
 
 stacked_bar_class <- tbas_with_site %>%
   inner_join(extractions, by = c("extraction_id" = "Label_ID")) %>%
@@ -428,11 +428,8 @@ stacked_bar_class / stacked_bar_order + plot_annotation(tag_levels = "A")
 ```
 
 ```{r ordination_setup, include=FALSE}
-
 set.seed(42)
 ord_obj <- metaMDS(otu_table_trees, trymax = 100)
-adonis(otu_table_trees ~ trees$Site_ID)
-
 ```
 
 ```{r nmds-plot, fig.width=6, fig.cap="NMDS ordination of community compositions. Each point represents the endophytic community of one tree, and the size of the point corresponds to that tree's DBH, while the color of said point corresponds to the site that tree is from. Points that are closer together indicate that the trees they represent have similar community compositions. The ellipses show the standard error around the centroid of all points within a site, and are also color-coded according to which site they represent."}
@@ -479,6 +476,17 @@ ordiellipse(ord_obj,
                     rep("#007f36"),
                     rep("#81005e")),
             lwd = 5)
+```
+
+```{r permanova-table}
+adonis(otu_table_trees ~ trees$Site_ID + trees$DBH_cm,
+       strata = trees$Site_ID)$aov.tab %>%
+  broom::tidy() %>%
+  kable(col.names = c("Term", "df", "Sum of Squares", "Mean of Squares", "F", "R^2", "p-value"),
+        caption =
+          "PERMANOVA model output based on Bray-Curtis distance, with permutations stratified by site. Foliar fungal community composition in leaves of \\emph{Metrosideros excelsa} across San Francisco is significantly related to both site of sampling and tree diameter at breast height (DBH).",
+        booktabs = TRUE, digits = 3) %>%
+        kableExtra::kable_styling(latex_options = "hold_position")
 ```
 
 # References
