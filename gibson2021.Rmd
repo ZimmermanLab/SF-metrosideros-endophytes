@@ -153,6 +153,7 @@ library("ggthemes")
 
 # for community analyses
 library("vegan")
+library("broom")
 
 # for mapping
 library("ggmap")
@@ -479,10 +480,11 @@ ordiellipse(ord_obj,
 ```
 
 ```{r permanova-table}
-adonis(otu_table_trees ~ trees$Site_ID + trees$DBH_cm,
+adonis(otu_table_trees ~ trees$Site_ID + trees$DBH_cm, # interactn not signfcant
        strata = trees$Site_ID)$aov.tab %>%
   broom::tidy() %>%
-  kable(col.names = c("Term", "df", "Sum of Squares", "Mean of Squares", "F", "R^2", "p-value"),
+  kable(col.names = c("Term", "df", "Sum of Squares",
+                      "Mean of Squares", "F", "R^2", "p-value"),
         caption =
           "PERMANOVA model output based on Bray-Curtis distance, with permutations stratified by site. Foliar fungal community composition in leaves of \\emph{Metrosideros excelsa} across San Francisco is significantly related to both site of sampling and tree diameter at breast height (DBH).",
         booktabs = TRUE, digits = 3) %>%
