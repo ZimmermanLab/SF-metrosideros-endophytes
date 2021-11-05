@@ -215,20 +215,22 @@ ggmap(sf_map) +
                            color = Site_ID),
              pch = 16,
              size = 5) +
-  # Manually set colors and labels to match other figures
-  scale_color_manual(name = "Sites",
-                     labels = c("Freeway",
-                              "Balboa",
-                              "Mt. Davidson",
-                              "Bay",
-                              "Ocean",
-                              "Downtown"),
-                     values = c("#00005a",
-                                "#ff5e62",
-                                "#007f36",
-                                "#8781e6",
-                                "#81005e",
-                                "#f0a200"))
+  scale_color_manual(
+    name = "Sites",
+    labels = c("Balboa",
+               "Downtown",
+               "Mt. Davidson",
+               "Bay",
+               "Freeway",
+               "Ocean"),
+    values = c("#ff5e62",
+               "#f0a200",
+               "#007f36",
+               "#8781e6",
+               "#00005a",
+               "#81005e")) +
+  labs(x = "Longitude",
+       y = "Latitude")
 ```
 
 ```{r isolation-dbh-freq-plots, fig.width=6, fig.height=8, fig.cap="Isolation frequencies (A) and tree diameters (B) at each site. Isolation frequency (A) is a measure of how many slant tubes showed signs of fungal growth, out of how many total slant tubes were made. Approximately 100 slant tubes were made for each tree except for the trees in the downtown site, which had 140 slant tubes per tree because they had low isolation frequencies during the initial sampling. Sites along x axis are arranged left to right in order of their geographic location from west (left) to east (right)."}
