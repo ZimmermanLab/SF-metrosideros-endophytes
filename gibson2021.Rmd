@@ -185,6 +185,45 @@ source("scripts/04_clean_and_join_tbas_taxonomy.R")
 source("scripts/05_setup_maps_and_gis_coords.R")
 ```
 
+```{r set-site-name-color-vectors}
+# set the values for site name and colors for later use
+site_names_vector_by_site_id <- c("Balboa",          # S1B
+                                  "Downtown",        # S2B
+                                  "Mt. Davidson",    # S3B
+                                  "Bay",             # S4B
+                                  "Freeway",         # S5B
+                                  "Ocean")           # S6B
+
+site_colors_vector_by_site_id <- c("#ff5e62",        # Balboa
+                                   "#f0a200",        # Downtown
+                                   "#007f36",        # Mt. Davidson
+                                   "#8781e6",        # Bay
+                                   "#00005a",        # Freeway
+                                   "#81005e")        # Ocean
+
+site_colors_alphabetical_by_site_name <- c("#ff5e62",        # Balboa
+                                           "#8781e6",        # Bay
+                                           "#f0a200",        # Downtown
+                                           "#00005a",        # Freeway
+                                           "#007f36",        # Mt. Davidson
+                                           "#81005e")        # Ocean
+
+site_id_west_to_east <-  c("S6",
+                           "S1",
+                           "S3",
+                           "S5",
+                           "S2",
+                           "S4")
+
+sites_names_west_to_east <- c("Ocean",
+                              "Balboa",
+                              "Mt. Davidson",
+                              "Freeway",
+                              "Downtown",
+                              "Bay")
+```
+
+
 <!-- tables -->
 
 ```{r class-abundance-table}
@@ -217,36 +256,33 @@ ggmap(sf_map) +
              size = 5) +
   scale_color_manual(
     name = "Sites",
-    labels = c("Balboa",
-               "Downtown",
-               "Mt. Davidson",
-               "Bay",
-               "Freeway",
-               "Ocean"),
-    values = c("#ff5e62",
-               "#f0a200",
-               "#007f36",
-               "#8781e6",
-               "#00005a",
-               "#81005e")) +
+    labels = site_names_vector_by_site_id,
+    values = site_colors_vector_by_site_id) +
   labs(x = "Longitude",
        y = "Latitude")
 ```
 
 ```{r isolation-dbh-freq-plots, fig.width=6, fig.height=8, fig.cap="Isolation frequencies (A) and tree diameters (B) at each site. Isolation frequency (A) is a measure of how many slant tubes showed signs of fungal growth, out of how many total slant tubes were made. Approximately 100 slant tubes were made for each tree except for the trees in the downtown site, which had 140 slant tubes per tree because they had low isolation frequencies during the initial sampling. Sites along x axis are arranged left to right in order of their geographic location from west (left) to east (right)."}
-iso_freq_plot <- trees %>%
+# do the isolation frequency calculations
+trees_with_isofreq <- trees %>%
   separate(isolation_freq,
            into = c("grew", "total"),
            sep = "/") %>%
   mutate(grew = as.numeric(grew),
          total = as.numeric(total)) %>%
   mutate(isoFreq = grew / total) %>%
+  
+  # for some reason can't do this with levels in scale_x_discrete
+  # so we have to do it here first
   mutate(Site_ID = forcats::fct_relevel(Site_ID, c("S6B",
                                                    "S1B",
                                                    "S3B",
                                                    "S5B",
                                                    "S2B",
-                                                   "S4B"))) %>%
+                                                   "S4B")))
+
+# boxplot of isolation frequencies with sites from west to east
+iso_freq_plot <- trees_with_isofreq %>%
   ggplot(aes(x = Site_ID,
              y = isoFreq)) +
   geom_boxplot() +
@@ -254,23 +290,13 @@ iso_freq_plot <- trees %>%
                                    vjust = 1,
                                    hjust = 1)) +
   stat_compare_means(method = "kruskal") +
-  scale_x_discrete(labels = c("Ocean",
-                              "Balboa",
-                              "Mt. Davidson",
-                              "Freeway",
-                              "Downtown",
-                              "Bay")) +
-  ggtitle("Isolation Frequencies") +
-  xlab("Site") +
-  ylab("Isolation Frequency")
+  scale_x_discrete(labels = sites_names_west_to_east) +
+  labs(title = "Isolation Frequencies",
+       x = "Site",
+       y = "Isolation Frequency")
 
-dbh_plot <- trees %>%
-  mutate(Site_ID = forcats::fct_relevel(Site_ID, c("S6B",
-                                                   "S1B",
-                                                   "S3B",
-                                                   "S5B",
-                                                   "S2B",
-                                                   "S4B"))) %>%
+# boxplot of tree dbh across sites from west to east
+dbh_plot <- trees_with_isofreq %>%
   ggplot(aes(x = Site_ID,
              y = DBH_cm)) +
   geom_boxplot() +
@@ -278,40 +304,23 @@ dbh_plot <- trees %>%
                                    vjust = 1,
                                    hjust = 1)) +
   stat_compare_means(method = "kruskal") +
-  scale_x_discrete(labels = c("Ocean",
-                              "Balboa",
-                              "Mt. Davidson",
-                              "Freeway",
-                              "Downtown",
-                              "Bay")) +
-  ggtitle("Diameter at Breast Height") +
-  xlab("Site") +
-  ylab("Diameter at Breast height (cm)")
+  scale_x_discrete(labels = sites_names_west_to_east) +
+  labs(title = "Diameter at Breast Height",
+       x = "Site",
+       y = "Diameter at Breast height (cm)")
 
+# put the two plots together one on top of the other
 iso_freq_plot / dbh_plot + plot_annotation(tag_levels = "A")
 ```
 
 ```{r rarefaction-plot, fig.width=6, fig.cap="Species accumulation curves showing fungal community OTU richness. Each line in A represents the OTU richness for a single host tree.  Each line in B represents the combined OTU richness of all trees (n = 5) in one site."}
 
+# two plots, side by side
 par(mfrow = c(1, 2))
-
-rare_color <- c(rep("#ff5e62", 5),
-                rep("#f0a200", 5),
-                rep("#007f36", 5),
-                rep("#8781e6", 5),
-                rep("#00005a", 5),
-                rep("#81005e", 5))
-
-group_labels <- c(rep("Balboa", 5),
-                  rep("Downtown", 5),
-                  rep("Mt. Davidson", 5),
-                  rep("Bay", 5),
-                  rep("Freeway", 5),
-                  rep("Ocean", 5))
 
 rarecurve(otu_table_trees,
           main = "Fungal community richness\nin individual host trees",
-          col = rare_color,
+          col = rep(site_colors_vector_by_site_id, each = 5),
           label = FALSE,
           lwd = 2.5,
           cex.main = 1,
@@ -319,35 +328,16 @@ rarecurve(otu_table_trees,
           ylab = "Number of fungal species (97% ITS OTUs)")
 
 legend("bottomright",
-       legend = levels(factor(group_labels)),
+       legend = site_names_vector_by_site_id,
        pch = 16,
        cex = 0.6,
-       col = c(rep("#ff5e62"),
-               rep("#8781e6"),
-               rep("#f0a200"),
-               rep("#00005a"),
-               rep("#007f36"),
-               rep("#81005e")))
+       col = site_colors_vector_by_site_id)
 
 mtext("A", side = 3, adj = -0.5, padj = -2.7, cex = 1.2)
 
-rare_color_sites <- c(rep("#ff5e62"),
-                      rep("#f0a200"),
-                      rep("#007f36"),
-                      rep("#8781e6"),
-                      rep("#00005a"),
-                      rep("#81005e"))
-
-group_labels_sites <- c(rep("Balboa"),
-                        rep("Downtown"),
-                        rep("Mt. Davidson"),
-                        rep("Bay"),
-                        rep("Freeway"),
-                        rep("Ocean"))
-
 rarecurve(otu_table_sites,
           main = "Fungal community richness\nfor each site",
-          col = rare_color_sites,
+          col = site_colors_vector_by_site_id,
           label = FALSE,
           lwd = 2.5,
           cex.main = 1,
@@ -355,15 +345,10 @@ rarecurve(otu_table_sites,
           ylab = "Number of fungal species (97% ITS OTUs)")
 
 legend("bottomright",
-       legend = levels(factor(group_labels_sites)),
+       legend = site_names_vector_by_site_id,
        pch = 16,
        cex = 0.6,
-       col = c(rep("#ff5e62"),
-               rep("#8781e6"),
-               rep("#f0a200"),
-               rep("#00005a"),
-               rep("#007f36"),
-               rep("#81005e")))
+       col = site_colors_vector_by_site_id)
 
 mtext("B", side = 3, adj = -0.5, padj = -2.7, cex = 1.2)
 
@@ -379,21 +364,11 @@ stacked_bar_class <- tbas_with_site %>%
              y = n,
              fill = Class.level_assignment)) +
   geom_col(position = position_fill()) +
-  scale_x_discrete(limits =  c("S6",
-                               "S1",
-                               "S3",
-                               "S5",
-                               "S2",
-                               "S4"),
-                   labels = c("Ocean",
-                              "Balboa",
-                              "Mt. Davidson",
-                              "Freeway",
-                              "Downtown",
-                              "Bay")) +
-  ggtitle("Relative abundances of fungal classes by site") +
-  ylab("Relative abundance") +
-  xlab("Site") +
+  scale_x_discrete(limits =  site_id_west_to_east,
+                   labels = sites_names_west_to_east) +
+  labs(title = "Relative abundances of fungal classes by site",
+       y = "Relative abundance",
+       x = "Site") +
   theme_few() +
   scale_fill_viridis_d(name = "Class") +
   theme(axis.text.x = element_text(angle = 45,
@@ -408,21 +383,11 @@ stacked_bar_order <- tbas_with_site %>%
              y = n,
              fill = Order.level_assignment)) +
   geom_col(position = position_fill()) +
-  scale_x_discrete(limits =  c("S6",
-                               "S1",
-                               "S3",
-                               "S5",
-                               "S2",
-                               "S4"),
-                   labels = c("Ocean",
-                              "Balboa",
-                              "Mt. Davidson",
-                              "Freeway",
-                              "Downtown",
-                              "Bay")) +
-  ggtitle("Relative abundances of fungal orders by site") +
-  ylab("Relative abundance") +
-  xlab("Site") +
+  scale_x_discrete(limits =  site_id_west_to_east,
+                   labels = sites_names_west_to_east) +
+  labs(title = "Relative abundances of fungal orders by site",
+       y = "Relative abundance",
+       x = "Site") +
   theme_few() +
   scale_fill_viridis_d(name = "Order") +
   theme(axis.text.x = element_text(angle = 45,
@@ -453,36 +418,21 @@ plot(ord_obj,
 
 points(ord_obj,
        display = "sites",
-       col = c(rep("#ff5e62", 5),
-               rep("#f0a200", 5),
-               rep("#007f36", 5),
-               rep("#8781e6", 5),
-               rep("#00005a", 5),
-               rep("#81005e", 5)),
+       col = rep(site_colors_vector_by_site_id, each = 5),
        pch = 16,
        cex = 1.2)
 
 legend("bottomleft",
-       legend = levels(factor(group_labels)),
+       legend = site_names_vector_by_site_id,
        pch = 16,
        cex = 0.7,
        pt.cex = 1.3,
-       col = c(rep("#ff5e62"),
-               rep("#8781e6"),
-               rep("#f0a200"),
-               rep("#00005a"),
-               rep("#007f36"),
-               rep("#81005e")))
+       col = site_colors_vector_by_site_id)
 
 ordiellipse(ord_obj,
-            groups = group_labels,
+            groups = rep(site_names_vector_by_site_id, each = 5),
             label = FALSE,
-            col = c(rep("#ff5e62"),
-                    rep("#8781e6"),
-                    rep("#f0a200"),
-                    rep("#00005a"),
-                    rep("#007f36"),
-                    rep("#81005e")),
+            col = site_colors_alphabetical_by_site_name, # note alphabetical
             lwd = 5)
 ```
 
