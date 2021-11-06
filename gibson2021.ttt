@@ -1,0 +1,47 @@
+\begin{table}[!h]
+
+\caption{\label{tab:class-abundance-table}Overall sequenced fungal isolate counts by Class and Order. All fungi successfully  sequenced in this study were placed within the Ascomycota.}
+\centering
+\begin{tabular}[t]{llr}
+\toprule
+Class & Order & Number of sequences\\
+\midrule
+Dothideomycetes & Capnodiales & 266\\
+Dothideomycetes & Botryosphaeriales & 127\\
+Dothideomycetes & Pleosporales & 52\\
+Dothideomycetes & unclassified,Capnodiales & 3\\
+Dothideomycetes & Trypetheliales & 1\\
+Dothideomycetes & unclassified & 1\\
+\addlinespace
+Eurotiomycetes & Eurotiales & 57\\
+\addlinespace
+Leotiomycetes & Helotiales & 19\\
+\addlinespace
+Pezizomycetes & Pezizales & 54\\
+\addlinespace
+Sordariomycetes & Xylariales & 237\\
+Sordariomycetes & Diaporthales & 49\\
+Sordariomycetes & Coniochaetales & 38\\
+Sordariomycetes & Sordariales & 9\\
+Sordariomycetes & Hypocreales & 7\\
+Sordariomycetes & Glomerellales & 1\\
+\bottomrule
+\end{tabular}
+\end{table}
+\efloatseparator
+ 
+\begin{table}[!h]
+
+\caption{\label{tab:permanova-table}PERMANOVA model output based on Bray-Curtis distance, with permutations stratified by site. Foliar fungal community composition in leaves of \emph{Metrosideros excelsa} across San Francisco is significantly related to both site of sampling and tree diameter at breast height (DBH).}
+\centering
+\begin{tabular}[t]{lrrrrrr}
+\toprule
+Term & df & Sum of Squares & Mean of Squares & F & R\textasciicircum{}2 & p-value\\
+\midrule
+trees\$Site\_ID & 5 & 3.642 & 0.728 & 3.015 & 0.373 & 0.022\\
+trees\$DBH\_cm & 1 & 0.556 & 0.556 & 2.302 & 0.057 & 0.022\\
+Residuals & 23 & 5.557 & 0.242 & NA & 0.570 & NA\\
+Total & 29 & 9.755 & NA & NA & 1.000 & NA\\
+\bottomrule
+\end{tabular}
+\end{table}
