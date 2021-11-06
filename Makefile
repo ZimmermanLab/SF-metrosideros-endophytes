@@ -19,6 +19,6 @@ clean:
 	rm -fv output/log_files/*
 	rm -fv output/mothur_pipeline/*
 	rm -fv gibson2021_files/figure-latex/*.pdf
-	rm -fv gibson2021.tex gibson2021.fff gibson2021.ttt gibson2021.pdf
+	rm -fv gibson2021.tex gibson2021.fff gibson2021.ttt gibson2021.pdf gibson2021.log
 
 .PHONY: clean otus all
