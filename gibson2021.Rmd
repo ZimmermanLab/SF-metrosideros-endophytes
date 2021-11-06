@@ -47,6 +47,7 @@ library("sf")
 
 # for document output and rendering
 library("ggpubr")
+library("ggstatsplot")
 library("knitr")
 library("kableExtra")
 library("patchwork")
@@ -162,32 +163,83 @@ trees_with_isofreq <- trees %>%
                                                    "S4B")))
 
 # boxplot of isolation frequencies with sites from west to east
-iso_freq_plot <- trees_with_isofreq %>%
-  ggplot(aes(x = Site_ID,
-             y = isoFreq)) +
-  geom_boxplot() +
+# iso_freq_plot <- trees_with_isofreq %>%
+#   ggplot(aes(x = Site_ID,
+#              y = isoFreq)) +
+#   geom_boxplot() +
+#   theme(axis.text.x = element_text(angle = 45,
+#                                    vjust = 1,
+#                                    hjust = 1)) +
+#   stat_compare_means(method = "kruskal") +
+#   scale_x_discrete(labels = sites_names_west_to_east) +
+#   labs(title = "Isolation Frequencies",
+#        x = "Site",
+#        y = "Isolation Frequency")
+
+# boxplot of tree dbh across sites from west to east
+iso_freq_plot <- ggstatsplot::ggbetweenstats(
+  data = trees_with_isofreq,
+  x = Site_ID,
+  y = isoFreq,
+  type = "nonparametric",
+  plot.type = "box",
+  results.subtitle = TRUE,
+  centrality.plotting = FALSE,
+  ggsignif.args = list(vjust = -1, textsize = 2),
+  point.args = list(color = "grey", position = "jitter")) +
+  ylim(c(0, 1)) +
+  scale_x_discrete(labels = sites_names_west_to_east) +
   theme(axis.text.x = element_text(angle = 45,
                                    vjust = 1,
                                    hjust = 1)) +
-  stat_compare_means(method = "kruskal") +
-  scale_x_discrete(labels = sites_names_west_to_east) +
   labs(title = "Isolation Frequencies",
        x = "Site",
        y = "Isolation Frequency")
 
 # boxplot of tree dbh across sites from west to east
-dbh_plot <- trees_with_isofreq %>%
-  ggplot(aes(x = Site_ID,
-             y = DBH_cm)) +
-  geom_boxplot() +
+# dbh_plot <- trees_with_isofreq %>%
+#   ggplot(aes(x = Site_ID,
+#              y = DBH_cm)) +
+#   geom_boxplot() +
+#   theme(axis.text.x = element_text(angle = 45,
+#                                    vjust = 1,
+#                                    hjust = 1)) +
+#   stat_compare_means(method = "kruskal") +
+#   scale_x_discrete(labels = sites_names_west_to_east) +
+#   labs(title = "Diameter at Breast Height",
+#        x = "Site",
+#        y = "Diameter at Breast height (cm)")
+
+pairwise_comps <- pairwise_comparisons(trees_with_isofreq, x = Site_ID, y = DBH_cm, paired = FALSE, type = "nonparametric") %>%
+      dplyr::mutate(groups = purrr::pmap(.l = list(group1, group2), .f = c)) %>%
+    dplyr::filter(p.value < 0.05)
+
+
+# boxplot of tree dbh across sites from west to east
+dbh_plot <- ggstatsplot::ggbetweenstats(
+  data = trees_with_isofreq,
+  x = Site_ID,
+  y = DBH_cm,
+  type = "nonparametric",
+  plot.type = "box",
+  results.subtitle = TRUE,
+  centrality.plotting = FALSE,
+  ggsignif.args = list(vjust = -1, textsize = 2),
+  point.args = list(color = "grey", position = "jitter")) +
+  # ggsignif::geom_signif(
+  #   comparisons = pairwise_comps$groups,
+  #   y_position = c(75, 65, 55),
+  #   na.rm = TRUE
+  # ) +
+  ylim(c(0, max(trees_with_isofreq$DBH_cm) + 20)) +
+  scale_x_discrete(labels = sites_names_west_to_east) +
   theme(axis.text.x = element_text(angle = 45,
                                    vjust = 1,
                                    hjust = 1)) +
-  stat_compare_means(method = "kruskal") +
-  scale_x_discrete(labels = sites_names_west_to_east) +
   labs(title = "Diameter at Breast Height",
        x = "Site",
        y = "Diameter at Breast height (cm)")
+
 
 # put the two plots together one on top of the other
 iso_freq_plot / dbh_plot + plot_annotation(tag_levels = "A")
@@ -407,6 +459,7 @@ betadispersion_result <- anova(
                             method = "bray"),
                     group = rep(site_names_vector_by_site_id,
                                 each = 5)))
+
 betadisp_p_val <- round(betadispersion_result$`Pr(>F)`[1], 2)
 ```
 
@@ -437,7 +490,7 @@ However, even sites with low within-site diversity appear to be more similar to 
 
 ## Community composition compared to related trees in other locations {-}
 
-In widely-distributed plant species, fungal endophyte composition can differ quite considerably in a species from its native home to the places it has been introduced [@taylor_hyde_jones_1999]. *M. excelsa* is native to New Zealand, but it and its close relatives in the *Myrtaceae* family are widespread across the world. Across all locations, the most abundant classes found within these *M. excelsa* fungal communities were Dothideomycetes and Sordariomycetes by a notable margin (Table \@ref(tab:class-abundance-table)). At broad taxonomic levels such as Class, the endophytes found in this study appear to be similar to those found in other Myrtaceae trees elsewhere. For instance, a study of *Myrtaceae* trees in South America, the first and second most common fungal isolates were also identified as Dothideomycetes followed by Sordariomycetes [@vaz2014fungal]. Dothideomycetes and Sordariomycetes are also the first and second most abundant classes in the endophytic communities of *M. excelsa's* close relative in Hawaii, *Metrosideros polymorpha*, as well [@Zimmerman13022]. This could indicate that these fungal classes are well-adapted to living as endophytes within these trees, but it is also possible that these communities are actually quite different when considered at a finer taxonomic resolution. 
+In widely-distributed plant species, fungal endophyte composition can differ quite considerably in a species from its native home to the places it has been introduced [@taylor_hyde_jones_1999]. *M. excelsa* is native to New Zealand, but it and its close relatives in the *Myrtaceae* family are widespread across the world. Across all locations, the most abundant classes found within these *M. excelsa* fungal communities were Dothideomycetes and Sordariomycetes by a notable margin (Table \@ref(tab:class-abundance-table)). At broad taxonomic levels such as Class, the endophytes found in this study appear to be similar to those found in other Myrtaceae trees elsewhere. For instance, a study of *Myrtaceae* trees in South America, the first and second most common fungal isolates were also identified as Dothideomycetes followed by Sordariomycetes [@vaz2014fungal]. Dothideomycetes and Sordariomycetes are also the first and second most abundant classes in the endophytic communities of *M. excelsa's* close relative in Hawai'i, *Metrosideros polymorpha*, as well [@Zimmerman13022]. This could indicate that these fungal classes are well-adapted to living as endophytes within these trees, but it is also possible that these communities are actually quite different when considered at a finer taxonomic resolution. 
 
 ## Comparison of trees in San Francisco and New Zealand {-}
 
