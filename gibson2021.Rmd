@@ -162,32 +162,18 @@ trees_with_isofreq <- trees %>%
                                                    "S2B",
                                                    "S4B")))
 
-# boxplot of isolation frequencies with sites from west to east
-# iso_freq_plot <- trees_with_isofreq %>%
-#   ggplot(aes(x = Site_ID,
-#              y = isoFreq)) +
-#   geom_boxplot() +
-#   theme(axis.text.x = element_text(angle = 45,
-#                                    vjust = 1,
-#                                    hjust = 1)) +
-#   stat_compare_means(method = "kruskal") +
-#   scale_x_discrete(labels = sites_names_west_to_east) +
-#   labs(title = "Isolation Frequencies",
-#        x = "Site",
-#        y = "Isolation Frequency")
-
 # boxplot of tree dbh across sites from west to east
 iso_freq_plot <- ggstatsplot::ggbetweenstats(
   data = trees_with_isofreq,
   x = Site_ID,
   y = isoFreq,
   type = "nonparametric",
-  plot.type = "box",
-  results.subtitle = TRUE,
-  centrality.plotting = FALSE,
-  ggsignif.args = list(vjust = -1, textsize = 2),
+  plot.type = "box", # instead of violin
+  results.subtitle = TRUE, # add overall stats in subtitle
+  centrality.plotting = FALSE, # don't want medians too
+  ggsignif.args = list(vjust = -1, textsize = 2), # to prevent overplotting
   point.args = list(color = "grey", position = "jitter")) +
-  ylim(c(0, 1)) +
+  ylim(c(0, 1)) + # always ranges between 0 and 1
   scale_x_discrete(labels = sites_names_west_to_east) +
   theme(axis.text.x = element_text(angle = 45,
                                    vjust = 1,
@@ -195,25 +181,6 @@ iso_freq_plot <- ggstatsplot::ggbetweenstats(
   labs(title = "Isolation Frequencies",
        x = "Site",
        y = "Isolation Frequency")
-
-# boxplot of tree dbh across sites from west to east
-# dbh_plot <- trees_with_isofreq %>%
-#   ggplot(aes(x = Site_ID,
-#              y = DBH_cm)) +
-#   geom_boxplot() +
-#   theme(axis.text.x = element_text(angle = 45,
-#                                    vjust = 1,
-#                                    hjust = 1)) +
-#   stat_compare_means(method = "kruskal") +
-#   scale_x_discrete(labels = sites_names_west_to_east) +
-#   labs(title = "Diameter at Breast Height",
-#        x = "Site",
-#        y = "Diameter at Breast height (cm)")
-
-pairwise_comps <- pairwise_comparisons(trees_with_isofreq, x = Site_ID, y = DBH_cm, paired = FALSE, type = "nonparametric") %>%
-      dplyr::mutate(groups = purrr::pmap(.l = list(group1, group2), .f = c)) %>%
-    dplyr::filter(p.value < 0.05)
-
 
 # boxplot of tree dbh across sites from west to east
 dbh_plot <- ggstatsplot::ggbetweenstats(
@@ -226,12 +193,7 @@ dbh_plot <- ggstatsplot::ggbetweenstats(
   centrality.plotting = FALSE,
   ggsignif.args = list(vjust = -1, textsize = 2),
   point.args = list(color = "grey", position = "jitter")) +
-  # ggsignif::geom_signif(
-  #   comparisons = pairwise_comps$groups,
-  #   y_position = c(75, 65, 55),
-  #   na.rm = TRUE
-  # ) +
-  ylim(c(0, max(trees_with_isofreq$DBH_cm) + 20)) +
+  ylim(c(0, max(trees_with_isofreq$DBH_cm) + 20)) + # give it some space
   scale_x_discrete(labels = sites_names_west_to_east) +
   theme(axis.text.x = element_text(angle = 45,
                                    vjust = 1,
