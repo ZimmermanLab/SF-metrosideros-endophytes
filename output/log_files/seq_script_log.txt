@@ -2707,13 +2707,13 @@ Type 'quit()' to exit program
 
 
 mothur > unique.seqs(fasta=04_good_seqs_short_names_checked.fasta, inputdir=./, outputdir=./)
-Setting output directory to: /home/zlabuser/SF-metrosideros-endophytes/output/mothur_pipeline/
-Setting input directory to: /home/zlabuser/SF-metrosideros-endophytes/output/mothur_pipeline/
+Setting output directory to: /home/rstudio/sfendos/output/mothur_pipeline/
+Setting input directory to: /home/rstudio/sfendos/output/mothur_pipeline/
 855	476
 
 Output File Names: 
-/home/zlabuser/SF-metrosideros-endophytes/output/mothur_pipeline/04_good_seqs_short_names_checked.names
-/home/zlabuser/SF-metrosideros-endophytes/output/mothur_pipeline/04_good_seqs_short_names_checked.unique.fasta
+/home/rstudio/sfendos/output/mothur_pipeline/04_good_seqs_short_names_checked.names
+/home/rstudio/sfendos/output/mothur_pipeline/04_good_seqs_short_names_checked.unique.fasta
 
 
 mothur > quit()
@@ -2745,8 +2745,8 @@ Type 'quit()' to exit program
 
 
 mothur > cluster(fasta=04_good_seqs_short_names_checked.fasta, method=agc, inputdir=./, outputdir=./)
-Setting output directory to: /home/zlabuser/SF-metrosideros-endophytes/output/mothur_pipeline/
-Setting input directory to: /home/zlabuser/SF-metrosideros-endophytes/output/mothur_pipeline/
+Setting output directory to: /home/rstudio/sfendos/output/mothur_pipeline/
+Setting input directory to: /home/rstudio/sfendos/output/mothur_pipeline/
 
 Using 1 processors.
 /home/mothur/mothurvsearch file does not exist. Checking path... 
@@ -2755,20 +2755,20 @@ Found vsearch in your path, using /home/mothur/vsearch
 No namesfile given, running unique.seqs command to generate one.
 
 /******************************************/
-Running command: unique.seqs(fasta=/home/zlabuser/SF-metrosideros-endophytes/output/mothur_pipeline/04_good_seqs_short_names_checked.fasta, format=count)
+Running command: unique.seqs(fasta=/home/rstudio/sfendos/output/mothur_pipeline/04_good_seqs_short_names_checked.fasta, format=count)
 855	476
 
 Output File Names: 
-/home/zlabuser/SF-metrosideros-endophytes/output/mothur_pipeline/04_good_seqs_short_names_checked.count_table
-/home/zlabuser/SF-metrosideros-endophytes/output/mothur_pipeline/04_good_seqs_short_names_checked.unique.fasta
+/home/rstudio/sfendos/output/mothur_pipeline/04_good_seqs_short_names_checked.count_table
+/home/rstudio/sfendos/output/mothur_pipeline/04_good_seqs_short_names_checked.unique.fasta
 
 /******************************************/
-It took 7 seconds to cluster
+It took 5 seconds to cluster
 
 Output File Names: 
-/home/zlabuser/SF-metrosideros-endophytes/output/mothur_pipeline/04_good_seqs_short_names_checked.agc.list
-/home/zlabuser/SF-metrosideros-endophytes/output/mothur_pipeline/04_good_seqs_short_names_checked.agc.sabund
-/home/zlabuser/SF-metrosideros-endophytes/output/mothur_pipeline/04_good_seqs_short_names_checked.agc.rabund
+/home/rstudio/sfendos/output/mothur_pipeline/04_good_seqs_short_names_checked.agc.list
+/home/rstudio/sfendos/output/mothur_pipeline/04_good_seqs_short_names_checked.agc.sabund
+/home/rstudio/sfendos/output/mothur_pipeline/04_good_seqs_short_names_checked.agc.rabund
 
 
 mothur > quit()
@@ -2800,12 +2800,12 @@ Type 'quit()' to exit program
 
 
 mothur > bin.seqs(list=04_good_seqs_short_names_checked.agc.list, fasta=04_good_seqs_short_names_checked.fasta, inputdir=./, outputdir=./)
-Setting output directory to: /home/zlabuser/SF-metrosideros-endophytes/output/mothur_pipeline/
-Setting input directory to: /home/zlabuser/SF-metrosideros-endophytes/output/mothur_pipeline/
+Setting output directory to: /home/rstudio/sfendos/output/mothur_pipeline/
+Setting input directory to: /home/rstudio/sfendos/output/mothur_pipeline/
 0.03
 
 Output File Names: 
-/home/zlabuser/SF-metrosideros-endophytes/output/mothur_pipeline/04_good_seqs_short_names_checked.agc.0.03.fasta
+/home/rstudio/sfendos/output/mothur_pipeline/04_good_seqs_short_names_checked.agc.0.03.fasta
 
 
 mothur > quit()
