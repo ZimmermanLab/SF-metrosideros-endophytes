@@ -7,7 +7,7 @@ RUN apt-get install -y openssh-server tmux nano git unzip \
 
 ##### bioawk #####
 RUN mkdir -p /home/code/tools \
- && cd /home/code/tools; git clone git://github.com/lh3/bioawk.git \
+ && cd /home/code/tools; git clone https://github.com/lh3/bioawk.git \
  && cd /home/code/tools/bioawk; make
 
 
