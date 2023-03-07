@@ -336,10 +336,13 @@ ordiellipse(ord_obj,
 
 
 ```{r permanova-table}
-tmp <- adonis(otu_table_trees ~ trees$Site_ID + trees$DBH_cm, # interactn not signfcant
-       strata = trees$Site_ID)$aov.tab %>%
+# set seet for permutations
+set.seed(42)
+
+# calculate PERMANOVA results for full model
+tmp <- adonis(otu_table_trees ~ trees$Site_ID * trees$DBH_cm)$aov.tab %>%
   broom::tidy() %>%
-  mutate(term = c("Site ID", "DBH (cm)", "Residuals", "Total")) %>%
+  mutate(term = c("Site ID", "DBH (cm)", "Site x DBH", "Residuals", "Total")) %>%
   kable(col.names = c("Term", "df", "Sum of Squares",
                       "Mean of Squares", "F", "RSQUARED", "p-value"),
         caption =
@@ -347,7 +350,22 @@ tmp <- adonis(otu_table_trees ~ trees$Site_ID + trees$DBH_cm, # interactn not si
         booktabs = TRUE, digits = 3) %>%
         kableExtra::kable_styling(latex_options = "hold_position")
 
+# sort of hacky approach to get nice R2 formatting, from
+# StackOverflow https://stackoverflow.com/a/62604838/3114071
 knitr::asis_output(stringr::str_replace(tmp, "RSQUARED", "$R^{2}$"))
+```
+
+```{r permanova-table-dbh}
+# set seet for permutations
+set.seed(42)
+
+# calculate PERMANOVA results for DBH but permuted only within sites
+# and extract R2 and p-value for in-text use
+dbh_results <- adonis(otu_table_trees ~ trees$DBH_cm,
+                      strata = trees$Site_ID)$aov.tab
+
+dbh_r2 <- round(dbh_results$R2[1], 2)
+dbh_p <- round(dbh_results$`Pr(>F)`[1], 2)
 ```
 
 # Introduction {-}
@@ -396,7 +414,7 @@ To prepare successfully amplified samples for Sanger sequencing, we first cleane
 
 We used Geneious 11.1 to manually clean and trim the Sanger sequencing data, and to identify and remove failed and low-quality sequences [@geneious]. Sequences that appeared to have multiple strong signals at a given position were discarded because they may have originated from from a mixed culture. Usable sequences were cleaned by trimming the ends of low-quality nucleotides, clarifying any ambiguity codes, and resolving incorrect base assignment due to dye blobs. Cleaned sequences are available on GenBank (finalized genbank IDs to go here following acceptance).
 
-After processing the cleaned sequences to add relevent metadata, we used mothur version 1.39.5 to determine Operational Taxonomic Units (OTUs), based on 97% ITS sequence similarity and abundance-based greedy clustering [@schloss2009introducing]. Next, we used R 4.1.1 [@r-citation] to analyze the resulting OTU table. We used vegan [@vegan] to calculate species accumulation curves to determine species richness from the OTU data, calculate Bray-Curtis distances between communities, and create a Non-Metric Multidimensional Scaling (NMDS) ordination, and perform a PERMANOVA to assess differences in communities between sites [@anderson2001a]. We used the Tree-Based Alignment Selector (TBAS) toolkit to assign taxonomic context to each ITS sequence [@tbas]. This toolkit matches unknown ITS sequences to the most similar ITS sequences in a large multi-gene phylogeny of confidently assigned taxa. We used the simple features [@sf] and ggmap [@ggmap] R packages to produce maps of study sites.
+After processing the cleaned sequences to add relevent metadata, we used mothur version 1.39.5 to determine Operational Taxonomic Units (OTUs), based on 97% ITS sequence similarity and abundance-based greedy clustering [@schloss2009introducing]. Next, we used R 4.1.1 [@r-citation] to analyze the resulting OTU table. We used vegan [@vegan] to: 1) calculate species accumulation curves to determine species richness from the OTU data, 2) estimate unknown total species richness using the Chao estimator with bias correction for small sample sizes [@chao1987a; @chiu2014a], 3) calculate Bray-Curtis distances between communities, 4) create a Non-Metric Multidimensional Scaling (NMDS) ordination, and 5) perform a PERMANOVA [@anderson2001a] to assess differences in communities between sites and between trees of different diameters at breast height (DBH) within sites. We used the Tree-Based Alignment Selector (TBAS) toolkit to assign taxonomic context to each ITS sequence [@tbas]. This toolkit matches unknown ITS sequences to the most similar ITS sequences in a large multi-gene phylogeny of confidently assigned taxa. We used the simple features [@sf] and ggmap [@ggmap] R packages to produce maps of study sites.
 
 Significant differences in fungal leaf isolation frequency and tree diameter were determined using a nonparametric Kruskal–Wallis one-way test of variance and Dunn’s Test for multiple comparisons with Holm's correction for multiple hypothesis testing. All analyses, figures, and the final manuscript were generated using a makefile, bash scripts, and R and Rmarkdown. All relevant metadata, as well as analysis and manuscript code, are available on GitHub: https://github.com/ZimmermanLab/SF-metrosideros-endophytes/ and archived at (Zenodo doi here following acceptance). The complete computational environment for the analyses is documented in a Dockerfile based on rocker containers [@boettiger2014] and a renv.lock [@renv] file in that same repository.
 
@@ -408,7 +426,17 @@ Then, we searched GenBank for fungal ITS sequences that had *M. excelsa* listed 
 
 # Results {-}
 
-Overall, we found high diversity in these urban endophytic communities. From 30 different host trees, we successfully cultured and sequenced 854 fungal isolates, which made up 85 distinct 97% ITS OTUs. Some communities encompassed a low number of fungal isolates; species richness analyses showed that in nearly all of the trees analyzed, our sampling did not encompass the complete microbial diversity (Fig. \@ref(fig:rarefaction-plot)). While we found species diversity within some sites that exceeds 20 distinct fungal OTUs, there appears to be greater species diversity in these fungal endophytic communities than this study was able to document.
+```{r chao-richness}
+overall_estimated_richness <- specpool(otu_table_trees,
+                                       smallsample = TRUE)
+
+site_estimated_richness <- specpool(otu_table_trees,
+                                       smallsample = TRUE,
+                                       pool = trees$Site_ID)
+```
+
+
+Overall, we found high diversity in these urban endophytic communities. From `r nrow(otu_table_trees)` different host trees, we successfully cultured and sequenced `r nrow(otus)` fungal isolates, which made up `r ncol(otu_table_trees)` distinct 97% ITS OTUs. Some communities encompassed a low number of fungal isolates; species richness analyses showed that in nearly all of the trees analyzed, our sampling did not encompass the complete microbial diversity (Fig. \@ref(fig:rarefaction-plot)). While we found species diversity within some sites that exceeds 20 distinct fungal OTUs, there appears to be greater species diversity in these fungal endophytic communities than this study was able to document. Chao estimated richness per tree was XXYY and overall was ZZYY. 
 
 ## Isolation Frequency and Host Tree Diameter at Breast Height {-}
 
@@ -441,7 +469,7 @@ betadisp_p_val <- round(betadispersion_result$`Pr(>F)`[1], 2)
 ```
 
 
-While the NMDS ordination group ellipses (standard error around the centroid for each site) suggest that there are differences in dispersion among sites, the multivariate dispersions of these communities were not significantly different from one another (p = `r betadisp_p_val`; Fig. \@ref(fig:nmds-plot)). Sites that were closer together geographically tended to also be closer to one another in ordination space.
+While the NMDS ordination group ellipses (standard error around the centroid for each site) suggest that there are differences in dispersion among sites, the multivariate dispersions of these communities were not significantly different from one another (p = `r betadisp_p_val`; Fig. \@ref(fig:nmds-plot)). Both site and tree DBH were significant predictors of differences in community composition, but their interaction was not significant (p > 0.05). Sites that were closer together geographically tended to also be closer to one another in ordination space.
 
 # Discussion {-}
 
@@ -453,7 +481,7 @@ Both isolation frequency and DBH varied among sites. The trees in the Bay site s
 
 ## Diversity Patterns {-}
 
-Endophytic microbiomes in tree leaves are known to be highly diverse in natural systems, and that also appears to be the case in these urban trees. The species accumulation curves indicate that even in the most well-represented sites, these are still many potentially undiscovered OTUs within these endophytic communities (Fig. \@ref(fig:rarefaction-plot)). Additionally, there is a considerable amount of taxonomic variation between certain sites, in addition to the generally high diversity of each site (Fig. \@ref(fig:taxonomy-by-site-plot)). In such cases, it is likely that environmental factors play a role in shaping the endophytic communities of these trees. While the impact of environmental factors may be less evident when focusing on fungal endophyte community richness, it becomes more apparent when looking at the identities of these endophytes. The composition of these communities can vary greatly among trees with similar isolation frequencies, as demonstrated by the taxonomic composition of the Mt. Davidson and Bay sites (Fig. \@ref(fig:taxonomy-by-site-plot)). It is possible that prevailing onshore weather dynamics, which generally lead the western part of the city to be colder and foggier than the eastern portion, explain some of the patterns we observed. In general, there was higher compositional similarity between trees from the same location than between trees of a similar size (Fig. \@(fig:nmds-plot)) and Table \@(tab:permanova-table)).
+Endophytic microbiomes in tree leaves are known to be highly diverse in natural systems, and that also appears to be the case in these urban trees. The species accumulation curves indicate that even in the most well-represented sites, these are still many potentially undiscovered OTUs within these endophytic communities (Fig. \@ref(fig:rarefaction-plot)). Additionally, there is a considerable amount of taxonomic variation between certain sites, in addition to the generally high diversity of each site (Fig. \@ref(fig:taxonomy-by-site-plot)). In such cases, it is likely that environmental factors play a role in shaping the endophytic communities of these trees. While the impact of environmental factors may be less evident when focusing on fungal endophyte community richness, it becomes more apparent when looking at the identities of these endophytes. The composition of these communities can vary greatly among trees with similar isolation frequencies, as demonstrated by the taxonomic composition of the Mt. Davidson and Bay sites (Fig. \@ref(fig:taxonomy-by-site-plot)). It is possible that prevailing onshore weather dynamics, which generally lead the western part of the city to be colder and foggier than the eastern portion, explain some of the patterns we observed. In general, there was higher compositional similarity between trees from the same location than between trees of a similar size (Fig. \@ref(fig:nmds-plot) and Table \@ref(tab:permanova-table)).
 
 ## Biogeographic Patterns {-}
 
