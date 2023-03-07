@@ -346,7 +346,7 @@ tmp <- adonis(otu_table_trees ~ trees$Site_ID * trees$DBH_cm)$aov.tab %>%
   kable(col.names = c("Term", "df", "Sum of Squares",
                       "Mean of Squares", "F", "RSQUARED", "p-value"),
         caption =
-          "PERMANOVA model output based on Bray-Curtis distance, with permutations stratified by site. Foliar fungal community composition in leaves of \\emph{Metrosideros excelsa} across San Francisco is significantly related to both site of sampling and tree diameter at breast height (DBH).",
+          "PERMANOVA model output based on Bray-Curtis distance. Foliar fungal community composition in leaves of \\emph{Metrosideros excelsa} across San Francisco is significantly related to both site of sampling and tree diameter at breast height (DBH), but the interaction between these parameters is not significant.",
         booktabs = TRUE, digits = 3) %>%
         kableExtra::kable_styling(latex_options = "hold_position")
 
@@ -365,7 +365,7 @@ dbh_results <- adonis(otu_table_trees ~ trees$DBH_cm,
                       strata = trees$Site_ID)$aov.tab
 
 dbh_r2 <- round(dbh_results$R2[1], 2)
-dbh_p <- round(dbh_results$`Pr(>F)`[1], 2)
+dbh_p <- round(dbh_results$`Pr(>F)`[1], 4)
 ```
 
 # Introduction {-}
@@ -427,16 +427,25 @@ Then, we searched GenBank for fungal ITS sequences that had *M. excelsa* listed 
 # Results {-}
 
 ```{r chao-richness}
-overall_estimated_richness <- specpool(otu_table_trees,
-                                       smallsample = TRUE)
+# first calculate richness estimate across all trees/sites
+overall_estimated_richness_chao <- specpool(otu_table_trees,
+                                            smallsample = TRUE)[1:3]
 
-site_estimated_richness <- specpool(otu_table_trees,
-                                       smallsample = TRUE,
-                                       pool = trees$Site_ID)
+# then calculate for each site separately, to make a table
+specpool(otu_table_trees,
+         smallsample = TRUE,
+         pool = rep(site_names_vector_by_site_id,
+                    each = 5))[1:3] %>%
+  add_rownames() %>%
+  kable(col.names = c("Site", "OTU Count", "Chao Estimated Richness", "Chao Richness SE"),
+        caption = "Estimated richness of OTU counts across sites using the Chao estimator suggest that OTU richness is higher than observed and is characterized by large uncertainty at several sites.",
+        booktab = TRUE, digits = 1, linesep = "") %>%
+        kableExtra::kable_styling(latex_options = "hold_position")
+  
 ```
 
 
-Overall, we found high diversity in these urban endophytic communities. From `r nrow(otu_table_trees)` different host trees, we successfully cultured and sequenced `r nrow(otus)` fungal isolates, which made up `r ncol(otu_table_trees)` distinct 97% ITS OTUs. Some communities encompassed a low number of fungal isolates; species richness analyses showed that in nearly all of the trees analyzed, our sampling did not encompass the complete microbial diversity (Fig. \@ref(fig:rarefaction-plot)). While we found species diversity within some sites that exceeds 20 distinct fungal OTUs, there appears to be greater species diversity in these fungal endophytic communities than this study was able to document. Chao estimated richness per tree was XXYY and overall was ZZYY. 
+Overall, we found high diversity in these urban endophytic communities. From `r nrow(otu_table_trees)` different host trees, we successfully cultured and sequenced `r nrow(otus)` fungal isolates, which made up `r ncol(otu_table_trees)` distinct 97% ITS OTUs. Some communities encompassed a low number of fungal isolates; species richness analyses showed that in nearly all of the trees analyzed, our sampling did not encompass the complete microbial diversity (Fig. \@ref(fig:rarefaction-plot)). While we found species diversity within some sites that exceeds 20 distinct fungal OTUs, there appears to be greater species diversity in these fungal endophytic communities than this study was able to document. Chao estimated richness overall was `r round(overall_estimated_richness_chao$chao, 1)` with a standard error of `r round(overall_estimated_richness_chao$chao.se, 1)` and is shown per site in Table \@ref(tab:chao-richness). 
 
 ## Isolation Frequency and Host Tree Diameter at Breast Height {-}
 
@@ -469,7 +478,7 @@ betadisp_p_val <- round(betadispersion_result$`Pr(>F)`[1], 2)
 ```
 
 
-While the NMDS ordination group ellipses (standard error around the centroid for each site) suggest that there are differences in dispersion among sites, the multivariate dispersions of these communities were not significantly different from one another (p = `r betadisp_p_val`; Fig. \@ref(fig:nmds-plot)). Both site and tree DBH were significant predictors of differences in community composition, but their interaction was not significant (p > 0.05). Sites that were closer together geographically tended to also be closer to one another in ordination space.
+While the NMDS ordination group ellipses (standard error around the centroid for each site) suggest that there might be differences in multivariate dispersion among sites, dispersions were not significantly different from one another (p = `r betadisp_p_val`; Fig. \@ref(fig:nmds-plot)), suggesting that PERMANOVA differences are likely to be caused by compositional differences rather than differences in dispersion. Both site and tree DBH were significant predictors of differences in community composition (Table \@ref(tab:permanova-table)), but their interaction was not significant (p > 0.05). Sites that were closer together geographically tended to also be closer to one another in NMDS ordination space. We also tested for the effect of tree DBH on community composition differences within sites, and found that it was significant (R^2^ = `r dbh_r2`, PERMANOVA p = `r dbh_p`).
 
 # Discussion {-}
 

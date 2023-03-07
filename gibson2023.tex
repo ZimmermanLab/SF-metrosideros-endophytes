@@ -159,15 +159,16 @@ Sordariomycetes & Glomerellales & 1\\
 
 \begin{table}[!h]
 
-\caption{\label{tab:permanova-table}PERMANOVA model output based on Bray-Curtis distance, with permutations stratified by site. Foliar fungal community composition in leaves of \emph{Metrosideros excelsa} across San Francisco is significantly related to both site of sampling and tree diameter at breast height (DBH).}
+\caption{\label{tab:permanova-table}PERMANOVA model output based on Bray-Curtis distance. Foliar fungal community composition in leaves of \emph{Metrosideros excelsa} across San Francisco is significantly related to both site of sampling and tree diameter at breast height (DBH), but the interaction between these parameters is not significant.}
 \centering
 \begin{tabular}[t]{lrrrrrr}
 \toprule
 Term & df & Sum of Squares & Mean of Squares & F & $R^{2}$ & p-value\\
 \midrule
-Site ID & 5 & 3.642 & 0.728 & 3.015 & 0.373 & 0.022\\
-DBH (cm) & 1 & 0.556 & 0.556 & 2.302 & 0.057 & 0.022\\
-Residuals & 23 & 5.557 & 0.242 & NA & 0.570 & NA\\
+Site ID & 5 & 3.642 & 0.728 & 3.015 & 0.373 & 0.001\\
+DBH (cm) & 1 & 0.556 & 0.556 & 2.302 & 0.057 & 0.007\\
+Site x DBH & 5 & 1.208 & 0.242 & 1.000 & 0.124 & 0.484\\
+Residuals & 18 & 4.349 & 0.242 & NA & 0.446 & NA\\
 Total & 29 & 9.755 & NA & NA & 1.000 & NA\\
 \bottomrule
 \end{tabular}
@@ -235,7 +236,7 @@ To prepare successfully amplified samples for Sanger sequencing, we first cleane
 
 We used Geneious 11.1 to manually clean and trim the Sanger sequencing data, and to identify and remove failed and low-quality sequences (Kearse et al., 2012). Sequences that appeared to have multiple strong signals at a given position were discarded because they may have originated from from a mixed culture. Usable sequences were cleaned by trimming the ends of low-quality nucleotides, clarifying any ambiguity codes, and resolving incorrect base assignment due to dye blobs. Cleaned sequences are available on GenBank (finalized genbank IDs to go here following acceptance).
 
-After processing the cleaned sequences to add relevent metadata, we used mothur version 1.39.5 to determine Operational Taxonomic Units (OTUs), based on 97\% ITS sequence similarity and abundance-based greedy clustering (Schloss et al., 2009). Next, we used R 4.1.1 (R Core Team, 2021) to analyze the resulting OTU table. We used vegan (Oksanen et al., 2018) to calculate species accumulation curves to determine species richness from the OTU data, calculate Bray-Curtis distances between communities, and create a Non-Metric Multidimensional Scaling (NMDS) ordination, and perform a PERMANOVA to assess differences in communities between sites (Anderson, 2001). We used the Tree-Based Alignment Selector (TBAS) toolkit to assign taxonomic context to each ITS sequence (Carbone et al., 2017). This toolkit matches unknown ITS sequences to the most similar ITS sequences in a large multi-gene phylogeny of confidently assigned taxa. We used the simple features (Pebesma, 2018) and ggmap (Kahle \& Wickham, 2013) R packages to produce maps of study sites.
+After processing the cleaned sequences to add relevent metadata, we used mothur version 1.39.5 to determine Operational Taxonomic Units (OTUs), based on 97\% ITS sequence similarity and abundance-based greedy clustering (Schloss et al., 2009). Next, we used R 4.1.1 (R Core Team, 2021) to analyze the resulting OTU table. We used vegan (Oksanen et al., 2018) to: 1) calculate species accumulation curves to determine species richness from the OTU data, 2) estimate unknown total species richness using the Chao estimator with bias correction for small sample sizes (Chao, 1987; Chiu et al., 2014), 3) calculate Bray-Curtis distances between communities, 4) create a Non-Metric Multidimensional Scaling (NMDS) ordination, and 5) perform a PERMANOVA (Anderson, 2001) to assess differences in communities between sites and between trees of different diameters at breast height (DBH) within sites. We used the Tree-Based Alignment Selector (TBAS) toolkit to assign taxonomic context to each ITS sequence (Carbone et al., 2017). This toolkit matches unknown ITS sequences to the most similar ITS sequences in a large multi-gene phylogeny of confidently assigned taxa. We used the simple features (Pebesma, 2018) and ggmap (Kahle \& Wickham, 2013) R packages to produce maps of study sites.
 
 Significant differences in fungal leaf isolation frequency and tree diameter were determined using a nonparametric Kruskal--Wallis one-way test of variance and Dunn's Test for multiple comparisons with Holm's correction for multiple hypothesis testing. All analyses, figures, and the final manuscript were generated using a makefile, bash scripts, and R and Rmarkdown. All relevant metadata, as well as analysis and manuscript code, are available on GitHub: \url{https://github.com/ZimmermanLab/SF-metrosideros-endophytes/} and archived at (Zenodo doi here following acceptance). The complete computational environment for the analyses is documented in a Dockerfile based on rocker containers (Boettiger, 2014) and a renv.lock (Ushey, 2021) file in that same repository.
 
@@ -251,7 +252,25 @@ Then, we searched GenBank for fungal ITS sequences that had \emph{M. excelsa} li
 \section*{Results}\label{results}}
 \addcontentsline{toc}{section}{Results}
 
-Overall, we found high diversity in these urban endophytic communities. From 30 different host trees, we successfully cultured and sequenced 854 fungal isolates, which made up 85 distinct 97\% ITS OTUs. Some communities encompassed a low number of fungal isolates; species richness analyses showed that in nearly all of the trees analyzed, our sampling did not encompass the complete microbial diversity (Fig. \ref{fig:rarefaction-plot}). While we found species diversity within some sites that exceeds 20 distinct fungal OTUs, there appears to be greater species diversity in these fungal endophytic communities than this study was able to document.
+\begin{table}[!h]
+
+\caption{\label{tab:chao-richness}Estimated richness of OTU counts across sites using the Chao estimator suggest that OTU richness is higher than observed and is characterized by large uncertainty at several sites.}
+\centering
+\begin{tabular}[t]{lrrr}
+\toprule
+Site & OTU Count & Chao Estimated Richness & Chao Richness SE\\
+\midrule
+Balboa & 15 & 19.9 & 5.0\\
+Bay & 35 & 105.5 & 50.9\\
+Downtown & 27 & 44.1 & 11.8\\
+Freeway & 29 & 144.6 & 128.9\\
+Mt. Davidson & 37 & 75.7 & 24.7\\
+Ocean & 24 & 184.0 & 175.7\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Overall, we found high diversity in these urban endophytic communities. From 30 different host trees, we successfully cultured and sequenced 855 fungal isolates, which made up 85 distinct 97\% ITS OTUs. Some communities encompassed a low number of fungal isolates; species richness analyses showed that in nearly all of the trees analyzed, our sampling did not encompass the complete microbial diversity (Fig. \ref{fig:rarefaction-plot}). While we found species diversity within some sites that exceeds 20 distinct fungal OTUs, there appears to be greater species diversity in these fungal endophytic communities than this study was able to document. Chao estimated richness overall was 166.6 with a standard error of 35 and is shown per site in Table \ref{tab:chao-richness}.
 
 \hypertarget{isolation-frequency-and-host-tree-diameter-at-breast-height}{%
 \subsection*{Isolation Frequency and Host Tree Diameter at Breast Height}\label{isolation-frequency-and-host-tree-diameter-at-breast-height}}
@@ -271,7 +290,7 @@ The most abundant fungal class that we found in our samples was Dothideomycetes,
 \subsection*{Biogeographic Patterns}\label{biogeographic-patterns}}
 \addcontentsline{toc}{subsection}{Biogeographic Patterns}
 
-While the NMDS ordination group ellipses (standard error around the centroid for each site) suggest that there are differences in dispersion among sites, the multivariate dispersions of these communities were not significantly different from one another (p = 0.76; Fig. \ref{fig:nmds-plot}). Sites that were closer together geographically tended to also be closer to one another in ordination space.
+While the NMDS ordination group ellipses (standard error around the centroid for each site) suggest that there might be differences in multivariate dispersion among sites, dispersions were not significantly different from one another (p = 0.76; Fig. \ref{fig:nmds-plot}), suggesting that PERMANOVA differences are likely to be caused by compositional differences rather than differences in dispersion. Both site and tree DBH were significant predictors of differences in community composition (Table \ref{tab:permanova-table}), but their interaction was not significant (p \textgreater{} 0.05). Sites that were closer together geographically tended to also be closer to one another in NMDS ordination space. We also tested for the effect of tree DBH on community composition differences within sites, and found that it was significant (R\textsuperscript{2} = 0.11, PERMANOVA p = 0.006).
 
 \hypertarget{discussion}{%
 \section*{Discussion}\label{discussion}}
@@ -371,6 +390,12 @@ Catcheside PS, Qaraghuli S, Catcheside DE. 2017. A new species of small black di
 
 \leavevmode\vadjust pre{\hypertarget{ref-cavaglieri2009rhizosphere}{}}%
 Cavaglieri L, Orlando J, Etcheverry M. 2009. Rhizosphere microbial community structure at different maize plant growth stages and root locations. \emph{Microbiological research} 164:391--399.
+
+\leavevmode\vadjust pre{\hypertarget{ref-chao1987a}{}}%
+Chao A. 1987. Estimating the population-size for capture recapture data with unequal catchability. \emph{Biometrics} 43:783--791. DOI: \href{https://doi.org/10.2307/2531532}{10.2307/2531532}.
+
+\leavevmode\vadjust pre{\hypertarget{ref-chiu2014a}{}}%
+Chiu C, Wang Y, Walther B, Chao A. 2014. An improved nonparametric lower bound of species richness via a modified good-turing frequency formula. \emph{Biometrics} 70:671--682. DOI: \href{https://doi.org/10.1111/biom.12200}{10.1111/biom.12200}.
 
 \leavevmode\vadjust pre{\hypertarget{ref-clay1988fungal}{}}%
 Clay K. 1988. Fungal endophytes of grasses: A defensive mutualism between plants and fungi. \emph{Ecology} 69:10--16.
