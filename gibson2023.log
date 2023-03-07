@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2021) (preloaded format=pdflatex 2022.10.31)  6 MAR 2023 23:42
+This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2021) (preloaded format=pdflatex 2022.10.31)  7 MAR 2023 01:55
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -812,12 +812,7 @@ AED: lastpage setting LastPage
 
 
 
-]
-LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 4
-1.
-(/usr/local/texlive/texmf-dist/tex/latex/psnfss/ts1ptm.fd
-File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
-)) [12
+]) [12
 
 ] (./gibson2023.fff
 <gibson2023_files/figure-latex/site-map-1.pdf, id=280, 420.57124pt x 315.1775pt
@@ -832,7 +827,11 @@ Overfull \hbox (5.4445pt too wide) in paragraph at lines 2--2
 [][] 
  []
 
-[13
+LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 2
+.
+(/usr/local/texlive/texmf-dist/tex/latex/psnfss/ts1ptm.fd
+File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
+) [13
 
 
 ] [14 <./gibson2023_files/figure-latex/site-map-1.pdf>]
@@ -885,13 +884,13 @@ Package rerunfilecheck Info: File `gibson2023.out' has not changed.
 (rerunfilecheck)             Checksum: EE21B755F162415F5F4539ADB888539B;4020.
  ) 
 Here is how much of TeX's memory you used:
- 18034 strings out of 480539
- 278596 string characters out of 5902823
- 738120 words of memory out of 5000000
- 34856 multiletter control sequences out of 15000+600000
- 462614 words of font info for 340 fonts, out of 8000000 for 9000
+ 18037 strings out of 480539
+ 278599 string characters out of 5902823
+ 738142 words of memory out of 5000000
+ 34853 multiletter control sequences out of 15000+600000
+ 462752 words of font info for 344 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 85i,11n,95p,2149b,476s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 85i,11n,95p,2171b,476s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/texliv
 e/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/texm
 f-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/texmf-dist
@@ -901,7 +900,7 @@ urw/helvetic/uhvb8a.pfb></usr/local/texlive/texmf-dist/fonts/type1/urw/helvetic
 ></usr/local/texlive/texmf-dist/fonts/type1/urw/symbol/usyr.pfb></usr/local/tex
 live/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/texmf-dist
 /fonts/type1/urw/times/utmri8a.pfb>
-Output written on gibson2023.pdf (18 pages, 1230182 bytes).
+Output written on gibson2023.pdf (18 pages, 1230168 bytes).
 PDF statistics:
  424 PDF objects out of 1000 (max. 8388607)
  366 compressed objects within 4 object streams

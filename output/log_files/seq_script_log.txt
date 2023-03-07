@@ -2763,7 +2763,7 @@ Output File Names:
 /home/rstudio/sfendos/output/mothur_pipeline/04_good_seqs_short_names_checked.unique.fasta
 
 /******************************************/
-It took 5 seconds to cluster
+It took 6 seconds to cluster
 
 Output File Names: 
 /home/rstudio/sfendos/output/mothur_pipeline/04_good_seqs_short_names_checked.agc.list

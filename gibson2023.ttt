@@ -36,10 +36,10 @@ Sordariomycetes & Glomerellales & 1\\
 \centering
 \begin{tabular}[t]{lrrrrrr}
 \toprule
-Term & df & Sum of Squares & Mean of Squares & F & R\textasciicircum{}2 & p-value\\
+Term & df & Sum of Squares & Mean of Squares & F & $R^{2}$ & p-value\\
 \midrule
-trees\$Site\_ID & 5 & 3.642 & 0.728 & 3.015 & 0.373 & 0.022\\
-trees\$DBH\_cm & 1 & 0.556 & 0.556 & 2.302 & 0.057 & 0.022\\
+Site ID & 5 & 3.642 & 0.728 & 3.015 & 0.373 & 0.022\\
+DBH (cm) & 1 & 0.556 & 0.556 & 2.302 & 0.057 & 0.022\\
 Residuals & 23 & 5.557 & 0.242 & NA & 0.570 & NA\\
 Total & 29 & 9.755 & NA & NA & 1.000 & NA\\
 \bottomrule
