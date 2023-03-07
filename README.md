@@ -28,6 +28,7 @@ docker run --rm -d -p 8787:8787 -e DISABLE_AUTH=true -e ROOT=true -v /home/rstud
 5. Open a new bash terminal in the RStudio Server interface and type `make`.
 6. Go get a cup of coffee (it still has to install a good number of LaTeX packages) and when you come back the manuscript should be built..
 
+## Overview of files and directory structure
 
 The directory structure is shown below. The most important files are the
 raw data in the `data/` directory, the `gibson2023.Rmd` Rmarkdown file
