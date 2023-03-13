@@ -106,24 +106,25 @@ sites_names_west_to_east <- c("Ocean",
 ```
 
 
-<!-- tables -->
 
-```{r class-abundance-table}
-tbas_with_site %>%
-  group_by(Class.level_assignment, Order.level_assignment) %>%
-  tally() %>%
-  arrange(Class.level_assignment, desc(n)) %>%
-  kable(col.names = c("Class", "Order", "Number of sequences"),
-        caption =
-          "Overall sequenced fungal isolate counts by Class and Order. All fungi successfully  sequenced in this study were placed within the Ascomycota.",
-        booktabs = TRUE,
-        linesep = c('', '', '', '', '', '\\addlinespace',
-                    '\\addlinespace',
-                    '\\addlinespace',
-                    '\\addlinespace',
-                    '', '', '', '', '', '')) %>%
-        kableExtra::kable_styling(latex_options = "hold_position")
-```
+
+
+
+# Introduction {-}
+
+Although major cities only cover a small portion of the Earth's total geographic area, more than 50% of the human population lives in these urban centers, and these cities have major impacts on the biogeochemistry, hydrology, and climate of both their immediate surroundings and of the biosphere as a whole [@schneider2009new]. With increasing urbanization, understanding the ecology of cities and urban settings has become critical to human health and well being. Despite their comparatively small geographic size, the high density of human populations in these environments makes them distinct ecosystems with their own unique dynamics [@sukopp1998urban]. Urban environments represent the convergence of humans from around the world, any plant or animal species those humans might have brought with them, and infrastructures such as roads, sewers, and tall buildings. Despite the complexity that these ecosystems present, they are often overlooked by ecologists because more traditional ecology has focused on 'natural' systems. In urban systems, however, human influence is a primary ecological factor [@mcdonnell2011history]. In recent years, ecologists have begun studying the urban environment just as they would a natural environment, in order to understand the novel environmental conditions this setting presents to the organisms that live there [@wu2014urban].
+
+In this study, we focus on the urban ecology of trees in San Francisco, California. Urban trees can play a major role in shaping the ecosystem of a city. Just as the trees in a forest have a considerable impact on its climate and ecology, trees in cities can have notable effects on a city's environment. For example, plant life in cities can impact temperature, air quality, and other aspects of human health [@Willis374]. The urban heat island effect, which occurs when 'islands' of heat form as heat gets trapped between tall buildings, is one of the most well-documented unique urban anthropogenic environmental conditions [@oke1973city]. Trees in urban environments have been shown to interact with these city-specific environmental factors [@salford40381]. For example, trees in cities have been shown to improve urban air quality by taking up significant amounts of carbon dioxide from city air [@NOWAK2014119]. As pollution generated in urban centers is one of the major contributing factors to worldwide pollution, trees in urban environments may have a role in managing the environmental impacts of urbanization [@alberti2003integrating].
+
+Due to their importance, there is growing interest in understanding and maintaining sustainable urban ecologies. One potentially major factor influencing health of plants both in nature and cities is the plant microbiome. As the widespread availability of DNA sequencing has made it possible to characterize microbial communities more easily and comprehensively, the microbiome has become a major area of interest in numerous organisms [@kyrpides2016microbiome]. Just as the emerging field of human microbiome study has revealed that symbiotic, non-pathogenic microbes can have major impacts on human health [@david2014diet], plants also host numerous symbiotic microbes. Similar to the human microbiome, the plant microbiome contains great diversity and is comprised of multiple distinct communities in various tissue systems such as the roots (rhizosphere), leaf surface (phyllosphere), and leaf interior (endosphere) [@turner2013plant]. All of these microbiomes can have an impact on their host's physiology. For instance, bacterial root microbes have been shown to play a role in the growth of various plant species [@gaiero2013inside]. They can also play a variety of roles in host physiology, depending on their location within the plant [@schlaeppi2015plant]. These communities can be quite dynamic, and vary with factors such as plant age [@cavaglieri2009rhizosphere]. While each of these sets of interactions is important, here we focus on the microbial ecology of fungal microorganisms living in the leaf endosphere. The endosphere is an ideal system for biogeographic studies, both because it is highly diverse, well replicated, and because it is a major interface between the host plant and its environment [@meyer2012microbiology].
+
+Endophytic microbes are naturally found in the interior of leaves, whether introduced by natural wounds or openings in the leaf surface, or through penetrating the plant surface with hydrolytic enzymes [@hallmann1997bacterial]. Although some of these microbes may be latent pathogens or decomposers waiting for the leaf to die, others are mutualists that may confer a benefit to their host [@carroll1988fungal]. Endophytes are commonly divided into classes, based on where they are found and what roles they are known to play in host tissues [@Rodriguez2009]. In wild grasses, Class 1 endophytic fungi (Clavicipitaceous endophytes) have been shown to protect their hosts by discouraging herbivory, and can even affect host reproductive viability in those same systems [@clay1988fungal]. In controlled settings, inoculation experiments with Class 3 endophytes (horizontally transmitted and localized to shoots) have shown that these specific taxa of endophytes can also have an impact on their host's overall health, including factors such as resistance and susceptibility to disease [@Busby2016]. In nature, Class 3 fungal endophytes can have impacts on their host's physiology, such as limiting pathogen damage [@arnold2003fungal]. In this study, we expected to primarily find Class 3 endophytes, which are known for having high diversity both within populations of plants and within plant tissues [@Rodriguez2009].
+
+In the wild, endophytic communities display species diversity comparable to that of any macroscopic community, even among individual trees from the same species [@gazis2011]. However, determining the factors that influence this diversity across disparate environments remains an area of active research. The biodiversity of these communities can be quite high, especially in areas like tropical forests [@arnold2007diversity]. In such natural settings, plant-associated microbial community compositions can show clear biogeographic structure [@andrews2000ecology]. The urban setting, however, may be distinct, because factors such as rainfall and elevation will likely be less apparent over a smaller geographic area, even as new factors such as proximity to roads and tall buildings may introduce effects of their own. Studies of suburban forests in Japan have indicated that an urban setting has a notable impact on endophytic diversity [@MATSUMURA2013191]. However, the full impact of urban environmental factors on endophytic communities has yet to be completely understood.
+
+In this study, we used culturing and barcode gene sequencing to identify the species makeup of endophytic communities in the New Zealand Christmas Tree (Māori: pōhutukawa),  *Metrosideros excelsa* (Myrtaceae), throughout San Francisco, CA, to quantify the diversity and biogeographic patterns of foliar fungal communities in this urban environment. Based on studies in natural systems, we expected to find high community diversity both within and between sites, as well as a degree of biogeographic structure to these community compositions. We also anticipated that urban environmental factors might play a role in shaping the biogeography in these endophytic communities.
+
+# Methods {-}
 
 <!-- figures -->
 
@@ -142,6 +143,164 @@ ggmap(sf_map) +
     values = site_colors_vector_by_site_id) +
   labs(x = "Longitude",
        y = "Latitude")
+```
+
+
+## Host Selection {-}
+
+We selected *Metrosideros excelsa* as a focal host tree. *Metrosideros excelsa* is widely planted throughout San Francisco and as such we were able to obtain samples from a large number of trees in a variety of locations throughout the city.
+
+## Site Selection {-}
+
+We selected six sites across the city for leaf sample collection (Fig. \@ref(fig:site-map)). When selecting sites, we took factors such as traffic levels, estimated temperature, proximity to tall buildings (greater than the 40-foot building-height limit imposed on most residential buildings in San Francisco), elevation, and proximity to the ocean and San Francisco Bay into account. In selecting the sites, we wanted to capture the wide range of potential urban climates. We used street tree location data available from the City of San Francisco (permalink: https://data.sfgov.org/City-Infrastructure/Street-Tree-List/tkzw-k3nq), which documents the location and species of every tree in San Francisco, to choose unique locations around the city with sufficient densities of *Metrosideros excelsa* individuals (Fig. \@ref(fig:site-map)).
+
+## Sample Collection {-}
+
+We collected small branches from 5 trees in each of these sites using a clipper pole, collecting at least 3 sun-exposed outer branches from each tree. Because *M. excelsa* is an evergreen tree and the newer leaves are likely to contain fewer fungi, we controlled for leaf age by only collecting branches which contained dark green leaves that appeared to be at least one year old. We collected all samples on the same day, August 26, 2017, to ensure that daily weather patterns and seasonal effects would not have an impact on the microbial community composition. Once collected, leaves were stored in labeled plastic bags and stored at 4$^{\circ}$C until culturing. All leaves were processed within 48 hours of collection. Permission to sample leaves was granted by the San Francisco Bureau of Urban Forestry.
+
+## Culturing Methods {-}
+
+From each sample, we selected a subset of dark green asymptomatic leaves for culturing. We surface-sterilized the leaves by first rinsing them with distilled water, then immersing them in a sterile petri dish with 95% ethanol for 10 seconds, 0.5% NaOCl for 2 minutes, then 70% ethanol for another 2 minutes following Arnold et al. [-@arnold2007b]. We emptied the dish between rinses and left it closed inside a sterile biosafety cabinet after the last rinse. We then cut the leaves into small (2mm x 2mm) pieces with flame-sterilized scissors and placed them into 1.5 mL microcentrifuge slant tubes partially filled with 2% VWR-brand malt extract agar (MEA). For each tree, we prepared 6 leaves and made 100 tubes, except for the trees from the downtown site. For the trees at this site, we prepared 140 tubes per tree because we found that they had low isolation frequencies in a preliminary sampling bout. All leaves were prepared this way within 48 hours of the initial leaf sampling, to prevent death of the leaf tissue from altering the fungal community composition.
+
+After two weeks, we evaluated the tubes for fungal growth and subcultured the emergent fungi from tubes with growth onto 35mm plates with 2% MEA in order to better evaluate their morphotypes and accumulate sufficient tissue for future barcode gene sequencing and water voucher preparation. We re-evaluated and subcultured these tubes in the following months to capture any late-growing fungi. Each pure culture was vouchered in sterile dI water and stored in a living culture collection in the Zimmerman Lab at the University of San Francisco.
+
+## Molecular Methods {-}
+
+We extracted DNA from fungal mycelium using the Sigma RED Extract ‘n Amp DNA extraction kit and following previously published protocols [@uren2012a]. First, we added fungal tissue to sterile tubes filled with 1 mm zirconium oxide beads, then added 100 $\mu$L of Extract 'n' Amp DNA extraction solution. Next, we put the tubes in a bead-beater (Mini-Beadbeater-96, Bio Spec Products Inc.) for one minute. The samples were then placed on a heat block at 95$^{\circ}$C for 10 minutes. After the heating step, we added a dilution buffer to each tube and stored them at 4$^{\circ}$C until PCR.
+
+We performed PCR using fungal-specific primers for the Internal Transcribed Spacer region, a commonly accepted fungal barcode locus [@schoch2012nuclear], using the ITS1F forward primer (5'-CTT GGT CAT TTA GAG GAA GTA A-3') and ITS4 reverse primer (5'-TCC TCC GCT TAT TGA TAT GC-3'). For each PCR reaction, we used 1 $\mu$L of template DNA, 10 $\mu$L Extract ‘n Amp Taq polymerase, 6.4 $\mu$L PCR-grade water, 1 $\mu$L bovine serum albumin, 0.8 $\mu$L ITS1F forward primer, and 0.8 $\mu$L ITS4 reverse primer [@uren2012a]. For the PCR reaction, we used a BioRAD T100 thermal cycler with the following cycles: 95$^{\circ}$C for 3 minutes; 35 cycles of 95$^{\circ}$C for 30 seconds, 54$^{\circ}$C for 30 seconds, 72$^{\circ}$C for 30 seconds; then 72$^{\circ}$C for 10 minutes. To ensure that the fungal DNA successfully amplified, and that the master mix was not contaminated, we ran 5 $\mu$L of each sample and a negative PCR control on a 1% agarose gel with 1X Tris-acetate-EDTA (TAE) buffer and SYBR Safe. We ran the gel at 120 volts for 20 minutes and visualized bands using UV transillumination. Successful PCR samples with clean negative controls were kept at 4$^{\circ}$C until sequencing preparation.
+
+To prepare successfully amplified samples for Sanger sequencing, we first cleaned each sample with 1 $\mu$L Thermo Fisher Shrimp Alkaline Phosphatase Exonuclease (ExoSAP-IT). To clean the samples, we used the following cycle on a BioRAD T100 thermal cycler: 37$^{\circ}$C for 15 minutes, 80$^{\circ}$C for 15 minutes, then hold at 4$^{\circ}$C. After cleaning, samples were kept at 4$^{\circ}$C until they were ready to be sent for sequencing. Directly before being sent for sequencing, cleaned samples that showed bright bands on their gels were diluted with an additional 15 $\mu$L PCR water, although a small number of samples that had faint bands on the gels were not diluted. Cleaned samples were sent to MCLabs (South San Francisco, CA) for Sanger sequencing.
+
+## Computational and Statistical Methods {-}
+
+We used Geneious 11.1 to manually clean and trim the Sanger sequencing data, and to identify and remove failed and low-quality sequences [@geneious]. Sequences that appeared to have multiple strong signals at a given position were discarded because they may have originated from from a mixed culture. Usable sequences were cleaned by trimming the ends of low-quality nucleotides, clarifying any ambiguity codes, and resolving incorrect base assignment due to dye blobs. Cleaned sequences are available on GenBank (finalized genbank IDs to go here following acceptance).
+
+After processing the cleaned sequences to add relevent metadata, we used mothur version 1.39.5 to determine Operational Taxonomic Units (OTUs), based on 97% ITS sequence similarity and abundance-based greedy clustering [@schloss2009introducing]. Next, we used R 4.1.1 [@r-citation] to analyze the resulting OTU table. We used vegan [@vegan] to: 1) calculate species accumulation curves to determine species richness from the OTU data, 2) estimate unknown total species richness using the Chao estimator with bias correction for small sample sizes [@chao1987a; @chiu2014a], 3) calculate Bray-Curtis distances between communities, 4) create a Non-Metric Multidimensional Scaling (NMDS) ordination, and 5) perform a PERMANOVA [@anderson2001a] to assess differences in communities between sites and between trees of different diameters at breast height (DBH) within sites. We used the Tree-Based Alignment Selector (TBAS) toolkit to assign taxonomic context to each ITS sequence [@tbas]. This toolkit matches unknown ITS sequences to the most similar ITS sequences in a large multi-gene phylogeny of confidently assigned taxa. We used the simple features [@sf] and ggmap [@ggmap] R packages to produce maps of study sites.
+
+Significant differences in fungal leaf isolation frequency and tree diameter were determined using a nonparametric Kruskal–Wallis one-way test of variance and Dunn’s Test for multiple comparisons with Holm's correction for multiple hypothesis testing. All analyses, figures, and the final manuscript were generated using a makefile, bash scripts, and R and Rmarkdown. All relevant metadata, as well as analysis and manuscript code, are available on GitHub: https://github.com/ZimmermanLab/SF-metrosideros-endophytes/ and archived at (Zenodo doi here following acceptance). The complete computational environment for the analyses is documented in a Dockerfile based on rocker containers [@boettiger2014] and a renv.lock [@renv] file in that same repository.
+
+## Methods for Comparing Fungi in San Fancisco Trees to New Zealand Trees {-}
+
+In order to compare the foliar microbial populations found in *M. excelsa* throughout San Francisco to those in the tree's native range (New Zealand), we surveyed public GenBank records and performed a literature search. First, we searched Google Scholar on July 7th, 2021, for papers mentioning any of the following sets of search terms: "metrosideros endophytes", "metrosideros excelsa endophytes", "metrosideros excelsa foliage fungus", "metrosideros excelsa endophytes". After this search, we looked through the papers cited by those we originally found in order to find any additional studies.
+
+Then, we searched GenBank for fungal ITS sequences that had *M. excelsa* listed as their host organism. We performed this search using the parameters "host="Metrosideros excelsa", organism=fungi", in order to limit our results to fungal sequences. This search yielded several new sequences that were not included in the previous search because they were unpublished. Using both of these methods, we were able to find about 30 taxa to include as a point of comparison, although many of these were described as pathogenic instead of endophytic.
+
+# Results {-}
+
+<!-- tables -->
+
+```{r chao-richness-table}
+# first calculate richness estimate across all trees/sites
+overall_estimated_richness_chao <- specpool(otu_table_trees,
+                                            smallsample = TRUE)[1:3]
+
+# then calculate for each site separately, to make a table
+specpool(otu_table_trees,
+         smallsample = TRUE,
+         pool = rep(site_names_vector_by_site_id,
+                    each = 5))[1:3] %>%
+  add_rownames() %>%
+  kable(col.names = c("Site", "OTU Count", "Chao Estimated Richness", "Chao Richness SE"),
+        caption = "Estimated richness of OTU counts across sites using the Chao estimator suggest that OTU richness is higher than observed and is characterized by large uncertainty at several sites.",
+        booktab = TRUE, digits = 1, linesep = "") %>%
+        kableExtra::kable_styling(latex_options = "hold_position")
+  
+```
+
+```{r class-abundance-table}
+tbas_with_site %>%
+  group_by(Class.level_assignment, Order.level_assignment) %>%
+  tally() %>%
+  arrange(Class.level_assignment, desc(n)) %>%
+  kable(col.names = c("Class", "Order", "Number of sequences"),
+        caption =
+          "Overall sequenced fungal isolate counts by Class and Order. All fungi successfully  sequenced in this study were placed within the Ascomycota.",
+        booktabs = TRUE,
+        linesep = c('', '', '', '', '', '\\addlinespace',
+                    '\\addlinespace',
+                    '\\addlinespace',
+                    '\\addlinespace',
+                    '', '', '', '', '', '')) %>%
+        kableExtra::kable_styling(latex_options = "hold_position")
+```
+
+```{r permanova-table}
+# set seet for permutations
+set.seed(42)
+
+# calculate PERMANOVA results for full model
+tmp <- adonis(otu_table_trees ~ trees$Site_ID * trees$DBH_cm)$aov.tab %>%
+  broom::tidy() %>%
+  mutate(term = c("Site ID", "DBH (cm)", "Site x DBH", "Residuals", "Total")) %>%
+  kable(col.names = c("Term", "df", "Sum of Squares",
+                      "Mean of Squares", "F", "RSQUARED", "p-value"),
+        caption =
+          "PERMANOVA model output based on Bray-Curtis distance. Foliar fungal community composition in leaves of \\emph{Metrosideros excelsa} across San Francisco is significantly related to both site of sampling and tree diameter at breast height (DBH), but the interaction between these parameters is not significant.",
+        booktabs = TRUE, digits = 3) %>%
+        kableExtra::kable_styling(latex_options = "hold_position")
+
+# sort of hacky approach to get nice R2 formatting, from
+# StackOverflow https://stackoverflow.com/a/62604838/3114071
+knitr::asis_output(stringr::str_replace(tmp, "RSQUARED", "$R^{2}$"))
+```
+
+```{r permanova-table-dbh}
+# set seet for permutations
+set.seed(42)
+
+# calculate PERMANOVA results for DBH but permuted only within sites
+# and extract R2 and p-value for in-text use
+dbh_results <- adonis(otu_table_trees ~ trees$DBH_cm,
+                      strata = trees$Site_ID)$aov.tab
+
+dbh_r2 <- round(dbh_results$R2[1], 2)
+dbh_p <- round(dbh_results$`Pr(>F)`[1], 4)
+```
+
+<!-- figures -->
+
+```{r rarefaction-plot, fig.width=6, fig.cap="Species accumulation curves showing fungal community OTU richness. Each line in A represents the OTU richness for a single host tree.  Each line in B represents the combined OTU richness of all trees (n = 5) in one site."}
+
+# two plots, side by side
+par(mfrow = c(1, 2))
+
+rarecurve(otu_table_trees,
+          col = rep(site_colors_vector_by_site_id, each = 5),
+          label = FALSE,
+          lwd = 2.5,
+          cex.main = 1,
+          xlab = "Number of fungal isolates",
+          ylab = "Number of fungal species (97% ITS OTUs)",
+          ylim = c(0, 40),
+          xlim = c(0, 250))
+
+legend("bottomright",
+       legend = site_names_vector_by_site_id,
+       pch = 16,
+       cex = 0.6,
+       col = site_colors_vector_by_site_id)
+
+mtext("A", side = 3, adj = -0.5, padj = -2.7, cex = 1.2)
+
+rarecurve(otu_table_sites,
+          col = site_colors_vector_by_site_id,
+          label = FALSE,
+          lwd = 2.5,
+          cex.main = 1,
+          xlab = "Number of fungal isolates",
+          ylab = "Number of fungal species (97% ITS OTUs)",
+          ylim = c(0, 40),
+          xlim = c(0, 250))
+
+legend("bottomright",
+       legend = site_names_vector_by_site_id,
+       pch = 16,
+       cex = 0.6,
+       col = site_colors_vector_by_site_id)
+
+mtext("B", side = 3, adj = -0.5, padj = -2.7, cex = 1.2)
+
 ```
 
 ```{r isolation-dbh-freq-plots, fig.width=6, fig.height=8, fig.cap="Isolation frequencies (A) and tree diameters (B) at each site. Isolation frequency (A) is a measure of how many slant tubes showed signs of fungal growth, out of how many total slant tubes were made. Approximately 100 slant tubes were made for each tree except for the trees in the downtown site, which had 140 slant tubes per tree because they had low isolation frequencies during the initial sampling. Sites along x axis are arranged left to right in order of their geographic location from west (left) to east (right)."}
@@ -206,49 +365,6 @@ dbh_plot <- ggstatsplot::ggbetweenstats(
 
 # put the two plots together one on top of the other
 iso_freq_plot / dbh_plot + plot_annotation(tag_levels = "A")
-```
-
-```{r rarefaction-plot, fig.width=6, fig.cap="Species accumulation curves showing fungal community OTU richness. Each line in A represents the OTU richness for a single host tree.  Each line in B represents the combined OTU richness of all trees (n = 5) in one site."}
-
-# two plots, side by side
-par(mfrow = c(1, 2))
-
-rarecurve(otu_table_trees,
-          col = rep(site_colors_vector_by_site_id, each = 5),
-          label = FALSE,
-          lwd = 2.5,
-          cex.main = 1,
-          xlab = "Number of fungal isolates",
-          ylab = "Number of fungal species (97% ITS OTUs)",
-          ylim = c(0, 40),
-          xlim = c(0, 250))
-
-legend("bottomright",
-       legend = site_names_vector_by_site_id,
-       pch = 16,
-       cex = 0.6,
-       col = site_colors_vector_by_site_id)
-
-mtext("A", side = 3, adj = -0.5, padj = -2.7, cex = 1.2)
-
-rarecurve(otu_table_sites,
-          col = site_colors_vector_by_site_id,
-          label = FALSE,
-          lwd = 2.5,
-          cex.main = 1,
-          xlab = "Number of fungal isolates",
-          ylab = "Number of fungal species (97% ITS OTUs)",
-          ylim = c(0, 40),
-          xlim = c(0, 250))
-
-legend("bottomright",
-       legend = site_names_vector_by_site_id,
-       pch = 16,
-       cex = 0.6,
-       col = site_colors_vector_by_site_id)
-
-mtext("B", side = 3, adj = -0.5, padj = -2.7, cex = 1.2)
-
 ```
 
 ```{r taxonomy-by-site-plot, fig.width=6, fig.height=8, fig.cap="Normalized relative abundances of taxonomic groupings (Classes in A and Orders in B) in each site. Sites along x axis are arranged left to right in order of their geographic location from west (left) to east (right)."}
@@ -330,119 +446,7 @@ ordiellipse(ord_obj,
             lwd = 5)
 ```
 
-
-
-```{r permanova-table}
-# set seet for permutations
-set.seed(42)
-
-# calculate PERMANOVA results for full model
-tmp <- adonis(otu_table_trees ~ trees$Site_ID * trees$DBH_cm)$aov.tab %>%
-  broom::tidy() %>%
-  mutate(term = c("Site ID", "DBH (cm)", "Site x DBH", "Residuals", "Total")) %>%
-  kable(col.names = c("Term", "df", "Sum of Squares",
-                      "Mean of Squares", "F", "RSQUARED", "p-value"),
-        caption =
-          "PERMANOVA model output based on Bray-Curtis distance. Foliar fungal community composition in leaves of \\emph{Metrosideros excelsa} across San Francisco is significantly related to both site of sampling and tree diameter at breast height (DBH), but the interaction between these parameters is not significant.",
-        booktabs = TRUE, digits = 3) %>%
-        kableExtra::kable_styling(latex_options = "hold_position")
-
-# sort of hacky approach to get nice R2 formatting, from
-# StackOverflow https://stackoverflow.com/a/62604838/3114071
-knitr::asis_output(stringr::str_replace(tmp, "RSQUARED", "$R^{2}$"))
-```
-
-```{r permanova-table-dbh}
-# set seet for permutations
-set.seed(42)
-
-# calculate PERMANOVA results for DBH but permuted only within sites
-# and extract R2 and p-value for in-text use
-dbh_results <- adonis(otu_table_trees ~ trees$DBH_cm,
-                      strata = trees$Site_ID)$aov.tab
-
-dbh_r2 <- round(dbh_results$R2[1], 2)
-dbh_p <- round(dbh_results$`Pr(>F)`[1], 4)
-```
-
-# Introduction {-}
-
-Although major cities only cover a small portion of the Earth's total geographic area, more than 50% of the human population lives in these urban centers, and these cities have major impacts on the biogeochemistry, hydrology, and climate of both their immediate surroundings and of the biosphere as a whole [@schneider2009new]. With increasing urbanization, understanding the ecology of cities and urban settings has become critical to human health and well being. Despite their comparatively small geographic size, the high density of human populations in these environments makes them distinct ecosystems with their own unique dynamics [@sukopp1998urban]. Urban environments represent the convergence of humans from around the world, any plant or animal species those humans might have brought with them, and infrastructures such as roads, sewers, and tall buildings. Despite the complexity that these ecosystems present, they are often overlooked by ecologists because more traditional ecology has focused on 'natural' systems. In urban systems, however, human influence is a primary ecological factor [@mcdonnell2011history]. In recent years, ecologists have begun studying the urban environment just as they would a natural environment, in order to understand the novel environmental conditions this setting presents to the organisms that live there [@wu2014urban].
-
-In this study, we focus on the urban ecology of trees in San Francisco, California. Urban trees can play a major role in shaping the ecosystem of a city. Just as the trees in a forest have a considerable impact on its climate and ecology, trees in cities can have notable effects on a city's environment. For example, plant life in cities can impact temperature, air quality, and other aspects of human health [@Willis374]. The urban heat island effect, which occurs when 'islands' of heat form as heat gets trapped between tall buildings, is one of the most well-documented unique urban anthropogenic environmental conditions [@oke1973city]. Trees in urban environments have been shown to interact with these city-specific environmental factors [@salford40381]. For example, trees in cities have been shown to improve urban air quality by taking up significant amounts of carbon dioxide from city air [@NOWAK2014119]. As pollution generated in urban centers is one of the major contributing factors to worldwide pollution, trees in urban environments may have a role in managing the environmental impacts of urbanization [@alberti2003integrating].
-
-Due to their importance, there is growing interest in understanding and maintaining sustainable urban ecologies. One potentially major factor influencing health of plants both in nature and cities is the plant microbiome. As the widespread availability of DNA sequencing has made it possible to characterize microbial communities more easily and comprehensively, the microbiome has become a major area of interest in numerous organisms [@kyrpides2016microbiome]. Just as the emerging field of human microbiome study has revealed that symbiotic, non-pathogenic microbes can have major impacts on human health [@david2014diet], plants also host numerous symbiotic microbes. Similar to the human microbiome, the plant microbiome contains great diversity and is comprised of multiple distinct communities in various tissue systems such as the roots (rhizosphere), leaf surface (phyllosphere), and leaf interior (endosphere) [@turner2013plant]. All of these microbiomes can have an impact on their host's physiology. For instance, bacterial root microbes have been shown to play a role in the growth of various plant species [@gaiero2013inside]. They can also play a variety of roles in host physiology, depending on their location within the plant [@schlaeppi2015plant]. These communities can be quite dynamic, and vary with factors such as plant age [@cavaglieri2009rhizosphere]. While each of these sets of interactions is important, here we focus on the microbial ecology of fungal microorganisms living in the leaf endosphere. The endosphere is an ideal system for biogeographic studies, both because it is highly diverse, well replicated, and because it is a major interface between the host plant and its environment [@meyer2012microbiology].
-
-Endophytic microbes are naturally found in the interior of leaves, whether introduced by natural wounds or openings in the leaf surface, or through penetrating the plant surface with hydrolytic enzymes [@hallmann1997bacterial]. Although some of these microbes may be latent pathogens or decomposers waiting for the leaf to die, others are mutualists that may confer a benefit to their host [@carroll1988fungal]. Endophytes are commonly divided into classes, based on where they are found and what roles they are known to play in host tissues [@Rodriguez2009]. In wild grasses, Class 1 endophytic fungi (Clavicipitaceous endophytes) have been shown to protect their hosts by discouraging herbivory, and can even affect host reproductive viability in those same systems [@clay1988fungal]. In controlled settings, inoculation experiments with Class 3 endophytes (horizontally transmitted and localized to shoots) have shown that these specific taxa of endophytes can also have an impact on their host's overall health, including factors such as resistance and susceptibility to disease [@Busby2016]. In nature, Class 3 fungal endophytes can have impacts on their host's physiology, such as limiting pathogen damage [@arnold2003fungal]. In this study, we expected to primarily find Class 3 endophytes, which are known for having high diversity both within populations of plants and within plant tissues [@Rodriguez2009].
-
-In the wild, endophytic communities display species diversity comparable to that of any macroscopic community, even among individual trees from the same species [@gazis2011]. However, determining the factors that influence this diversity across disparate environments remains an area of active research. The biodiversity of these communities can be quite high, especially in areas like tropical forests [@arnold2007diversity]. In such natural settings, plant-associated microbial community compositions can show clear biogeographic structure [@andrews2000ecology]. The urban setting, however, may be distinct, because factors such as rainfall and elevation will likely be less apparent over a smaller geographic area, even as new factors such as proximity to roads and tall buildings may introduce effects of their own. Studies of suburban forests in Japan have indicated that an urban setting has a notable impact on endophytic diversity [@MATSUMURA2013191]. However, the full impact of urban environmental factors on endophytic communities has yet to be completely understood.
-
-In this study, we used culturing and barcode gene sequencing to identify the species makeup of endophytic communities in the New Zealand Christmas Tree (Māori: pōhutukawa),  *Metrosideros excelsa* (Myrtaceae), throughout San Francisco, CA, to quantify the diversity and biogeographic patterns of foliar fungal communities in this urban environment. Based on studies in natural systems, we expected to find high community diversity both within and between sites, as well as a degree of biogeographic structure to these community compositions. We also anticipated that urban environmental factors might play a role in shaping the biogeography in these endophytic communities.
-
-# Methods {-}
-
-## Host Selection {-}
-
-We selected *Metrosideros excelsa* as a focal host tree. *Metrosideros excelsa* is widely planted throughout San Francisco and as such we were able to obtain samples from a large number of trees in a variety of locations throughout the city.
-
-## Site Selection {-}
-
-We selected six sites across the city for leaf sample collection (Fig. \@ref(fig:site-map)). When selecting sites, we took factors such as traffic levels, estimated temperature, proximity to tall buildings (greater than the 40-foot building-height limit imposed on most residential buildings in San Francisco), elevation, and proximity to the ocean and San Francisco Bay into account. In selecting the sites, we wanted to capture the wide range of potential urban climates. We used street tree location data available from the City of San Francisco (permalink: https://data.sfgov.org/City-Infrastructure/Street-Tree-List/tkzw-k3nq), which documents the location and species of every tree in San Francisco, to choose unique locations around the city with sufficient densities of *Metrosideros excelsa* individuals (Fig. \@ref(fig:site-map)).
-
-## Sample Collection {-}
-
-We collected small branches from 5 trees in each of these sites using a clipper pole, collecting at least 3 sun-exposed outer branches from each tree. Because *M. excelsa* is an evergreen tree and the newer leaves are likely to contain fewer fungi, we controlled for leaf age by only collecting branches which contained dark green leaves that appeared to be at least one year old. We collected all samples on the same day, August 26, 2017, to ensure that daily weather patterns and seasonal effects would not have an impact on the microbial community composition. Once collected, leaves were stored in labeled plastic bags and stored at 4$^{\circ}$C until culturing. All leaves were processed within 48 hours of collection. Permission to sample leaves was granted by the San Francisco Bureau of Urban Forestry.
-
-## Culturing Methods {-}
-
-From each sample, we selected a subset of dark green asymptomatic leaves for culturing. We surface-sterilized the leaves by first rinsing them with distilled water, then immersing them in a sterile petri dish with 95% ethanol for 10 seconds, 0.5% NaOCl for 2 minutes, then 70% ethanol for another 2 minutes following Arnold et al. [-@arnold2007b]. We emptied the dish between rinses and left it closed inside a sterile biosafety cabinet after the last rinse. We then cut the leaves into small (2mm x 2mm) pieces with flame-sterilized scissors and placed them into 1.5 mL microcentrifuge slant tubes partially filled with 2% VWR-brand malt extract agar (MEA). For each tree, we prepared 6 leaves and made 100 tubes, except for the trees from the downtown site. For the trees at this site, we prepared 140 tubes per tree because we found that they had low isolation frequencies in a preliminary sampling bout. All leaves were prepared this way within 48 hours of the initial leaf sampling, to prevent death of the leaf tissue from altering the fungal community composition.
-
-After two weeks, we evaluated the tubes for fungal growth and subcultured the emergent fungi from tubes with growth onto 35mm plates with 2% MEA in order to better evaluate their morphotypes and accumulate sufficient tissue for future barcode gene sequencing and water voucher preparation. We re-evaluated and subcultured these tubes in the following months to capture any late-growing fungi. Each pure culture was vouchered in sterile dI water and stored in a living culture collection in the Zimmerman Lab at the University of San Francisco.
-
-## Molecular Methods {-}
-
-We extracted DNA from fungal mycelium using the Sigma RED Extract ‘n Amp DNA extraction kit and following previously published protocols [@uren2012a]. First, we added fungal tissue to sterile tubes filled with 1 mm zirconium oxide beads, then added 100 $\mu$L of Extract 'n' Amp DNA extraction solution. Next, we put the tubes in a bead-beater (Mini-Beadbeater-96, Bio Spec Products Inc.) for one minute. The samples were then placed on a heat block at 95$^{\circ}$C for 10 minutes. After the heating step, we added a dilution buffer to each tube and stored them at 4$^{\circ}$C until PCR.
-
-We performed PCR using fungal-specific primers for the Internal Transcribed Spacer region, a commonly accepted fungal barcode locus [@schoch2012nuclear], using the ITS1F forward primer (5'-CTT GGT CAT TTA GAG GAA GTA A-3') and ITS4 reverse primer (5'-TCC TCC GCT TAT TGA TAT GC-3'). For each PCR reaction, we used 1 $\mu$L of template DNA, 10 $\mu$L Extract ‘n Amp Taq polymerase, 6.4 $\mu$L PCR-grade water, 1 $\mu$L bovine serum albumin, 0.8 $\mu$L ITS1F forward primer, and 0.8 $\mu$L ITS4 reverse primer [@uren2012a]. For the PCR reaction, we used a BioRAD T100 thermal cycler with the following cycles: 95$^{\circ}$C for 3 minutes; 35 cycles of 95$^{\circ}$C for 30 seconds, 54$^{\circ}$C for 30 seconds, 72$^{\circ}$C for 30 seconds; then 72$^{\circ}$C for 10 minutes. To ensure that the fungal DNA successfully amplified, and that the master mix was not contaminated, we ran 5 $\mu$L of each sample and a negative PCR control on a 1% agarose gel with 1X Tris-acetate-EDTA (TAE) buffer and SYBR Safe. We ran the gel at 120 volts for 20 minutes and visualized bands using UV transillumination. Successful PCR samples with clean negative controls were kept at 4$^{\circ}$C until sequencing preparation.
-
-To prepare successfully amplified samples for Sanger sequencing, we first cleaned each sample with 1 $\mu$L Thermo Fisher Shrimp Alkaline Phosphatase Exonuclease (ExoSAP-IT). To clean the samples, we used the following cycle on a BioRAD T100 thermal cycler: 37$^{\circ}$C for 15 minutes, 80$^{\circ}$C for 15 minutes, then hold at 4$^{\circ}$C. After cleaning, samples were kept at 4$^{\circ}$C until they were ready to be sent for sequencing. Directly before being sent for sequencing, cleaned samples that showed bright bands on their gels were diluted with an additional 15 $\mu$L PCR water, although a small number of samples that had faint bands on the gels were not diluted. Cleaned samples were sent to MCLabs (South San Francisco, CA) for Sanger sequencing.
-
-## Computational and Statistical Methods {-}
-
-We used Geneious 11.1 to manually clean and trim the Sanger sequencing data, and to identify and remove failed and low-quality sequences [@geneious]. Sequences that appeared to have multiple strong signals at a given position were discarded because they may have originated from from a mixed culture. Usable sequences were cleaned by trimming the ends of low-quality nucleotides, clarifying any ambiguity codes, and resolving incorrect base assignment due to dye blobs. Cleaned sequences are available on GenBank (finalized genbank IDs to go here following acceptance).
-
-After processing the cleaned sequences to add relevent metadata, we used mothur version 1.39.5 to determine Operational Taxonomic Units (OTUs), based on 97% ITS sequence similarity and abundance-based greedy clustering [@schloss2009introducing]. Next, we used R 4.1.1 [@r-citation] to analyze the resulting OTU table. We used vegan [@vegan] to: 1) calculate species accumulation curves to determine species richness from the OTU data, 2) estimate unknown total species richness using the Chao estimator with bias correction for small sample sizes [@chao1987a; @chiu2014a], 3) calculate Bray-Curtis distances between communities, 4) create a Non-Metric Multidimensional Scaling (NMDS) ordination, and 5) perform a PERMANOVA [@anderson2001a] to assess differences in communities between sites and between trees of different diameters at breast height (DBH) within sites. We used the Tree-Based Alignment Selector (TBAS) toolkit to assign taxonomic context to each ITS sequence [@tbas]. This toolkit matches unknown ITS sequences to the most similar ITS sequences in a large multi-gene phylogeny of confidently assigned taxa. We used the simple features [@sf] and ggmap [@ggmap] R packages to produce maps of study sites.
-
-Significant differences in fungal leaf isolation frequency and tree diameter were determined using a nonparametric Kruskal–Wallis one-way test of variance and Dunn’s Test for multiple comparisons with Holm's correction for multiple hypothesis testing. All analyses, figures, and the final manuscript were generated using a makefile, bash scripts, and R and Rmarkdown. All relevant metadata, as well as analysis and manuscript code, are available on GitHub: https://github.com/ZimmermanLab/SF-metrosideros-endophytes/ and archived at (Zenodo doi here following acceptance). The complete computational environment for the analyses is documented in a Dockerfile based on rocker containers [@boettiger2014] and a renv.lock [@renv] file in that same repository.
-
-## Methods for Comparing Fungi in San Fancisco Trees to New Zealand Trees {-}
-
-In order to compare the foliar microbial populations found in *M. excelsa* throughout San Francisco to those in the tree's native range (New Zealand), we surveyed public GenBank records and performed a literature search. First, we searched Google Scholar on July 7th, 2021, for papers mentioning any of the following sets of search terms: "metrosideros endophytes", "metrosideros excelsa endophytes", "metrosideros excelsa foliage fungus", "metrosideros excelsa endophytes". After this search, we looked through the papers cited by those we originally found in order to find any additional studies.
-
-Then, we searched GenBank for fungal ITS sequences that had *M. excelsa* listed as their host organism. We performed this search using the parameters "host="Metrosideros excelsa", organism=fungi", in order to limit our results to fungal sequences. This search yielded several new sequences that were not included in the previous search because they were unpublished. Using both of these methods, we were able to find about 30 taxa to include as a point of comparison, although many of these were described as pathogenic instead of endophytic.
-
-# Results {-}
-
-```{r chao-richness}
-# first calculate richness estimate across all trees/sites
-overall_estimated_richness_chao <- specpool(otu_table_trees,
-                                            smallsample = TRUE)[1:3]
-
-# then calculate for each site separately, to make a table
-specpool(otu_table_trees,
-         smallsample = TRUE,
-         pool = rep(site_names_vector_by_site_id,
-                    each = 5))[1:3] %>%
-  add_rownames() %>%
-  kable(col.names = c("Site", "OTU Count", "Chao Estimated Richness", "Chao Richness SE"),
-        caption = "Estimated richness of OTU counts across sites using the Chao estimator suggest that OTU richness is higher than observed and is characterized by large uncertainty at several sites.",
-        booktab = TRUE, digits = 1, linesep = "") %>%
-        kableExtra::kable_styling(latex_options = "hold_position")
-  
-```
-
-
-Overall, we found high diversity in these urban endophytic communities. From `r nrow(otu_table_trees)` different host trees, we successfully cultured and sequenced `r nrow(extractions)` fungal isolates, which made up `r ncol(otu_table_trees)` distinct 97% ITS OTUs. Some communities encompassed a low number of fungal isolates; species richness analyses showed that in nearly all of the trees analyzed, our sampling did not encompass the complete microbial diversity (Fig. \@ref(fig:rarefaction-plot)). While we found species diversity within some sites that exceeds 20 distinct fungal OTUs, there appears to be greater species diversity in these fungal endophytic communities than this study was able to document. Chao estimated richness overall was `r round(overall_estimated_richness_chao$chao, 1)` with a standard error of `r round(overall_estimated_richness_chao$chao.se, 1)` and is shown per site in Table \@ref(tab:chao-richness). 
+Overall, we found high diversity in these urban endophytic communities. From `r nrow(otu_table_trees)` different host trees, we successfully cultured and sequenced `r nrow(extractions)` fungal isolates, which made up `r ncol(otu_table_trees)` distinct 97% ITS OTUs. Some communities encompassed a low number of fungal isolates; species richness analyses showed that in nearly all of the trees analyzed, our sampling did not encompass the complete microbial diversity (Fig. \@ref(fig:rarefaction-plot)). While we found species diversity within some sites that exceeds 20 distinct fungal OTUs, there appears to be greater species diversity in these fungal endophytic communities than this study was able to document. Chao estimated richness overall was `r round(overall_estimated_richness_chao$chao, 1)` with a standard error of `r round(overall_estimated_richness_chao$chao.se, 1)` and is shown per site in Table \@ref(tab:chao-richness-table). 
 
 ## Isolation Frequency and Host Tree Diameter at Breast Height {-}
 
