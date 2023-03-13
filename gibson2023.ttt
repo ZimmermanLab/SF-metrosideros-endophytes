@@ -1,5 +1,24 @@
 \begin{table}[!h]
 
+\caption{\label{tab:chao-richness-table}Estimated richness of OTU counts across sites using the Chao estimator suggest that OTU richness is higher than observed and is characterized by large uncertainty at several sites.}
+\centering
+\begin{tabular}[t]{lrrr}
+\toprule
+Site & OTU Count & Chao Estimated Richness & Chao Richness SE\\
+\midrule
+Balboa & 15 & 19.9 & 5.0\\
+Bay & 35 & 105.5 & 50.9\\
+Downtown & 27 & 44.1 & 11.8\\
+Freeway & 29 & 144.6 & 128.9\\
+Mt. Davidson & 37 & 75.7 & 24.7\\
+Ocean & 24 & 184.0 & 175.7\\
+\bottomrule
+\end{tabular}
+\end{table}
+\efloatseparator
+ 
+\begin{table}[!h]
+
 \caption{\label{tab:class-abundance-table}Overall sequenced fungal isolate counts by Class and Order. All fungi successfully  sequenced in this study were placed within the Ascomycota.}
 \centering
 \begin{tabular}[t]{llr}
@@ -43,25 +62,6 @@ DBH (cm) & 1 & 0.556 & 0.556 & 2.302 & 0.057 & 0.007\\
 Site x DBH & 5 & 1.208 & 0.242 & 1.000 & 0.124 & 0.484\\
 Residuals & 18 & 4.349 & 0.242 & NA & 0.446 & NA\\
 Total & 29 & 9.755 & NA & NA & 1.000 & NA\\
-\bottomrule
-\end{tabular}
-\end{table}
-\efloatseparator
- 
-\begin{table}[!h]
-
-\caption{\label{tab:chao-richness}Estimated richness of OTU counts across sites using the Chao estimator suggest that OTU richness is higher than observed and is characterized by large uncertainty at several sites.}
-\centering
-\begin{tabular}[t]{lrrr}
-\toprule
-Site & OTU Count & Chao Estimated Richness & Chao Richness SE\\
-\midrule
-Balboa & 15 & 19.9 & 5.0\\
-Bay & 35 & 105.5 & 50.9\\
-Downtown & 27 & 44.1 & 11.8\\
-Freeway & 29 & 144.6 & 128.9\\
-Mt. Davidson & 37 & 75.7 & 24.7\\
-Ocean & 24 & 184.0 & 175.7\\
 \bottomrule
 \end{tabular}
 \end{table}

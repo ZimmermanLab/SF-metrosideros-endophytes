@@ -1,12 +1,5 @@
 \begin{figure}[p!]
-\includegraphics{gibson2023_files/figure-latex/site-map-1} \caption{A map of the locations sampled across the city of San Francisco, California, USA. Five trees from each site were sampled. Sites were selected to span the range of environmental conditions across the city. Map data © 2021 Google.}\label{fig:site-map}
-\end{figure}
-\efloatseparator
- 
-\begin{figure}
-\centering
-\includegraphics{gibson2023_files/figure-latex/isolation-dbh-freq-plots-1.pdf}
-\caption{\label{fig:isolation-dbh-freq-plots}Isolation frequencies (A) and tree diameters (B) at each site. Isolation frequency (A) is a measure of how many slant tubes showed signs of fungal growth, out of how many total slant tubes were made. Approximately 100 slant tubes were made for each tree except for the trees in the downtown site, which had 140 slant tubes per tree because they had low isolation frequencies during the initial sampling. Sites along x axis are arranged left to right in order of their geographic location from west (left) to east (right).}
+\includegraphics{gibson2023_files/figure-latex/site-map-1} \caption{A map of the locations sampled across the city of San Francisco, California, USA. Five trees from each site were sampled. Sites were selected to span the range of environmental conditions across the city. Map data:  Google, ©2018 TerraMetrics.}\label{fig:site-map}
 \end{figure}
 \efloatseparator
  
@@ -14,6 +7,13 @@
 \centering
 \includegraphics{gibson2023_files/figure-latex/rarefaction-plot-1.pdf}
 \caption{\label{fig:rarefaction-plot}Species accumulation curves showing fungal community OTU richness. Each line in A represents the OTU richness for a single host tree. Each line in B represents the combined OTU richness of all trees (n = 5) in one site.}
+\end{figure}
+\efloatseparator
+ 
+\begin{figure}
+\centering
+\includegraphics{gibson2023_files/figure-latex/isolation-dbh-freq-plots-1.pdf}
+\caption{\label{fig:isolation-dbh-freq-plots}Isolation frequencies (A) and tree diameters (B) at each site. Isolation frequency (A) is a measure of how many slant tubes showed signs of fungal growth, out of how many total slant tubes were made. Approximately 100 slant tubes were made for each tree except for the trees in the downtown site, which had 140 slant tubes per tree because they had low isolation frequencies during the initial sampling. Sites along x axis are arranged left to right in order of their geographic location from west (left) to east (right).}
 \end{figure}
 \efloatseparator
  
