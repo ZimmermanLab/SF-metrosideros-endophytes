@@ -13,7 +13,7 @@ affiliation:
   - code: 1
     address: Department of Biology, University of San Francisco
 abstract: >
- In natural and agricultural systems, the plant microbiome--the microbial organisms associated with plant tissues and rhizosphere soils--has been shown to have important effects on host physiology and ecology, yet we know little about how these plant-microbe relationships play out in urban environments. Here we characterize the composition of fungal communities associated with living leaves of one of the most common sidewalk trees in the city of San Francisco, California. We focus our efforts on endophytic fungi (asymptomatic microfungi that live inside healthy leaves), which have been shown in other systems to have large ecological effects on the health of their plant hosts. Specifically, we characterized the foliar fungal microbiome of *Metrosideros excelsa* (Myrtaceae) trees growing in a variety of urban environmental conditions. We used high-throughput culturing, PCR, and Sanger sequencing of the ITS nrDNA region to quantify the composition and structure of fungal communities growing within healthy leaves of 30 *M. excelsa* trees from 6 distinct sites, which were selected to capture the range of environmental conditions found within city limits. Sequencing resulted in 854 high-quality ITS sequences. These sequences clustered into 85 Operational Taxonomic Units (97% VSEARCH OTUs). We found that these communities encompass relatively high alpha (within) and beta (between-site) diversity. Because the communities are all from the same host tree species, and located in relatively close geographical proximity to one another, these analyses suggest that urban environmental factors such as heat islands or differences in vegetation or traffic density (and associated air quality) may potentially be influencing the composition of these fungal communities. These biogeographic patterns provide evidence that plant microbiomes in urban environments can be as dynamic and complex as their natural counterparts. As human populations continue to transition out of rural areas and into cities, understanding the factors that shape environmental microbial communities in urban ecosystems stands to become increasingly important.
+ In natural and agricultural systems, the plant microbiome--the microbial organisms associated with plant tissues and rhizosphere soils--has been shown to have important effects on host physiology and ecology, yet we know little about how these plant-microbe relationships play out in urban environments. Here we characterize the composition of fungal communities associated with living leaves of one of the most common sidewalk trees in the city of San Francisco, California. We focus our efforts on endophytic fungi (asymptomatic microfungi that live inside healthy leaves), which have been shown in other systems to have large ecological effects on the health of their plant hosts. Specifically, we characterized the foliar fungal microbiome of *Metrosideros excelsa* (Myrtaceae) trees growing in a variety of urban environmental conditions. We used high-throughput culturing, PCR, and Sanger sequencing of the internal transcribed spacer nuclear ribosomal DNA (ITS nrDNA) region to quantify the composition and structure of fungal communities growing within healthy leaves of 30 *M. excelsa* trees from 6 distinct sites, which were selected to capture the range of environmental conditions found within city limits. Sequencing resulted in 854 high-quality ITS sequences. These sequences clustered into 85 Operational Taxonomic Units (97% OTUs). We found that these communities encompass relatively high alpha (within) and beta (between-site) diversity. Because the communities are all from the same host tree species, and located in relatively close geographical proximity to one another, these analyses suggest that urban environmental factors such as heat islands or differences in vegetation or traffic density (and associated air quality) may potentially be influencing the composition of these fungal communities. These biogeographic patterns provide evidence that plant microbiomes in urban environments can be as dynamic and complex as their natural counterparts. As human populations continue to transition out of rural areas and into cities, understanding the factors that shape environmental microbial communities in urban ecosystems stands to become increasingly important.
 bibliography: references.bib
 csl: peerj.csl
 output:
@@ -127,7 +127,7 @@ tbas_with_site %>%
 
 <!-- figures -->
 
-```{r site-map, fig.pos="p!", fig.width=7, fig.cap="A map of the locations sampled across the city of San Francisco, California, USA. Five trees from each site were sampled. Sites were selected to span the range of environmental conditions across the city. Map data © 2021 Google.", out.extra = ""}
+```{r site-map, fig.pos="p!", fig.width=7, fig.cap="A map of the locations sampled across the city of San Francisco, California, USA. Five trees from each site were sampled. Sites were selected to span the range of environmental conditions across the city. Map data:  Google, ©2018 TerraMetrics.", out.extra = ""}
 # plot map and adjust legend as needed
 ggmap(sf_map) +
   geom_point(data = tree_coords_mean,
@@ -181,8 +181,7 @@ iso_freq_plot <- ggstatsplot::ggbetweenstats(
   theme(axis.text.x = element_text(angle = 45,
                                    vjust = 1,
                                    hjust = 1)) +
-  labs(title = "Isolation Frequencies",
-       x = "Site",
+  labs(x = "Site",
        y = "Isolation Frequency")
 
 # boxplot of tree dbh across sites from west to east
@@ -201,8 +200,7 @@ dbh_plot <- ggstatsplot::ggbetweenstats(
   theme(axis.text.x = element_text(angle = 45,
                                    vjust = 1,
                                    hjust = 1)) +
-  labs(title = "Diameter at Breast Height",
-       x = "Site",
+  labs(x = "Site",
        y = "Diameter at Breast height (cm)")
 
 
@@ -216,13 +214,14 @@ iso_freq_plot / dbh_plot + plot_annotation(tag_levels = "A")
 par(mfrow = c(1, 2))
 
 rarecurve(otu_table_trees,
-          main = "Fungal community richness\nin individual host trees",
           col = rep(site_colors_vector_by_site_id, each = 5),
           label = FALSE,
           lwd = 2.5,
           cex.main = 1,
           xlab = "Number of fungal isolates",
-          ylab = "Number of fungal species (97% ITS OTUs)")
+          ylab = "Number of fungal species (97% ITS OTUs)",
+          ylim = c(0, 40),
+          xlim = c(0, 250))
 
 legend("bottomright",
        legend = site_names_vector_by_site_id,
@@ -233,13 +232,14 @@ legend("bottomright",
 mtext("A", side = 3, adj = -0.5, padj = -2.7, cex = 1.2)
 
 rarecurve(otu_table_sites,
-          main = "Fungal community richness\nfor each site",
           col = site_colors_vector_by_site_id,
           label = FALSE,
           lwd = 2.5,
           cex.main = 1,
           xlab = "Number of fungal isolates",
-          ylab = "Number of fungal species (97% ITS OTUs)")
+          ylab = "Number of fungal species (97% ITS OTUs)",
+          ylim = c(0, 40),
+          xlim = c(0, 250))
 
 legend("bottomright",
        legend = site_names_vector_by_site_id,
@@ -263,8 +263,7 @@ stacked_bar_class <- tbas_with_site %>%
   geom_col(position = position_fill()) +
   scale_x_discrete(limits =  site_id_west_to_east,
                    labels = sites_names_west_to_east) +
-  labs(title = "Relative abundances of fungal classes by site",
-       y = "Relative abundance",
+  labs(y = "Relative abundance",
        x = "Site") +
   theme_few() +
   scale_fill_viridis_d(name = "Class") +
@@ -282,8 +281,7 @@ stacked_bar_order <- tbas_with_site %>%
   geom_col(position = position_fill()) +
   scale_x_discrete(limits =  site_id_west_to_east,
                    labels = sites_names_west_to_east) +
-  labs(title = "Relative abundances of fungal orders by site",
-       y = "Relative abundance",
+  labs(y = "Relative abundance",
        x = "Site") +
   theme_few() +
   scale_fill_viridis_d(name = "Order") +
@@ -307,7 +305,6 @@ ord_obj <- metaMDS(otu_table_trees, trymax = 100)
 plot(ord_obj,
      display = "sites",
      type = "n",
-     main = "NMDS ordination of fungal community composition",
      xlab = "",
      ylab = "",
      tck = 0,
