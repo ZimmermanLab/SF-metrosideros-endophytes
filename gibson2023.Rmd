@@ -76,19 +76,20 @@ site_names_vector_by_site_id <- c("Balboa",          # S1B
                                   "Freeway",         # S5B
                                   "Ocean")           # S6B
 
-site_colors_vector_by_site_id <- c("#ff5e62",        # Balboa
-                                   "#f0a200",        # Downtown
-                                   "#007f36",        # Mt. Davidson
-                                   "#8781e6",        # Bay
-                                   "#00005a",        # Freeway
-                                   "#81005e")        # Ocean
+# colorblind-friendly color palette generated via `scales::viridis_pal()(6)`
+site_colors_vector_by_site_id <- c("#440154FF",        # Balboa
+                                   "#414487FF",        # Downtown
+                                   "#2A788EFF",        # Mt. Davidson
+                                   "#22A884FF",        # Bay
+                                   "#7AD151FF",        # Freeway
+                                   "#FDE725FF")        # Ocean
 
-site_colors_alphabetical_by_site_name <- c("#ff5e62",        # Balboa
-                                           "#8781e6",        # Bay
-                                           "#f0a200",        # Downtown
-                                           "#00005a",        # Freeway
-                                           "#007f36",        # Mt. Davidson
-                                           "#81005e")        # Ocean
+site_colors_alphabetical_by_site_name <- c("#440154FF",        # Balboa
+                                           "#22A884FF",        # Bay
+                                           "#414487FF",        # Downtown 
+                                           "#7AD151FF",        # Freeway
+                                           "#2A788EFF",        # Mt. Davidson
+                                           "#FDE725FF")        # Ocean
 
 site_id_west_to_east <-  c("S6",
                            "S1",
@@ -104,11 +105,6 @@ sites_names_west_to_east <- c("Ocean",
                               "Downtown",
                               "Bay")
 ```
-
-
-
-
-
 
 # Introduction {-}
 
@@ -133,6 +129,12 @@ In this study, we used culturing and barcode gene sequencing to identify the spe
 ggmap(sf_map) +
   geom_point(data = tree_coords_mean,
              mapping = aes(x = mean_lon,
+                           y = mean_lat),
+             color = "white",
+             pch = 16,
+             size = 8) +
+  geom_point(data = tree_coords_mean,
+             mapping = aes(x = mean_lon,
                            y = mean_lat,
                            color = Site_ID),
              pch = 16,
@@ -144,7 +146,6 @@ ggmap(sf_map) +
   labs(x = "Longitude",
        y = "Latitude")
 ```
-
 
 ## Host Selection {-}
 
