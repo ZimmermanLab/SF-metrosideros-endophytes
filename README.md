@@ -1,7 +1,7 @@
 # Urban biogeography of fungal endophytes across San Francisco
 
 [![DOI](https://zenodo.org/badge/94378545.svg)](https://zenodo.org/badge/latestdoi/94378545)
-[![License (for text): CC BY 4.0](https://img.shields.io/badge/License-CC_BY_4.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
+[![License (for text): CC BY 4.0](https://img.shields.io/badge/License%20(for%20text)-CC_BY_4.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 [![License (for code):
 MIT](https://img.shields.io/badge/License%20(for%20code)-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![License (for data):
