@@ -1,6 +1,14 @@
 # Urban biogeography of fungal endophytes across San Francisco
 
-Repository for the manuscript "Urban biogeography of fungal endophytes across San Francisco" submitted to the scientific journal [PeerJ](https://peerj.com), written by Emma Gibson and Naupaka Zimmerman.
+[![DOI](https://zenodo.org/badge/94378545.svg)](https://zenodo.org/badge/latestdoi/94378545)
+[![License (for text): CC BY 4.0](https://img.shields.io/badge/License-CC_BY_4.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
+[![License (for code):
+MIT](https://img.shields.io/badge/License%20(for%20code)-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![License (for data):
+CC0-1.0](https://img.shields.io/badge/License%20(for%20data)-CC0_1.0-lightgrey.svg)](http://creativecommons.org/publicdomain/zero/1.0/)
+
+
+Repository of the code, data, and text for the manuscript "Urban biogeography of fungal endophytes across San Francisco" published in the scientific journal [PeerJ](https://peerj.com), written by Emma Gibson and Naupaka Zimmerman.
 
 Use of Google Maps images follows the guidelines here:    
 https://about.google/brand-resource-center/products-and-services/geo-guidelines/
@@ -34,11 +42,11 @@ The directory structure is shown below. The most important files are the
 raw data in the `data/` directory, the `gibson2023.Rmd` Rmarkdown file
 that contains all of the text and a good bit of the code for the
 manuscript, the `references.bib` file that contains the references for
-the manuscipr, and the scripts in the `scripts/` directory, which are
+the manuscript, and the scripts in the `scripts/` directory, which are
 called by the Rmd file or the `Makefile` to run the pipeline. The
 computational environment is specified by the `Dockerfile` and the
 `renv.lock` file. The `output/` directory contains a number of
-intermediate output files for the processing pipeline, and also include
+intermediate output files for the processing pipeline, and also includes
 the R session info for the last time the manuscript was generated, in
 `output/log_files/r_session_info.txt`. Other files that haven't been
 mentioned are mostly ancillary files for generating the manuscript using
@@ -47,6 +55,7 @@ bookdown and LaTeX.
 
 ```
 ├── Dockerfile
+├── LICENSE.md
 ├── Makefile
 ├── README.md
 ├── SF-metrosideros-endophytes.Rproj
@@ -121,5 +130,5 @@ bookdown and LaTeX.
 │   └── 05_setup_maps_and_gis_coords.R
 └── wlpeerj.cls
 
-16 directories, 59 files
+16 directories, 60 files
 ```
